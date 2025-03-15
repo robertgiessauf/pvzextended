@@ -86,7 +86,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 	},
 	{ ZOMBIE_NEWSPAPER,
 		{
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
 			0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -250,7 +250,13 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 	},
 	{ ZOMBIE_BOSS, {0} },
 	{ ZOMBIE_REDEYE_GARGANTUAR, {0} },
-	{ ZOMBIE_PEA_HEAD, {0} },
+	{ ZOMBIE_PEA_HEAD, 		{
+			0, 0, 0, 1, 0, 1, 0, 1, 1, 0,
+			0, 1, 1, 0, 0, 1, 1, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
+			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+		} },
 	{ ZOMBIE_WALLNUT_HEAD, {0} },
 	{ ZOMBIE_JALAPENO_HEAD, {0} },
 	{ ZOMBIE_GATLING_HEAD, {0} },
