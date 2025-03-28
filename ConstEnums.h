@@ -843,6 +843,7 @@ enum ReanimationType
     REANIM_DOOMSHROOM,
     REANIM_SNOWPEA,
     REANIM_REPEATER,
+    REANIM_FIREPEA,
     REANIM_SUNSHROOM,
     REANIM_TALLNUT,
     REANIM_FUMESHROOM,
@@ -1054,7 +1055,7 @@ enum SeedType
     ENUM_AUTO_VALUE(SEED_POTATOMINE)                 
     ENUM_AUTO_VALUE(SEED_SNOWPEA)                    
     ENUM_AUTO_VALUE(SEED_CHOMPER)                    
-    ENUM_AUTO_VALUE(SEED_REPEATER)                   
+    ENUM_AUTO_VALUE(SEED_FIREPEA)                   
     ENUM_AUTO_VALUE(SEED_PUFFSHROOM)                 
     ENUM_AUTO_VALUE(SEED_SUNSHROOM)                  
     ENUM_AUTO_VALUE(SEED_FUMESHROOM)                 

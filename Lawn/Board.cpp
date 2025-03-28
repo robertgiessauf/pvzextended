@@ -1388,7 +1388,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[0].SetPacketType(SeedType::SEED_PEASHOOTER);
 		mSeedBank->mSeedPackets[1].SetPacketType(SeedType::SEED_CHERRYBOMB);
 		mSeedBank->mSeedPackets[2].SetPacketType(SeedType::SEED_WALLNUT);
-		mSeedBank->mSeedPackets[3].SetPacketType(SeedType::SEED_REPEATER);
+		mSeedBank->mSeedPackets[3].SetPacketType(SeedType::SEED_FIREPEA);
 		mSeedBank->mSeedPackets[4].SetPacketType(SeedType::SEED_SNOWPEA);
 		mSeedBank->mSeedPackets[5].SetPacketType(SeedType::SEED_CHOMPER);
 	}
@@ -2067,7 +2067,7 @@ Plant* Board::AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedTyp
 
 	if (theSeedType == SeedType::SEED_PEASHOOTER ||
 		theSeedType == SeedType::SEED_SNOWPEA ||
-		theSeedType == SeedType::SEED_REPEATER ||
+		theSeedType == SeedType::SEED_FIREPEA ||
 		theSeedType == SeedType::SEED_THREEPEATER ||
 		theSeedType == SeedType::SEED_SPLITPEA ||
 		theSeedType == SeedType::SEED_GATLINGPEA)
@@ -3260,7 +3260,7 @@ void Board::UpdateToolTip()
 
 	if (gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED || gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST)
 	{
-		if (aUseSeedType == SeedType::SEED_REPEATER)
+		if (aUseSeedType == SeedType::SEED_FIREPEA)
 		{
 			mToolTip->SetLabel(_S("[BEGHOULED_REPEATER_UPGRADE_TOOLTIP]"));
 		}
@@ -9532,7 +9532,7 @@ bool Board::PlantingRequirementsMet(SeedType theSeedType)
 {
 	switch (theSeedType)
 	{
-	case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_REPEATER);
+	case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_FIREPEA);
 	case SeedType::SEED_TWINSUNFLOWER:		return CountPlantByType(SeedType::SEED_SUNFLOWER);
 	case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
 	case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);

@@ -441,6 +441,8 @@ void CreditScreen::PreLoadCredits()
     ReanimationPreload(ReanimationType::REANIM_PEASHOOTER);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_REPEATER, true);
     ReanimationPreload(ReanimationType::REANIM_REPEATER);
+    ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_FIREPEA, true);
+    ReanimationPreload(ReanimationType::REANIM_FIREPEA);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_KERNELPULT, true);
     ReanimationPreload(ReanimationType::REANIM_KERNELPULT);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_WALLNUT, true);

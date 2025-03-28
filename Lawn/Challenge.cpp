@@ -839,7 +839,7 @@ void Challenge::BeghouledScore(int theGridX, int theGridY, int theNumPlants, boo
 	mChallengeScore++;
 	if (mBoard->mSeedBank->mNumPackets == 0)
 	{
-		mBoard->mSeedBank->mSeedPackets[0].SetPacketType(SEED_REPEATER, SEED_NONE);
+		mBoard->mSeedBank->mSeedPackets[0].SetPacketType(SEED_FIREPEA, SEED_NONE);
 		mBoard->mSeedBank->mSeedPackets[1].SetPacketType(SEED_FUMESHROOM, SEED_NONE);
 		mBoard->mSeedBank->mSeedPackets[2].SetPacketType(SEED_TALLNUT, SEED_NONE);
 		mBoard->mSeedBank->mSeedPackets[3].SetPacketType(SEED_BEGHOULED_BUTTON_SHUFFLE, SEED_NONE);
@@ -974,7 +974,7 @@ SeedType Challenge::BeghouledPickSeed(int theGridX, int theGridY, BeghouledBoard
 
 		if (mBeghouledPurcasedUpgrade[(int)BeghouledUpgrade::BEGHOULED_UPGRADE_REPEATER] && aSeedType == SeedType::SEED_PEASHOOTER)
 		{
-			aSeedType = SeedType::SEED_REPEATER;
+			aSeedType = SeedType::SEED_FIREPEA;
 		}
 		if (mBeghouledPurcasedUpgrade[(int)BeghouledUpgrade::BEGHOULED_UPGRADE_FUMESHROOM] && aSeedType == SeedType::SEED_PUFFSHROOM)
 		{
@@ -1616,7 +1616,7 @@ void Challenge::UpdateConveyorBelt()
 		aSeedPickArray[1].mWeight = 20;
 		aSeedPickArray[2].mItem = SEED_WALLNUT;
 		aSeedPickArray[2].mWeight = 15;
-		aSeedPickArray[3].mItem = SEED_REPEATER;
+		aSeedPickArray[3].mItem = SEED_FIREPEA;
 		aSeedPickArray[3].mWeight = 20;
 		aSeedPickArray[4].mItem = SEED_SNOWPEA;
 		aSeedPickArray[4].mWeight = 10;
@@ -1766,7 +1766,7 @@ void Challenge::UpdateConveyorBelt()
 		aSeedPickCount = 6;
 		aSeedPickArray[0].mItem = SEED_PEASHOOTER;
 		aSeedPickArray[0].mWeight = 25;
-		aSeedPickArray[1].mItem = SEED_REPEATER;
+		aSeedPickArray[1].mItem = SEED_FIREPEA;
 		aSeedPickArray[1].mWeight = 20;
 		aSeedPickArray[2].mItem = SEED_TORCHWOOD;
 		aSeedPickArray[2].mWeight = 10;
@@ -3453,7 +3453,7 @@ void Challenge::BeghouledPacketClicked(SeedPacket* theSeedPacket)
 	if (!mBoard->CanTakeSunMoney(aPacketCost))
 		return;
 
-	if (theSeedPacket->mPacketType == SEED_REPEATER && !mBoard->mChallenge->mBeghouledPurcasedUpgrade[(int)BeghouledUpgrade::BEGHOULED_UPGRADE_REPEATER])
+	if (theSeedPacket->mPacketType == SEED_FIREPEA && !mBoard->mChallenge->mBeghouledPurcasedUpgrade[(int)BeghouledUpgrade::BEGHOULED_UPGRADE_REPEATER])
 	{
 		mBoard->mChallenge->mBeghouledPurcasedUpgrade[(int)BeghouledUpgrade::BEGHOULED_UPGRADE_REPEATER] = true;
 
@@ -3463,7 +3463,7 @@ void Challenge::BeghouledPacketClicked(SeedPacket* theSeedPacket)
 			if (aPlant->mSeedType == SEED_PEASHOOTER)
 			{
 				aPlant->Die();
-				mBoard->AddPlant(aPlant->mPlantCol, aPlant->mRow, SEED_REPEATER, SEED_NONE);
+				mBoard->AddPlant(aPlant->mPlantCol, aPlant->mRow, SEED_FIREPEA, SEED_NONE);
 			}
 		}
 		theSeedPacket->Deactivate();
@@ -4555,7 +4555,7 @@ void Challenge::IZombieInitLevel()
 			case 0:  
 				IZombiePlacePlants(SEED_SNOWPEA, 9, -1);
 				IZombiePlacePlants(SEED_SPLITPEA, 4, -1);
-				IZombiePlacePlants(SEED_REPEATER, 4, -1);
+				IZombiePlacePlants(SEED_FIREPEA, 4, -1);
 				break;
 			case 1:  
 				IZombiePlacePlants(SEED_POTATOMINE, 9, -1);
@@ -4601,7 +4601,7 @@ void Challenge::IZombieInitLevel()
 			case 4:  
 				IZombiePlacePlants(SEED_TORCHWOOD, 1, -1);
 				IZombiePlacePlants(SEED_SPLITPEA, 3, -1);
-				IZombiePlacePlants(SEED_REPEATER, 1, -1);
+				IZombiePlacePlants(SEED_FIREPEA, 1, -1);
 				IZombiePlacePlants(SEED_KERNELPULT, 3, -1);
 				IZombiePlacePlants(SEED_THREEPEATER, 1, -1);
 				IZombiePlacePlants(SEED_SNOWPEA, 3, -1);

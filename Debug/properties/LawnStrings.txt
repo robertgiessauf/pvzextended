@@ -23,10 +23,10 @@ Wall-nut
 Blocks off zombies and protects your other plants
 
 [REPEATER]
-Repeater
+Firepea
 
 [REPEATER_TOOLTIP]
-Fires two peas at a time
+Shoots fireballs at enemies burning them
 
 [POTATO_MINE]
 Potato Mine
@@ -237,7 +237,7 @@ Gatling Pea
 
 [GATLING_PEA_TOOLTIP]
 Shoots four peas at a time
-(requires repeater)
+(requires firepea)
 
 [TWIN_SUNFLOWER]
 Twin Sunflower

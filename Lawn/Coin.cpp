@@ -192,7 +192,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
                 SeedType::SEED_SUNFLOWER,
                 SeedType::SEED_CHERRYBOMB,
                 SeedType::SEED_WALLNUT,
-                SeedType::SEED_REPEATER,
+                SeedType::SEED_FIREPEA,
                 SeedType::SEED_POTATOMINE,
                 SeedType::SEED_SNOWPEA,
                 SeedType::SEED_CHOMPER

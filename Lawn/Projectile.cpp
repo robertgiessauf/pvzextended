@@ -96,7 +96,8 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
 	{
-		TOD_ASSERT();
+		//TOD_ASSERT();
+		ConvertToFireball(-100);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_COBBIG)
 	{

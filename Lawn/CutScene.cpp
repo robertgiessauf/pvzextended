@@ -1984,7 +1984,7 @@ void CutScene::LoadUpsellBoardRoof()
 	mBoard->NewPlant(4, 1, SeedType::SEED_FLOWERPOT, SeedType::SEED_NONE);
 	mBoard->NewPlant(4, 1, SeedType::SEED_CHOMPER, SeedType::SEED_NONE);
 	mBoard->NewPlant(4, 2, SeedType::SEED_FLOWERPOT, SeedType::SEED_NONE);
-	mBoard->NewPlant(4, 2, SeedType::SEED_REPEATER, SeedType::SEED_NONE);
+	mBoard->NewPlant(4, 2, SeedType::SEED_FIREPEA, SeedType::SEED_NONE);
 	mBoard->NewPlant(4, 3, SeedType::SEED_FLOWERPOT, SeedType::SEED_NONE);
 	mBoard->NewPlant(5, 2, SeedType::SEED_FLOWERPOT, SeedType::SEED_NONE);
 	mBoard->NewPlant(5, 2, SeedType::SEED_WALLNUT, SeedType::SEED_NONE);
