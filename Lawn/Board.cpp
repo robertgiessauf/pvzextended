@@ -646,7 +646,8 @@ void Board::PickZombieWaves()
 		if (aIsFlagWave)
 		{
 			int aPlainZombiesNum = min(aZombiePoints, 8);
-			aZombiePoints *= 2.5f;
+			//aZombiePoints *= 2.5f; // TODOFIX
+			aZombiePoints *= 5.0f;
 
 			if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
 			{
