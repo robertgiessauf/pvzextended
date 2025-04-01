@@ -9588,6 +9588,7 @@ void Board::KillAllZombiesInRadius(int theRow, int theX, int theY, int theRadius
 	}
 }
 
+
 int Board::GetAllZombiesInRadius(int theRow, int theX, int theY, int theRadius, int theRowRange, int theDamageRangeFlags)
 {
 	Zombie* aZombie = nullptr;

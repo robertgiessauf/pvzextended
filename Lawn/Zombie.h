@@ -24,6 +24,7 @@ constexpr const int POGO_BOUNCE_TIME = 80;
 constexpr const int DOLPHIN_JUMP_TIME = 120;
 constexpr const int JackInTheBoxZombieRadius = 115;
 constexpr const int JackInTheBoxPlantRadius = 90;
+constexpr const int WalnutPlantRadius = 150;
 constexpr const int BOBSLED_CRASH_TIME = 150;
 constexpr const int ZOMBIE_BACKUP_DANCER_RISE_HEIGHT = -200;
 constexpr const int BOSS_FLASH_HEALTH_FRACTION = 10;

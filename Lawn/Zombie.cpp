@@ -45,8 +45,8 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_IMP,               REANIM_IMP,                 10,     48,     1,      0,      _S("IMP")},
     { ZOMBIE_BOSS,              REANIM_BOSS,                10,     50,     1,      0,      _S("BOSS")},
     { ZOMBIE_REDEYE_GARGANTUAR, REANIM_GARGANTUAR,          10,     48,     15,     6000,   _S("REDEYED_GARGANTUAR")},
-    { ZOMBIE_PEA_HEAD,          REANIM_ZOMBIE,              1,      4,     1,      4000,   _S("PEASHOOTER_ZOMBIE")},
-    { ZOMBIE_WALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     1,      3000,   _S("WALLNUT_ZOMBIE")},
+    { ZOMBIE_PEA_HEAD,          REANIM_ZOMBIE,              1,       4,     1,      4000,   _S("PEASHOOTER_ZOMBIE")},
+    { ZOMBIE_WALLNUT_HEAD,      REANIM_ZOMBIE,              4,      /*99*/4,     1,      3000,   _S("WALLNUT_ZOMBIE")},
     { ZOMBIE_JALAPENO_HEAD,     REANIM_ZOMBIE,              3,      99,     10,     1000,   _S("JALAPENO_ZOMBIE")},
     { ZOMBIE_GATLING_HEAD,      REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("GATLING_ZOMBIE")},
     { ZOMBIE_SQUASH_HEAD,       REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("SQUASH_ZOMBIE")},
@@ -7564,6 +7564,7 @@ int Zombie::TakeHelmDamage(int theDamage, unsigned int theDamageFlags)
             aHeadReanim->SetImageOverride("anim_idle", IMAGE_REANIM_TALLNUT_CRACKED2);
         }
     }
+
     return aDamageRemaining;
 }
 
@@ -7721,7 +7722,23 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
             mBodyHealth = 1;
         }
     }
-    else
+    else if (mZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD) {
+        if (mApp->IsAdventureMode()) {
+            if (mBodyHealth <= 0)
+            {
+                mApp->PlayFoley(FoleyType::FOLEY_EXPLOSION);
+
+                int aPosX = mX + mWidth / 2;
+                int aPosY = mY + mHeight / 2;
+                //mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, JackInTheBoxZombieRadius, 1, true, 255);
+                mBoard->KillAllPlantsInRadius(aPosX, aPosY, WalnutPlantRadius);
+
+                mApp->AddTodParticle(aPosX, aPosY, Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_TOP, 0, 0), ParticleEffect::PARTICLE_JACKEXPLODE);
+                mBoard->ShakeBoard(4, -6);
+
+            }
+        }
+    } else
     {
         UpdateDamageStates(theDamageFlags);
     }
@@ -8662,6 +8679,10 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
 {
     if (mZombiePhase == ZombiePhase::PHASE_ZOMBIE_DYING || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_BURNED || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_MOWERED)
         return;
+
+    if (mZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD) {
+        return;
+    }
 
     Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
     if (aBodyReanim == nullptr || !aBodyReanim->TrackExists("anim_death"))
