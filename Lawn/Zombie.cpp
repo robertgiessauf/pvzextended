@@ -4344,7 +4344,9 @@ void Zombie::CheckForBoardEdge()
 
 void Zombie::UpdatePlaying()
 {
-    TOD_ASSERT(mBodyHealth > 0 || mZombiePhase == ZombiePhase::PHASE_BOBSLED_CRASHING);
+    if (!(mBodyHealth > 0 || mZombiePhase == ZombiePhase::PHASE_BOBSLED_CRASHING)) {
+        return;
+    }
 
     mGroanCounter--;
     int aZombiesCount = mBoard->mZombies.mSize;
@@ -7735,7 +7737,7 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
 
                 mApp->AddTodParticle(aPosX, aPosY, Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_TOP, 0, 0), ParticleEffect::PARTICLE_JACKEXPLODE);
                 mBoard->ShakeBoard(4, -6);
-
+                DieWithLoot();
             }
         }
     } else
