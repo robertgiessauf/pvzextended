@@ -975,8 +975,8 @@ void Projectile::Draw(Graphics* g)
 		aImage = IMAGE_PROJECTILE_STAR;
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
-	{
-		aImage = IMAGE_PUFFSHROOM_PUFF2;
+	{	
+		aImage = IMAGE_PUFFSHROOM_PUFF1; //mApp->mResourceManager->GetImage("PuffShroom_puff_normal");
 		aScale = TodAnimateCurveFloat(0, 30, mProjectileAge, 0.3f, 1.0f, TodCurves::CURVE_LINEAR);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_BASKETBALL)

@@ -50,7 +50,8 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_JALAPENO_HEAD,     REANIM_ZOMBIE,              3,      99,     10,     1000,   _S("JALAPENO_ZOMBIE")},
     { ZOMBIE_GATLING_HEAD,      REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("GATLING_ZOMBIE")},
     { ZOMBIE_SQUASH_HEAD,       REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("SQUASH_ZOMBIE")},
-    { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")}
+    { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")},
+    { ZOMBIE_STRONG_BITE,       REANIM_ZOMBIE,              2,      1,      1,      4000,   _S("ZOMBIE_STRONG_BITE")},
 };
 
 static ZombieType gBossZombieList[] = {  
@@ -174,8 +175,13 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
 
     switch (theType)
     {
-    case ZombieType::ZOMBIE_NORMAL:  
+    case ZombieType::ZOMBIE_NORMAL:
         LoadPlainZombieReanim();
+        break;
+
+    case ZombieType::ZOMBIE_STRONG_BITE:
+        LoadPlainZombieReanim();
+        mBodyHealth = 1000;
         break;
 
     case ZombieType::ZOMBIE_DUCKY_TUBE:  
@@ -3209,6 +3215,7 @@ void Zombie::OverrideParticleColor(TodParticleSystem* aParticle)
 {
     if (aParticle)
     {
+
         if (mMindControlled)
         {
             aParticle->OverrideColor(nullptr, ZOMBIE_MINDCONTROLLED_COLOR);
@@ -4961,6 +4968,18 @@ void Zombie::DrawZombiePart(Graphics* g, Image* theImage, int theFrame, int theR
         g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
         g->DrawImageMirror(theImage, aDestRect, aSrcRect, aMirror);
         g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+    } else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
+    {
+        aMirror = true;
+        g->SetColorizeImages(true);
+        Color aMincontrolledColor = Color(255, 75, 75, 255);
+        aMincontrolledColor.mAlpha = anAlpha;
+        g->SetColor(aMincontrolledColor);
+        g->DrawImageMirror(theImage, aDestRect, aSrcRect, aMirror);
+
+        g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+        g->DrawImageMirror(theImage, aDestRect, aSrcRect, aMirror);
+        g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
     }
     else
     {
@@ -5477,6 +5496,13 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
     else if (mChilledCounter > 0 || mIceTrapCounter > 0)
     {
         aColorOverride = Color(75, 75, 255, aFadeAlpha);
+        aExtraAdditiveColor = aColorOverride;
+        aEnableExtraAdditiveDraw = true;
+    }
+    else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
+    {
+        aColorOverride = Color(255, 75, 75, 255);
+        aColorOverride.mAlpha = aFadeAlpha;
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
     }
@@ -6857,13 +6883,17 @@ void Zombie::EatPlant(Plant* thePlant)
         }
     }
 
-    thePlant->mPlantHealth -= DAMAGE_PER_EAT;
+    int damage = DAMAGE_PER_EAT;
+    if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE) {
+        damage = 10000;
+    }
+    thePlant->mPlantHealth -= damage;
     thePlant->mRecentlyEatenCountdown = 50;
     if (mApp->IsIZombieLevel() && mJustGotShotCounter < -500)
     {
         if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
         {
-            thePlant->mPlantHealth -= DAMAGE_PER_EAT;
+            thePlant->mPlantHealth -= damage;
         }
     }
 
