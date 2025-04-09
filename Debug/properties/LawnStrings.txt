@@ -17,10 +17,10 @@ Cherry Bomb
 Blows up all zombies in an area
 
 [WALL_NUT]
-Wall-nut
+Cherrybomb Nut
 
 [WALL_NUT_TOOLTIP]
-Blocks off zombies and protects your other plants
+Blocks off zombies and explodes when dead
 
 [REPEATER]
 Firepea
@@ -59,10 +59,10 @@ Sun-shroom
 Gives small sun at first and normal sun later
 
 [FUME_SHROOM]
-Fume-shroom
+Snow-Fume-shroom
 
 [FUME_SHROOM_TOOLTIP]
-Shoots fumes that can pass through screen doors
+Shoots ice fumes that can pass through screen doors
 
 [GRAVE_BUSTER]
 Grave Buster

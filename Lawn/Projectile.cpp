@@ -976,7 +976,7 @@ void Projectile::Draw(Graphics* g)
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
 	{
-		aImage = IMAGE_PUFFSHROOM_PUFF1;
+		aImage = IMAGE_PUFFSHROOM_PUFF2;
 		aScale = TodAnimateCurveFloat(0, 30, mProjectileAge, 0.3f, 1.0f, TodCurves::CURVE_LINEAR);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_BASKETBALL)
