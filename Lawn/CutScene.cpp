@@ -874,7 +874,7 @@ void CutScene::StartLevelIntro()
 		}
 		else if (mApp->IsAdventureMode())
 		{
-			if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT)
+			if (mBoard->mBackground == BackgroundType::BACKGROUND_7_STONES || mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT)
 			{
 				aHouseMessage = TodStringTranslate(_S("[PLAYERS_HOUSE]"));
 			}
