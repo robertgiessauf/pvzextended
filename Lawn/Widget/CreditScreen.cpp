@@ -412,6 +412,7 @@ void CreditScreen::PreLoadCredits()
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_DIGGER, true);
     ReanimationPreload(ReanimationType::REANIM_DIGGER);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE_FOOTBALL, true);
+    ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE_FOOTBALL_GIGA, true);
     ReanimationPreload(ReanimationType::REANIM_ZOMBIE_FOOTBALL);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE_CREDITS_CONEHEAD, true);
     ReanimationPreload(ReanimationType::REANIM_ZOMBIE_CREDITS_CONEHEAD);

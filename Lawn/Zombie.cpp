@@ -52,6 +52,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_SQUASH_HEAD,       REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("SQUASH_ZOMBIE")},
     { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")},
     { ZOMBIE_STRONG_BITE,       REANIM_ZOMBIE,              2,      1,      1,      4000,   _S("ZOMBIE_STRONG_BITE")},
+    { ZOMBIE_GIGA_FOOTBALL,     REANIM_ZOMBIE_FOOTBALL_GIGA,7,      16,     5,      2000,   _S("FOOTBALL_ZOMBIE_GIGA")},
 };
 
 static ZombieType gBossZombieList[] = {  
@@ -274,6 +275,17 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mAnimTicksPerFrame = 6;
         mVariant = false;
         break;
+
+    case ZombieType::ZOMBIE_GIGA_FOOTBALL:
+        mZombieRect = Rect(50, 0, 57, 115);
+        //ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
+        mHelmType = HelmType::HELMTYPE_FOOTBALL;
+        mHelmHealth = 1400;
+        mBodyHealth = 2400;
+        mAnimTicksPerFrame = 6;
+        mVariant = false;
+        break;
+
 
     case ZombieType::ZOMBIE_DIGGER:  
     {
@@ -1147,7 +1159,7 @@ void Zombie::PickRandomSpeed()
         mVelX = 2.0f;
     }
     else if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_PRE_VAULT || 
-        mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_SNORKEL || mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX)
+        mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL || mZombieType == ZombieType::ZOMBIE_SNORKEL || mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX)
     {
         mVelX = RandRangeFloat(0.66f, 0.68f);
     }
@@ -3490,6 +3502,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
     switch (mZombieType)
     {
     case ZombieType::ZOMBIE_FOOTBALL:
+    case ZombieType::ZOMBIE_GIGA_FOOTBALL:
         ReanimShowPrefix("Zombie_football_leftarm_lower", RENDER_GROUP_HIDDEN);
         ReanimShowPrefix("Zombie_football_leftarm_hand", RENDER_GROUP_HIDDEN);
         break;
@@ -3529,6 +3542,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
         switch (mZombieType)
         {
         case ZombieType::ZOMBIE_FOOTBALL:
+        case ZombieType::ZOMBIE_GIGA_FOOTBALL:
             GetTrackPosition("Zombie_football_leftarm_hand", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_football_leftarm_upper", IMAGE_REANIM_ZOMBIE_FOOTBALL_LEFTARM_UPPER2);
             break;
@@ -3627,6 +3641,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
             switch (mZombieType)
             {
             case ZombieType::ZOMBIE_FOOTBALL:
+            case ZombieType::ZOMBIE_GIGA_FOOTBALL:
                 aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_FOOTBALL_LEFTARM_HAND);
                 break;
             case ZombieType::ZOMBIE_NEWSPAPER:
@@ -4341,7 +4356,7 @@ void Zombie::CheckForBoardEdge()
     {
         aEdgeX = -150;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_CATAPULT || mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_ZAMBONI)
+    else if (mZombieType == ZombieType::ZOMBIE_CATAPULT || mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL || mZombieType == ZombieType::ZOMBIE_ZAMBONI)
     {
         aEdgeX = -175;
     }
@@ -4831,6 +4846,7 @@ void Zombie::DrawZombie(Graphics* g, const ZombieDrawPosition& theDrawPos)
     case ZombieType::ZOMBIE_NEWSPAPER:
     case ZombieType::ZOMBIE_DOOR:
     case ZombieType::ZOMBIE_FOOTBALL:
+    case ZombieType::ZOMBIE_GIGA_FOOTBALL:
     case ZombieType::ZOMBIE_DOLPHIN_RIDER:
     case ZombieType::ZOMBIE_LADDER:
     //case ZombieType::ZOMBIE_DOG_WALKER:
@@ -5128,7 +5144,7 @@ void Zombie::UpdateReanim()
             anOffsetY += RandRangeFloat(-1.0f, 1.0f);
         }
     }
-    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL && mScaleZombie < 1.0f)
+    if ((mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL) && mScaleZombie < 1.0f)
     {
         anOffsetY += 20.0f - mScaleZombie * 20.0f;
     }
@@ -5773,6 +5789,7 @@ void Zombie::GetDrawPos(ZombieDrawPosition& theDrawPos)
     switch (mZombieType)
     {
     case ZombieType::ZOMBIE_FOOTBALL:
+    case ZombieType::ZOMBIE_GIGA_FOOTBALL:
         theDrawPos.mImageOffsetY -= 16.0f;
         break;
     case ZombieType::ZOMBIE_YETI:
@@ -8808,7 +8825,7 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
     }
 
     float aDeathAnimRate;
-    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL)
+    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL  || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL)
     {
         aDeathAnimRate = 24.0f;
     }
@@ -8880,7 +8897,7 @@ void Zombie::DoDaisies()
 
     float aOffsetX = 20.0f;
     float aOffsetY = 100.0f;
-    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_DANCER || mZombieType == ZombieType::ZOMBIE_BACKUP_DANCER)
+    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL || mZombieType == ZombieType::ZOMBIE_DANCER || mZombieType == ZombieType::ZOMBIE_BACKUP_DANCER)
     {
         aOffsetX += 160.0f;
     }
@@ -8973,6 +8990,7 @@ void Zombie::UpdateDeath()
             break;
 
         case ZombieType::ZOMBIE_FOOTBALL:
+        case ZombieType::ZOMBIE_GIGA_FOOTBALL:
             aFallTime = 0.52f;
             break;
 
@@ -9213,7 +9231,7 @@ void Zombie::DrawShadow(Graphics* g)
         aShadowType = 1;
     }
 
-    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL)
+    if (mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL)
     {
         if (IsWalkingBackwards())
         {
@@ -9493,7 +9511,7 @@ void Zombie::WalkIntoHouse()
 
         if (mBoard->StageHasPool())
         {
-            if (mZombieType == ZombieType::ZOMBIE_FOOTBALL)
+            if (mZombieType == ZombieType::ZOMBIE_FOOTBALL|| mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL)
             {
                 mPosX -= 10.0f;
             }
@@ -9514,7 +9532,7 @@ void Zombie::WalkIntoHouse()
         {
             mPosY += 5.0f;
         }
-        else if (mZombieType == ZombieType::ZOMBIE_FOOTBALL)
+        else if (mZombieType == ZombieType::ZOMBIE_FOOTBALL || mZombieType == ZombieType::ZOMBIE_GIGA_FOOTBALL)
         {
             mPosX -= 14.0f;
         }
