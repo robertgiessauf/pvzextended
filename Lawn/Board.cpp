@@ -647,7 +647,7 @@ void Board::PickZombieWaves()
 		{
 			int aPlainZombiesNum = min(aZombiePoints, 8);
 			//aZombiePoints *= 2.5f; // TODOFIX
-			aZombiePoints *= 5.0f;
+			aZombiePoints *= 15.0f;
 
 			if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
 			{
@@ -657,6 +657,9 @@ void Board::PickZombieWaves()
 				}
 				PutZombieInWave(ZombieType::ZOMBIE_FLAG, aWave, &aZombiePicker);
 			}
+		}
+		else {
+			aZombiePoints *= 3.0f;
 		}
 
 		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)

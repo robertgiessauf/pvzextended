@@ -179,11 +179,6 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         LoadPlainZombieReanim();
         break;
 
-    case ZombieType::ZOMBIE_STRONG_BITE:
-        LoadPlainZombieReanim();
-        mBodyHealth = 1000;
-        break;
-
     case ZombieType::ZOMBIE_DUCKY_TUBE:  
         LoadPlainZombieReanim();
         break;
@@ -679,6 +674,29 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
 
         mHelmType = HelmType::HELMTYPE_WALLNUT;
         mHelmHealth = 1100;
+        mVariant = false;
+        break;
+    }
+
+
+    case ZombieType::ZOMBIE_STRONG_BITE:
+    {
+        LoadPlainZombieReanim();
+        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("anim_head", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("Zombie_tie", RENDER_GROUP_HIDDEN);
+
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_body");
+        Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_CHOMPER);
+        aHeadReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
+        AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
+        aBodyReanim->mFrameBasePose = 0;
+        TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 50.0f, 0.0f, 0.2f, -0.8f, 0.8f);
+
+        //mHelmType = HelmType::HELMTYPE_WALLNUT;
+        //mHelmHealth = 1100;
         mVariant = false;
         break;
     }
@@ -4968,7 +4986,8 @@ void Zombie::DrawZombiePart(Graphics* g, Image* theImage, int theFrame, int theR
         g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
         g->DrawImageMirror(theImage, aDestRect, aSrcRect, aMirror);
         g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
-    } else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
+    }
+    /*else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
     {
         aMirror = true;
         g->SetColorizeImages(true);
@@ -4980,7 +4999,7 @@ void Zombie::DrawZombiePart(Graphics* g, Image* theImage, int theFrame, int theR
         g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
         g->DrawImageMirror(theImage, aDestRect, aSrcRect, aMirror);
         g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
-    }
+    }*/
     else
     {
         g->DrawImageMirror(theImage, aDestRect, aSrcRect, aMirror);
@@ -5499,13 +5518,13 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
-    {
-        aColorOverride = Color(255, 75, 75, 255);
-        aColorOverride.mAlpha = aFadeAlpha;
-        aExtraAdditiveColor = aColorOverride;
-        aEnableExtraAdditiveDraw = true;
-    }
+    //else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
+    //{
+    //    aColorOverride = Color(255, 75, 75, 255);
+    //    aColorOverride.mAlpha = aFadeAlpha;
+    //    aExtraAdditiveColor = aColorOverride;
+    //    aEnableExtraAdditiveDraw = true;
+    //}
     else if (mZombieHeight == ZombieHeight::HEIGHT_ZOMBIQUARIUM && mBodyHealth < 100)
     {
         aColorOverride = Color(100, 150, 25, aFadeAlpha);

@@ -272,7 +272,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		ZOMBIE_STRONG_BITE,
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 1, 1, 1, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
