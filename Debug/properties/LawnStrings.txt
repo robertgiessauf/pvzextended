@@ -23,9 +23,15 @@ Cherrybomb Nut
 Blocks off zombies and explodes when dead
 
 [REPEATER]
-Firepea
+Repeater
 
 [REPEATER_TOOLTIP]
+Shoots two peas at a time
+
+[FIREPEASHOOTER]
+Firepea
+
+[FIREPEASHOOTER_TOOLTIP]
 Shoots fireballs at enemies burning them
 
 [POTATO_MINE]
@@ -470,6 +476,19 @@ Repeaters fire two peas at a time.
 {SHORTLINE}
 {FLAVOR}Repeater is fierce. He's from the streets. He doesn't take attitude from anybody, 
 plant or zombie, and he shoots peas to keep people at a distance. Secretly, though, Repeater yearns for love.
+
+[FIREPEASHOOTER_DESCRIPTION_HEADER]
+Firepea shooter fires fire peas
+
+[FIREPEASHOOTER_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Damage:{STAT}
+{KEYWORD}Firing speed:{STAT}
+{SHORTLINE}
+{FLAVOR}Firepeashooter is on fire. Even as a little seedling he was already playing with fire. Now he has turned his hobby into a business.
+
+
+
 
 [SNOW_PEA_DESCRIPTION_HEADER]
 Snow Peas shoot frozen peas that damage and slow the enemy.
@@ -1301,6 +1320,13 @@ Yeah, just like that, but instead of squirbos, it's zombies.
 {SHOW_HAMMER}And instead of a shovel, it's a mallet.
 [CRAZY_DAVE_406]
 And instead of ME, it's YOU! {MOUTH_BIG_SMILE} {SCREAM}
+
+
+[CRAZY_DAVE_4001]
+Someone placed rocks on your yard.
+[CRAZY_DAVE_4002]
+You cannot plant on these spots.
+
 
 [CRAZY_DAVE_501]
 Looks like the zombies gave up attacking your front yard.

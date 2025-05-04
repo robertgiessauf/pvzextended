@@ -686,7 +686,7 @@ void SeedChooserScreen::OnStartButton()
 	}
 	if (mBoard->StageHasPool() && !PickedPlantType(SEED_LILYPAD) && !PickedPlantType(SEED_SEASHROOM) && !PickedPlantType(SEED_TANGLEKELP) && !mBoard->mCutScene->IsSurvivalRepick())
 	{
-		if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel == 21)
+		if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel == 31)
 		{
 			if (!DisplayRepickWarningDialog(_S("[SEED_CHOOSER_LILY_WARNING]")))
 			{

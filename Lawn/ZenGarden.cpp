@@ -1176,7 +1176,7 @@ float ZenGarden::PlantPottedDrawHeightOffset(SeedType theSeedType, float theScal
         aScaleOffsetFix += 0.0f;
     }
     else if (theSeedType == SeedType::SEED_HYPNOSHROOM || theSeedType == SeedType::SEED_MARIGOLD || theSeedType == SeedType::SEED_PEASHOOTER || 
-        theSeedType == SeedType::SEED_FIREPEA || theSeedType == SeedType::SEED_LEFTPEATER || theSeedType == SeedType::SEED_SNOWPEA || 
+        theSeedType == SeedType::SEED_REPEATER || theSeedType == SeedType::SEED_FIREPEA || theSeedType == SeedType::SEED_LEFTPEATER || theSeedType == SeedType::SEED_SNOWPEA ||
         theSeedType == SeedType::SEED_THREEPEATER || theSeedType == SeedType::SEED_SUNFLOWER || theSeedType == SeedType::SEED_MARIGOLD)
     {
         aScaleOffsetFix += 10.0f;
@@ -2131,7 +2131,7 @@ void ZenGarden::SetPlantAnimSpeed(Plant* thePlant)
     }
 
     float aTargetRate;
-    if (thePlant->mSeedType == SeedType::SEED_PEASHOOTER || thePlant->mSeedType == SeedType::SEED_SNOWPEA || thePlant->mSeedType == SeedType::SEED_FIREPEA || 
+    if (thePlant->mSeedType == SeedType::SEED_PEASHOOTER || thePlant->mSeedType == SeedType::SEED_SNOWPEA || thePlant->mSeedType == SeedType::SEED_FIREPEA || thePlant->mSeedType == SeedType::SEED_REPEATER ||
         thePlant->mSeedType == SeedType::SEED_LEFTPEATER || thePlant->mSeedType == SeedType::SEED_GATLINGPEA || thePlant->mSeedType == SeedType::SEED_SPLITPEA || 
         thePlant->mSeedType == SeedType::SEED_THREEPEATER || thePlant->mSeedType == SeedType::SEED_MARIGOLD)
     {

@@ -2547,7 +2547,7 @@ SeedType LawnApp::GetAwardSeedForLevel(int theLevel)
 	}
 	else if (aSub >= 5)
 	{
-		aSeedsHasGot -= 1;  
+		aSeedsHasGot -= 1;
 	}
 	if (aSeedsHasGot > 40)
 	{

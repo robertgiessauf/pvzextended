@@ -762,6 +762,10 @@ void CutScene::StartLevelIntro()
 	}
 	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 21)
 	{
+		mCrazyDaveDialogStart = 4001;
+	}
+	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 31)
+	{
 		mCrazyDaveDialogStart = 501;
 	}
 	else if (mApp->IsWhackAZombieLevel() && mApp->IsAdventureMode())
@@ -772,7 +776,7 @@ void CutScene::StartLevelIntro()
 	{
 		mCrazyDaveDialogStart = 701;
 	}
-	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 31)
+	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 41)
 	{
 		mCrazyDaveDialogStart = 801;
 	}
@@ -784,7 +788,7 @@ void CutScene::StartLevelIntro()
 	{
 		mCrazyDaveDialogStart = 1101;
 	}
-	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 41)
+	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 51)
 	{
 		mCrazyDaveDialogStart = 1201;
 	}

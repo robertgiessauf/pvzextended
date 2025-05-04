@@ -340,7 +340,7 @@ void AwardScreen::Draw(Graphics* g)
             DrawBottom(g, _S("[FOUND_KEYS]"), _S("[KEYS]"), _S("[KEYS_DESCRIPTION]"));
             g->DrawImage(Sexy::IMAGE_CARKEYS, BOARD_WIDTH / 2 - Sexy::IMAGE_CARKEYS->mWidth / 2, 160);
         }
-        else if (aLevel == 30)
+        else if (aLevel == 40)
         {
             g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
             g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
@@ -348,12 +348,12 @@ void AwardScreen::Draw(Graphics* g)
             TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
             mState = "Zombie Note (" + mApp->GetStageString(aLevel).erase(0, 1) + ")";
         }
-        else if (aLevel == 35)
+        else if (aLevel == 45)
         {
             DrawBottom(g, _S("[FOUND_TACO]"), _S("[TACO]"), _S("[TACO_DESCRIPTION]"));
             g->DrawImage(Sexy::IMAGE_TACO, BOARD_WIDTH / 2 - Sexy::IMAGE_TACO->mWidth / 2, 160);
         }
-        else if (aLevel == 40)
+        else if (aLevel == 50)
         {
             g->DrawImage(Sexy::IMAGE_BACKGROUND2, -700, -300, 2800, 1200);
             g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
@@ -361,12 +361,12 @@ void AwardScreen::Draw(Graphics* g)
             TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
             mState = "Zombie Note (" + mApp->GetStageString(aLevel).erase(0, 1) + ")";
         }
-        else if (aLevel == 45)
+        else if (aLevel == 55)
         {
             DrawBottom(g, _S("[FOUND_WATERING_CAN]"), _S("[WATERING_CAN]"), _S("[WATERING_CAN_DESCRIPTION]"));
             g->DrawImage(Sexy::IMAGE_WATERINGCAN, BOARD_WIDTH / 2 - Sexy::IMAGE_WATERINGCAN->mWidth / 2, 160);
         }
-        else if (aLevel == 50)
+        else if (aLevel == 60)
         {
             g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
             g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);

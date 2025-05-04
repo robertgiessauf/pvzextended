@@ -24,3 +24,5 @@ Debug/LawnProject.exe
 /Debug/savefiles
 /enc_temp_folder
 PopcapTools/projects.txt
+/SaveFileManager/obj
+/SaveFileManager/bin

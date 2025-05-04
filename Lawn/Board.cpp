@@ -9556,7 +9556,7 @@ bool Board::PlantingRequirementsMet(SeedType theSeedType)
 {
 	switch (theSeedType)
 	{
-	case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_FIREPEA);
+	case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_REPEATER);
 	case SeedType::SEED_TWINSUNFLOWER:		return CountPlantByType(SeedType::SEED_SUNFLOWER);
 	case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
 	case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);

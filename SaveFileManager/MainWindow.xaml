@@ -1,0 +1,32 @@
+﻿<Window x:Class="SaveFileManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SaveFileManager"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="197*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="167*"/>
+            <ColumnDefinition Width="633*"/>
+
+
+
+        </Grid.ColumnDefinitions>
+        <ListBox Name="saveFiles" Grid.RowSpan="2" MouseDoubleClick="saveFiles_MouseDoubleClick" />
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <Button Click="Button_Click">Speichern</Button>
+        </StackPanel>
+        <TextBox x:Name="tbCoins" Grid.Column="1" HorizontalAlignment="Left" Margin="57,14,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+        <Label Grid.Column="1" Content="Coins:" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbLevels" Grid.Column="1" HorizontalAlignment="Left" Margin="207,14,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+        <Label Grid.Column="1" Content="Levels:" HorizontalAlignment="Left" Margin="160,10,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
