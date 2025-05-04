@@ -730,7 +730,7 @@ void SeedChooserScreen::OnStartButton()
 		}
 	}
 
-	if (!CheckSeedUpgrade(SEED_GATLINGPEA, SEED_FIREPEA) ||
+	if (!CheckSeedUpgrade(SEED_GATLINGPEA, SEED_REPEATER) ||
 		!CheckSeedUpgrade(SEED_WINTERMELON, SEED_MELONPULT) ||
 		!CheckSeedUpgrade(SEED_TWINSUNFLOWER, SEED_SUNFLOWER) ||
 		!CheckSeedUpgrade(SEED_SPIKEROCK, SEED_SPIKEWEED) ||

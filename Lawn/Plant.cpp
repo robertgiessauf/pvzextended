@@ -965,7 +965,7 @@ void Plant::UpdateShooter()
     }
     if (mLaunchCounter == 25)
     {
-        if (/*mSeedType == SeedType::SEED_FIREPEA || */ mSeedType == SeedType::SEED_LEFTPEATER)
+        if (mSeedType == SeedType::SEED_REPEATER ||  mSeedType == SeedType::SEED_LEFTPEATER)
         {
             FindTargetAndFire(mRow, PlantWeapon::WEAPON_PRIMARY);
         }
@@ -4569,7 +4569,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + 12;
         aOriginY = mY - 56;
     }
-    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA)
+    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_REPEATER)
     {
         int aOffsetX, aOffsetY;
         GetPeaHeadOffset(aOffsetX, aOffsetY);
@@ -4971,7 +4971,7 @@ int Plant::GetCost(SeedType theSeedType, SeedType theImitaterType)
 {
     if (gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED || gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST)
     {
-        if (theSeedType == SeedType::SEED_FIREPEA)
+        if (theSeedType == SeedType::SEED_FIREPEA || theSeedType == SeedType::SEED_REPEATER)
         {
             return 1000;
         }
