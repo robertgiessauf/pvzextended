@@ -48,7 +48,7 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_MARIGOLD,                             "reanim\\Marigold.reanim",                          0 },
 	{ ReanimationType::REANIM_ICESHROOM,                            "reanim\\IceShroom.reanim",                         0 },
 	{ ReanimationType::REANIM_ZOMBIE_FOOTBALL,                      "reanim\\Zombie_football.reanim",                   0 },
-	{ ReanimationType::REANIM_ZOMBIE_FOOTBALL_GIGA,                      "reanim\\Zombie_football_giga.reanim",                   0 },
+	{ ReanimationType::REANIM_ZOMBIE_FOOTBALL_GIGA,                 "reanim\\Zombie_football_giga.reanim",              0 },
     { ReanimationType::REANIM_ZOMBIE_NEWSPAPER,                     "reanim\\Zombie_paper.reanim",                      0 },
 	{ ReanimationType::REANIM_ZOMBIE_ZAMBONI,                       "reanim\\Zombie_zamboni.reanim",                    0 },
 	{ ReanimationType::REANIM_SPLASH,                               "reanim\\splash.reanim",                            0 },
