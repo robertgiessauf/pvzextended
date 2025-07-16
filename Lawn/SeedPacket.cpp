@@ -852,7 +852,9 @@ void SeedPacket::MouseDown(int x, int y, int theClickCount)
 
 void SeedPacket::WasPlanted()
 {
-	TOD_ASSERT(mPacketType != SeedType::SEED_NONE);
+	if(mPacketType == SeedType::SEED_NONE) {
+		return;
+	}
 
 	if (mBoard->HasConveyorBeltSeedBank())
 	{

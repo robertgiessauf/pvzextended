@@ -6192,7 +6192,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
         {
             return false;
         }
-        if (thePlant->mSeedType == SeedType::SEED_DOOMSHROOM || thePlant->mSeedType == SeedType::SEED_ICESHROOM)
+        if (thePlant->mSeedType == SeedType::SEED_DOOMSHROOM || thePlant->mSeedType == SeedType::SEED_ICESHROOM || thePlant->mSeedType == SeedType::SEED_FIRESHROOM)
         {
             return thePlant->mIsAsleep;
         }
@@ -6874,7 +6874,8 @@ void Zombie::EatPlant(Plant* thePlant)
     if (thePlant->mSeedType == SeedType::SEED_JALAPENO || 
         thePlant->mSeedType == SeedType::SEED_CHERRYBOMB || 
         thePlant->mSeedType == SeedType::SEED_DOOMSHROOM ||
-        thePlant->mSeedType == SeedType::SEED_ICESHROOM || 
+        thePlant->mSeedType == SeedType::SEED_ICESHROOM ||
+        thePlant->mSeedType == SeedType::SEED_FIRESHROOM ||
         thePlant->mSeedType == SeedType::SEED_HYPNOSHROOM || 
         thePlant->mState == PlantState::STATE_FLOWERPOT_INVULNERABLE ||
         thePlant->mState == PlantState::STATE_LILYPAD_INVULNERABLE || 
@@ -6896,7 +6897,7 @@ void Zombie::EatPlant(Plant* thePlant)
     {
         triggered = true;
     }
-    if (thePlant->mSeedType == SeedType::SEED_ICESHROOM  && !thePlant->mIsAsleep)
+    if ((thePlant->mSeedType == SeedType::SEED_ICESHROOM || thePlant->mSeedType == SeedType::SEED_FIRESHROOM) && !thePlant->mIsAsleep)
     {
         triggered = true;
     }
@@ -8510,14 +8511,14 @@ void Zombie::RemoveColdEffects()
     }
 }
 
-void Zombie::ApplyBurn()
+void Zombie::ApplyBurn(int damage)
 {
     if (mDead || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_BURNED)
         return;
 
-    if (mBodyHealth >= 1800 || mZombieType == ZombieType::ZOMBIE_BOSS)
+    if (mBodyHealth >= damage || mZombieType == ZombieType::ZOMBIE_BOSS)
     {
-        TakeDamage(1800, 18U);
+        TakeDamage(damage, 18U);
         return;
     }
 

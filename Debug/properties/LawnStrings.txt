@@ -94,6 +94,12 @@ Ice-shroom
 [ICE_SHROOM_TOOLTIP]
 Temporarily immobilizes all zombies on the screen
 
+[FIRE_SHROOM]
+Fire-shroom
+
+[FIRE_SHROOM_TOOLTIP]
+Burns all zombies on the screen
+
 [DOOM_SHROOM]
 Doom-shroom
 
@@ -593,6 +599,18 @@ Ice-shrooms temporarily immobilize all zombies on the screen.
 {NOCTURNAL}Sleeps during the day
 {SHORTLINE}
 {FLAVOR}Ice-shroom frowns, not because he's unhappy or because he disapproves, but because of a childhood injury that left his facial nerves paralyzed.
+
+[FIRE_SHROOM_DESCRIPTION_HEADER]
+Burns all zombies on the screen.
+
+[FIRE_SHROOM_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} high
+{KEYWORD}Range:{STAT} all zombies on the screen
+{KEYWORD}Usage:{STAT} single use, instant
+{SHORTLINE}
+{FLAVOR}Fire-Shroom is a bit hotheaded, but he has a good heart
+
 
 [DOOM_SHROOM_DESCRIPTION_HEADER]
 Doom-shrooms destroy everything in a large area and leave a crater that can't be planted on.

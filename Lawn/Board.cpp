@@ -1378,6 +1378,13 @@ void Board::InitLevel()
 	}
 	memset(mHelpDisplayed, 0, sizeof(mHelpDisplayed));
 	mSeedBank->mNumPackets = GetNumSeedsInBank();
+	//for (int i = 0; i < mSeedBank->mNumPackets; i++)
+	//{
+	//	if (mSeedBank->mSeedPackets[i].mPacketType == SeedType::SEED_NONE) {
+	//		mSeedBank->mNumPackets = i;
+	//		break;
+	//	}
+	//}
 	mSeedBank->UpdateWidth();
 	for (int i = 0; i < SEEDBANK_MAX; i++)
 	{
@@ -2752,10 +2759,15 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		if (theGridY == 0 && (theGridX == 0 || theGridX == 1)) {
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
-		if (theGridY == 5 && (theGridX == 0 || theGridX == 1)) {
+		if (theGridY == 4 && (theGridX == 0 || theGridX == 1)) {
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
-		// TODO MORE
+		if (theGridY == 1 && (theGridX == 3)) {
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
+		if (theGridY == 3 && (theGridX == 3)) {
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
 	}
 	if (GetScaryPotAt(theGridX, theGridY) || IsIceAt(theGridX, theGridY))
 	{

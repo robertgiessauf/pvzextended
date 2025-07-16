@@ -225,7 +225,7 @@ public:
     void                    UpdateSquash();
     /*inline*/ bool         NotOnGround();
     void                    DoSquashDamage();
-    void                    BurnRow(int theRow);
+    void                    BurnRow(int theRow, int damage = 1800);
     void                    IceZombies();
     void                    BlowAwayFliers(int theX, int theRow);
     void                    UpdateGraveBuster();
@@ -247,6 +247,7 @@ public:
     void                    DrawMagnetItems(Graphics* g);
     void                    UpdateDoomShroom();
     void                    UpdateIceShroom();
+    void                    UpdateFireShroom();
     void                    UpdatePotato();
     int                     CalcRenderOrder();
     void                    AnimateNuts();

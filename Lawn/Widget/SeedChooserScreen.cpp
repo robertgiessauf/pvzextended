@@ -53,7 +53,7 @@ SeedChooserScreen::SeedChooserScreen()
 	mStartButton->Resize(154, 545, 156, 42);
 	mStartButton->mTextOffsetY = -1;
 	mStartButton->mParentWidget = this;
-	EnableStartButton(false);
+	//EnableStartButton(false);
 
 	mMenuButton = new GameButton(SeedChooserScreen::SeedChooserScreen_Menu);
 	mMenuButton->SetLabel(_S("[MENU_BUTTON]"));
@@ -912,7 +912,7 @@ void SeedChooserScreen::ClickedSeedInBank(ChosenSeed& theChosenSeed)
 	mSeedsInBank--;
 	//mSeedsInFlight++;
 	RemoveToolTip();
-	EnableStartButton(false);
+	//EnableStartButton(false);
 	mApp->PlaySample(Sexy::SOUND_TAP);
 }
 
@@ -1218,6 +1218,9 @@ void SeedChooserScreen::CloseSeedChooser()
 	for (int anIndex = 0; anIndex < mBoard->mSeedBank->mNumPackets; anIndex++)
 	{
 		SeedType aSeedType = FindSeedInBank(anIndex);
+		if (aSeedType == SeedType::SEED_NONE) {
+			continue;
+		}
 		ChosenSeed& aChosenSeed = mChosenSeeds[aSeedType];
 		SeedPacket& aSeedPacket = mBoard->mSeedBank->mSeedPackets[anIndex];
 		aSeedPacket.SetPacketType(aSeedType, aChosenSeed.mImitaterType);
@@ -1261,7 +1264,7 @@ void SeedChooserScreen::UpdateAfterPurchase()
 		aChosenSeed.mEndX = aChosenSeed.mX;
 		aChosenSeed.mEndY = aChosenSeed.mY;
 	}
-	EnableStartButton(mSeedsInBank == mBoard->mSeedBank->mNumPackets);
+	//EnableStartButton(mSeedsInBank == mBoard->mSeedBank->mNumPackets);
 	ResizeSlider();
 }
 

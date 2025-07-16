@@ -1258,6 +1258,9 @@ void Coin::Collect()
         for (int i = 0; i < mBoard->mSeedBank->mNumPackets; i++)
         {
             SeedPacket* aSeedPacket = &mBoard->mSeedBank->mSeedPackets[i];
+            if (aSeedPacket->mPacketType == SeedType::SEED_NONE) {
+                continue;
+            }
             int aCost = mBoard->GetCurrentPlantCost(aSeedPacket->mPacketType, aSeedPacket->mImitaterType);
             int aSunProfit = mBoard->mSunMoney + mBoard->CountSunBeingCollected() - aCost;
             if (aSunProfit >= 0 && aSunProfit < GetSunValue())

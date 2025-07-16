@@ -37,13 +37,13 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_HYPNOSHROOM,       nullptr, ReanimationType::REANIM_HYPNOSHROOM,   10, 75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("HYPNO_SHROOM") },
     { SeedType::SEED_SCAREDYSHROOM,     nullptr, ReanimationType::REANIM_SCRAREYSHROOM, 33, 25,     750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("SCAREDY_SHROOM") },
     { SeedType::SEED_ICESHROOM,         nullptr, ReanimationType::REANIM_ICESHROOM,     36, 75,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("ICE_SHROOM") },
-    
-    { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,       5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
-    { SeedType::SEED_DOOMSHROOM,        nullptr, ReanimationType::REANIM_DOOMSHROOM,    20, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DOOM_SHROOM") },
+        { SeedType::SEED_DOOMSHROOM,        nullptr, ReanimationType::REANIM_DOOMSHROOM,    20, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DOOM_SHROOM") },
+        { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12, 325,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
+{ SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,       5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
 
-    { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12, 325,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
-    { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
-
+    { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 125,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
+    { SeedType::SEED_FIRESHROOM,         nullptr, ReanimationType::REANIM_FIRESHROOM,     36, 100,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FIRE_SHROOM") },
+     // TODO More
     { SeedType::SEED_LILYPAD,           nullptr, ReanimationType::REANIM_LILYPAD,       19, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("LILY_PAD") },
 
     
@@ -1552,6 +1552,15 @@ void Plant::UpdateSquash()
             if (mStateCountdown == 0)
             {
                 Die();
+                int aPosX = mX + mWidth / 2;
+                int aPosY = mY + mHeight / 2;
+                int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
+
+                mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, true, aDamageRangeFlags);
+
+
+                mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
+                mBoard->ShakeBoard(3, -4);
             }
         }
     }
@@ -1579,6 +1588,17 @@ void Plant::UpdateDoomShroom()
 
 void Plant::UpdateIceShroom()
 {
+    if (!mIsAsleep && mState != PlantState::STATE_DOINGSPECIAL)
+    {
+        mState = PlantState::STATE_DOINGSPECIAL;
+        mDoSpecialCountdown = 100;
+    }
+}
+
+
+void Plant::UpdateFireShroom()
+{
+    // TODO SEED_FIRESHROOM
     if (!mIsAsleep && mState != PlantState::STATE_DOINGSPECIAL)
     {
         mState = PlantState::STATE_DOINGSPECIAL;
@@ -2303,7 +2323,7 @@ void Plant::Squish()
     if (!mIsAsleep)
     {
         if (mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO ||
-            mSeedType == SeedType::SEED_DOOMSHROOM || mSeedType == SeedType::SEED_ICESHROOM)
+            mSeedType == SeedType::SEED_DOOMSHROOM || mSeedType == SeedType::SEED_ICESHROOM || mSeedType == SeedType::SEED_FIRESHROOM)
         {
             DoSpecial();
             return;
@@ -2533,6 +2553,7 @@ void Plant::UpdateAbilities()
     if (mSeedType == SeedType::SEED_SQUASH)                                                     UpdateSquash();
     else if (mSeedType == SeedType::SEED_DOOMSHROOM)                                            UpdateDoomShroom();
     else if (mSeedType == SeedType::SEED_ICESHROOM)                                             UpdateIceShroom();
+    else if (mSeedType == SeedType::SEED_FIRESHROOM)                                             UpdateFireShroom();
     else if (mSeedType == SeedType::SEED_CHOMPER)                                               UpdateChomper();
     else if (mSeedType == SeedType::SEED_BLOVER)                                                UpdateBlover();
     else if (mSeedType == SeedType::SEED_FLOWERPOT)                                             UpdateFlowerPot();
@@ -4203,7 +4224,7 @@ void Plant::IceZombies()
     }
 }
 
-void Plant::BurnRow(int theRow)
+void Plant::BurnRow(int theRow, int damage)
 {
     int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
 
@@ -4213,7 +4234,7 @@ void Plant::BurnRow(int theRow)
         if ((aZombie->mZombieType == ZombieType::ZOMBIE_BOSS || aZombie->mRow == theRow) && aZombie->EffectedByDamage(aDamageRangeFlags))
         {
             aZombie->RemoveColdEffects();
-            aZombie->ApplyBurn();
+            aZombie->ApplyBurn(damage);
         }
     }
 
@@ -4347,6 +4368,23 @@ void Plant::DoSpecial()
 
         Die();
         break;
+    }
+    case SeedType::SEED_FIRESHROOM:
+    {
+        mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
+
+        mBoard->ShakeBoard(3, -4);
+
+        for (int aRow = 0; aRow < MAX_GRID_SIZE_Y; aRow++)
+        {
+            mBoard->DoFwoosh(aRow);
+            BurnRow(aRow, 270);
+            mBoard->mIceTimer[aRow] = 20;
+        }
+
+        Die();
+        break;
+
     }
     case SeedType::SEED_POTATOMINE:
     {
@@ -5083,9 +5121,11 @@ bool Plant::IsNocturnal(SeedType theSeedtype)
         theSeedtype == SeedType::SEED_HYPNOSHROOM ||
         theSeedtype == SeedType::SEED_DOOMSHROOM ||
         theSeedtype == SeedType::SEED_ICESHROOM ||
+        //theSeedtype == SeedType::SEED_FIRESHROOM ||
         theSeedtype == SeedType::SEED_MAGNETSHROOM ||
         theSeedtype == SeedType::SEED_SCAREDYSHROOM ||
         theSeedtype == SeedType::SEED_GLOOMSHROOM;
+
 }
 
 bool Plant::IsAquatic(SeedType theSeedType)
