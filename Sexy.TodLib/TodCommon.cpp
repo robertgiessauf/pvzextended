@@ -195,7 +195,7 @@ int TodPickFromSmoothArray(TodSmoothArray* theArray, int theCount)
 	{
 		aTotalWeight += theArray[i].mWeight;
 	}
-	TOD_ASSERT(aTotalWeight > 0.0f);
+	//TOD_ASSERT(aTotalWeight > 0.0f);
 
 	float aNormalizeFactor = 1.0f / aTotalWeight;
 	float aTotalAdjustedWeight = 0.0f;

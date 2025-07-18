@@ -189,6 +189,8 @@ void Music::MusicInit()
 	if (mApp->mCompletedLoadingThreadTasks != aNumLoadingTasks)
 		TodTrace("Didn't calculate loading task count correctly!!!!");
 #endif
+
+	LoadSong(MusicFile::MUSIC_FILE_DAYLEVELS_NEW, "sounds\\lawnbgm(1).ogg");
 }
 
 void Music::MusicCreditScreenInit()
@@ -274,14 +276,22 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 	switch (theMusicTune)
 	{
 	case MusicTune::MUSIC_TUNE_DAY_GRASSWALK:
-		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
-		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
-		mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
+		//mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+		//mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
+		//mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
+		//if (theOffset == -1)
+		//	theOffset = 0;
+		//PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
+		//PlayFromOffset(mCurMusicFileDrums, theOffset, 0.0);
+		//PlayFromOffset(mCurMusicFileHihats, theOffset, 0.0);
+		// 
+		//mMusicInterface->PlayMusic(MusicFile::MUSIC_FILE_DAYLEVELS_NEW, theOffset, true);
+		mCurMusicFileMain = MusicFile::MUSIC_FILE_DAYLEVELS_NEW;
 		if (theOffset == -1)
 			theOffset = 0;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
-		PlayFromOffset(mCurMusicFileDrums, theOffset, 0.0);
-		PlayFromOffset(mCurMusicFileHihats, theOffset, 0.0);
+		break;
+
 		break;
 
 	case MusicTune::MUSIC_TUNE_NIGHT_MOONGRAINS:
