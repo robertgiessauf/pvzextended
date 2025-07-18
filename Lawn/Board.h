@@ -408,6 +408,7 @@ public:
 	Zombie*							GetBossZombie();
 	bool							HasConveyorBeltSeedBank();
 	/*inline*/ bool					StageHasRoof();
+	/*inline*/ bool                 IsStoneLevel();
 	void							SpawnZombiesFromPool();
 	void							SpawnZombiesFromSky();
 	void							PickUpTool(GameObjectType theObjectType);

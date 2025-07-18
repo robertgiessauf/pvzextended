@@ -8789,6 +8789,10 @@ bool Board::StageHasRoof()
 	return (mBackground == BackgroundType::BACKGROUND_5_ROOF || mBackground == BackgroundType::BACKGROUND_6_BOSS);
 }
 
+bool Board::IsStoneLevel() {
+	return mBackground == BackgroundType::BACKGROUND_7_STONES;
+}
+
 bool Board::StageHasPool()
 {
 	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG);

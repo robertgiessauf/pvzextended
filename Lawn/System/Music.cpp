@@ -183,14 +183,15 @@ void Music::MusicInit()
 	LoadSong(MusicFile::MUSIC_FILE_HIHATS, "sounds\\mainmusic_hihats.mo3");
 	mApp->mCompletedLoadingThreadTasks += 3500;
 
+	//LoadSong(MusicFile::MUSIC_FILE_DAYLEVELS_NEW, "sounds\\lawnbgm(1).ogg");
+	LoadSong(MusicFile::MUSIC_FILE_STONELEVELS, "sounds\\stone_levels.ogg");
+
 #ifdef _DEBUG
 	LoadSong(MusicFile::MUSIC_FILE_CREDITS_ZOMBIES_ON_YOUR_LAWN, "sounds\\ZombiesOnYourLawn.ogg");
 	mApp->mCompletedLoadingThreadTasks += 3500;
 	if (mApp->mCompletedLoadingThreadTasks != aNumLoadingTasks)
 		TodTrace("Didn't calculate loading task count correctly!!!!");
 #endif
-
-	LoadSong(MusicFile::MUSIC_FILE_DAYLEVELS_NEW, "sounds\\lawnbgm(1).ogg");
 }
 
 void Music::MusicCreditScreenInit()
@@ -276,24 +277,26 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 	switch (theMusicTune)
 	{
 	case MusicTune::MUSIC_TUNE_DAY_GRASSWALK:
-		//mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
-		//mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
-		//mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
-		//if (theOffset == -1)
-		//	theOffset = 0;
-		//PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
-		//PlayFromOffset(mCurMusicFileDrums, theOffset, 0.0);
-		//PlayFromOffset(mCurMusicFileHihats, theOffset, 0.0);
-		// 
-		//mMusicInterface->PlayMusic(MusicFile::MUSIC_FILE_DAYLEVELS_NEW, theOffset, true);
-		mCurMusicFileMain = MusicFile::MUSIC_FILE_DAYLEVELS_NEW;
+		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
+		mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
 		if (theOffset == -1)
 			theOffset = 0;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
+		PlayFromOffset(mCurMusicFileDrums, theOffset, 0.0);
+		PlayFromOffset(mCurMusicFileHihats, theOffset, 0.0);
+		
+		//mCurMusicFileMain = MusicFile::MUSIC_FILE_DAYLEVELS_NEW;
+		//if (theOffset == -1)
+		//	theOffset = 0;
+		//PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
 		break;
-
-		break;
-
+	case MusicTune::MUSIC_TUNE_STONE:
+		mCurMusicFileMain = MusicFile::MUSIC_FILE_STONELEVELS;
+if (theOffset == -1)
+	theOffset = 0;
+PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
+break;
 	case MusicTune::MUSIC_TUNE_NIGHT_MOONGRAINS:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
@@ -702,7 +705,9 @@ void Music::StartGameMusic()
 		MakeSureMusicIsPlaying(MusicTune::MUSIC_TUNE_POOL_WATERYGRAVES);
 	else if (mApp->mBoard->StageHasRoof())
 		MakeSureMusicIsPlaying(MusicTune::MUSIC_TUNE_ROOF_GRAZETHEROOF);
-	else
+	else if (mApp->mBoard->IsStoneLevel()) {
+		MakeSureMusicIsPlaying(MusicTune::MUSIC_TUNE_STONE);
+	} else
 		MakeSureMusicIsPlaying(MusicTune::MUSIC_TUNE_DAY_GRASSWALK);
 }
 
