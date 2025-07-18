@@ -24,6 +24,7 @@ extern ProjectileDefinition gProjectileDefinition[NUM_PROJECTILES];
 class Projectile : public GameObject
 {
 public:
+    std::vector<Zombie*> zombieList;
     int                     mFrame;                 
     int                     mNumFrames;             
     int                     mAnimCounter;           
@@ -50,7 +51,8 @@ public:
     float                   mCobTargetX;            
     int                     mCobTargetRow;          
     ZombieID                mTargetZombieID;        
-    int                     mLastPortalX;           
+    int                     mLastPortalX;     
+    bool                    passThrought;
 
 public:
     Projectile();

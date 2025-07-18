@@ -20,7 +20,7 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_WINTERMELON,   0,  80  },
 	{ ProjectileType::PROJECTILE_FIREBALL,      0,  40  },
 	{ ProjectileType::PROJECTILE_STAR,          0,  20  },
-	{ ProjectileType::PROJECTILE_SPIKE,         0,  20  },
+	{ ProjectileType::PROJECTILE_SPIKE,         0,  40  },
 	{ ProjectileType::PROJECTILE_BASKETBALL,    0,  75  },
 	{ ProjectileType::PROJECTILE_KERNEL,        0,  20  },
 	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
@@ -48,6 +48,7 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	mVelY = 0.0f;
 	mVelZ = 0.0f;
 	mAccZ = 0.0f;
+	passThrought = theProjectileType == ProjectileType::PROJECTILE_SPIKE; // TODO: not for cattail
 	mShadowY = mBoard->GridToPixelY(aGridX, theRow) + 67.0f;
 	mHitTorchwoodGridX = -1;
 	mMotionType = ProjectileMotion::MOTION_STRAIGHT;
@@ -792,7 +793,9 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 
 void Projectile::DoImpact(Zombie* theZombie)
 {
-	PlayImpactSound(theZombie);
+	if (!passThrought) {
+		PlayImpactSound(theZombie);
+	}
 
 	if (IsSplashDamage(theZombie))
 	{
@@ -806,7 +809,31 @@ void Projectile::DoImpact(Zombie* theZombie)
 	else if (theZombie)
 	{
 		unsigned int aDamageFlags = GetDamageFlags(theZombie);
-		theZombie->TakeDamage(GetProjectileDef().mDamage, aDamageFlags);
+		int damage = GetProjectileDef().mDamage;
+		//if (passThrought) {
+		//	damage = 2; //damage / 10;
+		//}
+
+		if (passThrought) {
+			Zombie* targetZombie = theZombie;
+
+			bool alreadyHit = false;
+			for (Zombie* z : zombieList) {
+				if (z == targetZombie) {
+					alreadyHit = true;
+					break;
+				}
+			}
+			if (alreadyHit) {
+				damage = 0;
+			}
+			else {
+				zombieList.push_back(theZombie);
+			}
+		}
+
+
+		theZombie->TakeDamage(damage, aDamageFlags);
 	}
 
 	float aLastPosX = mPosX - mVelX;
@@ -905,7 +932,9 @@ void Projectile::DoImpact(Zombie* theZombie)
 		}
 	}
 
-	Die();
+	if (!passThrought) {
+		Die();
+	}
 }
 
 void Projectile::Update()

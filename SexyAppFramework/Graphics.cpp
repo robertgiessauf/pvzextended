@@ -648,6 +648,9 @@ void Graphics::DrawString(const SexyString& theString, int theX, int theY)
 
 void Graphics::DrawImage(Sexy::Image* theImage, int theX, int theY)
 {
+	if (theImage == 0) {
+		return;
+	}
 	if (mScaleX!=1 || mScaleY!=1)
 	{
 		DrawImage(theImage,theX,theY,Rect(0,0,theImage->mWidth,theImage->mHeight));
