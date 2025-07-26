@@ -2088,6 +2088,7 @@ Plant* Board::AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedTyp
 		theSeedType == SeedType::SEED_SNOWPEA ||
 		theSeedType == SeedType::SEED_FIREPEA ||
 		theSeedType == SeedType::SEED_THREEPEATER ||
+		theSeedType == SeedType::SEED_QUATROTHREEPEATER ||
 		theSeedType == SeedType::SEED_REPEATER ||
 		theSeedType == SeedType::SEED_SPLITPEA ||
 		theSeedType == SeedType::SEED_GATLINGPEA)

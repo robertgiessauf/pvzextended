@@ -421,6 +421,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_THREEPEATER:
+	case SeedType::SEED_QUATROTHREEPEATER:
 		aScale = 0.5f;
 		aOffsetX = 5.0f;
 		aOffsetY = 10.0f;
