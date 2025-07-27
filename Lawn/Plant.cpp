@@ -74,7 +74,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
         { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,    5,  250,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
 
 
-    { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, 525,     750,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
+    { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, /*525*/0,     50,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
 
     { SeedType::SEED_TWINSUNFLOWER,     nullptr, ReanimationType::REANIM_TWIN_SUNFLOWER,1,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("TWIN_SUNFLOWER") },
     { SeedType::SEED_GLOOMSHROOM,       nullptr, ReanimationType::REANIM_GLOOMSHROOM,   27, 150,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("GLOOM_SHROOM") },
@@ -755,6 +755,10 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
             aHeadReanim->mAnimRate = 38.0f;
             mShootingCounter = 100;
         }
+        //else if (mSeedType == SeedType::SEED_QUATROTHREEPEATER) {
+        //    aHeadReanim->mAnimRate = 38.0f;
+        //    mShootingCounter = 100;
+        //}
     }
     else if (mState == PlantState::STATE_CACTUS_HIGH)
     {
@@ -3305,8 +3309,8 @@ void Plant::UpdateShooting()
     }
     else if (mSeedType == SeedType::SEED_QUATROTHREEPEATER) {
 
-
-        if (mShootingCounter == 16 || mShootingCounter == 22 || mShootingCounter == 28 || mShootingCounter == 34)
+        // if (mShootingCounter == 18 || mShootingCounter == 35 || mShootingCounter == 51 || mShootingCounter == 68)
+        if (mShootingCounter == 2 || mShootingCounter == 12 || mShootingCounter == 22 || mShootingCounter == 34)
         {
             int rowAbove = mRow - 1;
             int rowBelow = mRow + 1;
