@@ -44,7 +44,6 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
 
     { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 125,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
     { SeedType::SEED_FIRESHROOM,         nullptr, ReanimationType::REANIM_FIRESHROOM,     36, 100,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FIRE_SHROOM") },
-    { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, 150,     750,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
 
     
     // TODO More
@@ -72,7 +71,11 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_UMBRELLA,          nullptr, ReanimationType::REANIM_UMBRELLALEAF,  23, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("UMBRELLA_LEAF") },
     { SeedType::SEED_MARIGOLD,          nullptr, ReanimationType::REANIM_MARIGOLD,      24, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("MARIGOLD") },
     { SeedType::SEED_MELONPULT,         nullptr, ReanimationType::REANIM_MELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("MELON_PULT") },
-    { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,    5,  250,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
+        { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,    5,  250,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
+
+
+    { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, 525,     750,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
+
     { SeedType::SEED_TWINSUNFLOWER,     nullptr, ReanimationType::REANIM_TWIN_SUNFLOWER,1,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("TWIN_SUNFLOWER") },
     { SeedType::SEED_GLOOMSHROOM,       nullptr, ReanimationType::REANIM_GLOOMSHROOM,   27, 150,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("GLOOM_SHROOM") },
     { SeedType::SEED_CATTAIL,           nullptr, ReanimationType::REANIM_CATTAIL,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CATTAIL") },
@@ -1570,6 +1573,16 @@ void Plant::UpdateSquash()
             if (mStateCountdown == 5)
             {
                 DoSquashDamage();
+
+                int aPosX = mX + mWidth / 2;
+                int aPosY = mY + mHeight / 2;
+                int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
+
+                mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, true, aDamageRangeFlags);
+
+
+                mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
+                mBoard->ShakeBoard(3, -4);
             }
 
             if (mStateCountdown == 0)
@@ -1598,7 +1611,7 @@ void Plant::UpdateSquash()
         {
             if (mStateCountdown == 0)
             {
-                Die();
+                Die();/*
                 int aPosX = mX + mWidth / 2;
                 int aPosY = mY + mHeight / 2;
                 int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
@@ -1607,7 +1620,7 @@ void Plant::UpdateSquash()
 
 
                 mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
-                mBoard->ShakeBoard(3, -4);
+                mBoard->ShakeBoard(3, -4);*/
             }
         }
     }

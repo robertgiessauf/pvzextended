@@ -367,10 +367,12 @@ void StoreScreen::DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theIt
     else if (IsPottedPlant(theItemType))
     {
         mApp->mZenGarden->DrawPottedPlantIcon(g, aPosX, aPosY, &mPottedPlantSpecs);
-    }
-    else
-    {
-        DrawSeedPacket(g, aPosX, aPosY, (SeedType)(theItemType + 40), SEED_NONE, 0, 255, false, false);
+    // }
+    // else if (theItemType == STORE_ITEM_PLANT_GATLINGPEA)
+    // {
+        // DrawSeedPacket(g, aPosX, aPosY, SeedType::SEED_QUATROTHREEPEATER, SEED_NONE, 0, 255, false, false);
+    } else {
+        DrawSeedPacket(g, aPosX, aPosY, (SeedType)(theItemType + (int)SeedType::SEED_QUATROTHREEPEATER), SEED_NONE, 0, 255, false, false);
     }
 
     g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
@@ -854,7 +856,7 @@ int StoreScreen::GetItemCost(StoreItem theStoreItem)
     if (theStoreItem == STORE_ITEM_BONUS_LAWN_MOWER)    return gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_BONUS_LAWN_MOWER] ? 500 : 200;
     switch (theStoreItem)
     {
-    case STORE_ITEM_PLANT_GATLINGPEA:                   return 500;
+    case STORE_ITEM_PLANT_GATLINGPEA:                   return 1000;
     case STORE_ITEM_PLANT_TWINSUNFLOWER:                return 500;
     case STORE_ITEM_PLANT_GLOOMSHROOM:                  return 750;
     case STORE_ITEM_PLANT_CATTAIL:                      return 1000;

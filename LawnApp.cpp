@@ -2634,7 +2634,7 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 
 bool LawnApp::SeedTypeAvailable(SeedType theSeedType)
 {
-	return (theSeedType == SeedType::SEED_GATLINGPEA && mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_GATLINGPEA]) || HasSeedType(theSeedType);
+	return (theSeedType == SeedType::SEED_QUATROTHREEPEATER && mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_GATLINGPEA]) || HasSeedType(theSeedType);
 }
 
 bool LawnApp::HasAllUpgrades()
