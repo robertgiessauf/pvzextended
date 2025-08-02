@@ -24,28 +24,29 @@
 PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  
     { SeedType::SEED_PEASHOOTER,        nullptr, ReanimationType::REANIM_PEASHOOTER,    0,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEASHOOTER") },
     { SeedType::SEED_SUNFLOWER,         nullptr, ReanimationType::REANIM_SUNFLOWER,     1,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     1800,   _S("SUNFLOWER") },
-    { SeedType::SEED_CHERRYBOMB,        nullptr, ReanimationType::REANIM_CHERRYBOMB,    3,  150,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHERRY_BOMB") },
-    { SeedType::SEED_WALLNUT,           nullptr, ReanimationType::REANIM_WALLNUT,       2,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WALL_NUT") },
+    { SeedType::SEED_CHERRYBOMB,        nullptr, ReanimationType::REANIM_CHERRYBOMB,    3,  125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHERRY_BOMB") },
+    { SeedType::SEED_WALLNUT,           nullptr, ReanimationType::REANIM_WALLNUT,       2,  75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WALL_NUT") },
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
     { SeedType::SEED_SNOWPEA,           nullptr, ReanimationType::REANIM_SNOWPEA,       4,  150,    750,    PlantSubClass::SUBCLASS_SHOOTER,    125,    _S("SNOW_PEA") },
-    { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
-    { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FIREPEASHOOTER") },
+    { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 125,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
+    { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FIREPEASHOOTER") },
     { SeedType::SEED_PUFFSHROOM,        nullptr, ReanimationType::REANIM_PUFFSHROOM,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PUFF_SHROOM") },
     { SeedType::SEED_SUNSHROOM,         nullptr, ReanimationType::REANIM_SUNSHROOM,     7,  25,     750,    PlantSubClass::SUBCLASS_NORMAL,     1800,   _S("SUN_SHROOM") },
     { SeedType::SEED_FUMESHROOM,        nullptr, ReanimationType::REANIM_FUMESHROOM,    9,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FUME_SHROOM") },
-    { SeedType::SEED_GRAVEBUSTER,       nullptr, ReanimationType::REANIM_GRAVE_BUSTER,  40, 75,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GRAVE_BUSTER") },
-    { SeedType::SEED_HYPNOSHROOM,       nullptr, ReanimationType::REANIM_HYPNOSHROOM,   10, 75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("HYPNO_SHROOM") },
+    { SeedType::SEED_GRAVEBUSTER,       nullptr, ReanimationType::REANIM_GRAVE_BUSTER,  40, 50,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GRAVE_BUSTER") },
+    { SeedType::SEED_HYPNOSHROOM,       nullptr, ReanimationType::REANIM_HYPNOSHROOM,   10, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("HYPNO_SHROOM") },
     { SeedType::SEED_SCAREDYSHROOM,     nullptr, ReanimationType::REANIM_SCRAREYSHROOM, 33, 25,     750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("SCAREDY_SHROOM") },
     { SeedType::SEED_ICESHROOM,         nullptr, ReanimationType::REANIM_ICESHROOM,     36, 75,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("ICE_SHROOM") },
-        { SeedType::SEED_DOOMSHROOM,        nullptr, ReanimationType::REANIM_DOOMSHROOM,    20, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DOOM_SHROOM") },
-        { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12, 325,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
-    { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,       5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
+    { SeedType::SEED_DOOMSHROOM,        nullptr, ReanimationType::REANIM_DOOMSHROOM,    20, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DOOM_SHROOM") },
+    { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
+    { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,      5, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
 
-    { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 125,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
-    { SeedType::SEED_FIRESHROOM,         nullptr, ReanimationType::REANIM_FIRESHROOM,     36, 100,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FIRE_SHROOM") },
+    { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 150,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
 
-    
+    { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,    5,  300,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
+    { SeedType::SEED_FIRESHROOM,         nullptr, ReanimationType::REANIM_FIRESHROOM,   36, 125,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FIRE_SHROOM") },
+
     // TODO More
     { SeedType::SEED_LILYPAD,           nullptr, ReanimationType::REANIM_LILYPAD,       19, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("LILY_PAD") },
 
@@ -69,12 +70,14 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_INSTANT_COFFEE,    nullptr, ReanimationType::REANIM_COFFEEBEAN,    33, 75,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("COFFEE_BEAN") },
     { SeedType::SEED_GARLIC,            nullptr, ReanimationType::REANIM_GARLIC,        8,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GARLIC") },
     { SeedType::SEED_UMBRELLA,          nullptr, ReanimationType::REANIM_UMBRELLALEAF,  23, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("UMBRELLA_LEAF") },
+
     { SeedType::SEED_MARIGOLD,          nullptr, ReanimationType::REANIM_MARIGOLD,      24, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("MARIGOLD") },
     { SeedType::SEED_MELONPULT,         nullptr, ReanimationType::REANIM_MELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("MELON_PULT") },
-        { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,    5,  250,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
 
 
-    { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, /*525*/0,     50,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
+    { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, 650,     750,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
+
+    { SeedType::SEED_QUATROSUNFLOWER,     nullptr, ReanimationType::REANIM_QUATRO_SUNFLOWER, 1,  275,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("QUATRO_SUNFLOWER") },
 
     { SeedType::SEED_TWINSUNFLOWER,     nullptr, ReanimationType::REANIM_TWIN_SUNFLOWER,1,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("TWIN_SUNFLOWER") },
     { SeedType::SEED_GLOOMSHROOM,       nullptr, ReanimationType::REANIM_GLOOMSHROOM,   27, 150,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("GLOOM_SHROOM") },
@@ -1033,7 +1036,7 @@ void Plant::UpdateShooter()
 
 bool Plant::MakesSun()
 {
-    return mSeedType == SeedType::SEED_SUNFLOWER || mSeedType == SeedType::SEED_TWINSUNFLOWER || mSeedType == SeedType::SEED_SUNSHROOM;
+    return mSeedType == SeedType::SEED_SUNFLOWER || mSeedType == SeedType::SEED_TWINSUNFLOWER || mSeedType == SeedType::SEED_QUATROSUNFLOWER || mSeedType == SeedType::SEED_SUNSHROOM;
 }
 
 void Plant::UpdateProductionPlant()
@@ -1086,6 +1089,13 @@ void Plant::UpdateProductionPlant()
         }
         else if (mSeedType == SeedType::SEED_TWINSUNFLOWER)
         {
+            mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
+            mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
+        }
+        else if (mSeedType == SeedType::SEED_QUATROSUNFLOWER)
+        {
+            mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
+            mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
             mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
             mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
         }
@@ -2664,10 +2674,10 @@ bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 
 bool Plant::IsUpgradableTo(SeedType theUpgradedType)
 {
-    if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_REPEATER)
-    {
-        return true;
-    }
+    //if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_REPEATER)
+    //{
+    //    return true;
+    //}
     if (theUpgradedType == SeedType::SEED_WINTERMELON && mSeedType == SeedType::SEED_MELONPULT)
     {
         return true;
@@ -4261,7 +4271,7 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
             {
                 aCelRow = 2;
             }
-            else if (aSeedType == SeedType::SEED_TWINSUNFLOWER)
+            else if (aSeedType == SeedType::SEED_TWINSUNFLOWER || aSeedType == SeedType::SEED_QUATROSUNFLOWER)
             {
                 aCelRow = 1;
             }
@@ -5244,7 +5254,7 @@ bool Plant::IsFlying(SeedType theSeedtype)
 bool Plant::IsUpgrade(SeedType theSeedtype)
 {
     return 
-        theSeedtype == SeedType::SEED_GATLINGPEA || 
+        //theSeedtype == SeedType::SEED_GATLINGPEA || 
         theSeedtype == SeedType::SEED_WINTERMELON || 
         theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
         theSeedtype == SeedType::SEED_SPIKEROCK || 

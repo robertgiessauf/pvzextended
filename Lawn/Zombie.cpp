@@ -396,7 +396,8 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     }
 
     case ZombieType::ZOMBIE_ZAMBONI:  
-        mBodyHealth = 1350;
+        //mBodyHealth = 1350;
+        mBodyHealth = 3000;
         mAnimFrames = 2;
         mAnimTicksPerFrame = 8;
         mPosX = WIDE_BOARD_WIDTH + Rand(10);

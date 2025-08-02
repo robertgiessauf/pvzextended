@@ -225,6 +225,10 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 6, 0, g->mScaleX, g->mScaleY);
 	}
+	else if (aSeedType == SeedType::SEED_QUATROSUNFLOWER && g->mScaleX <= 1.0f)
+	{
+		TodDrawImageCelScaledF(g, aImage, x, y, 6, 0, g->mScaleX, g->mScaleY);
+	}
 	else if (aSeedType == SeedType::SEED_COBCANNON && g->mScaleX <= 1.0f)
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 7, 0, g->mScaleX, g->mScaleY);
@@ -359,6 +363,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_TWINSUNFLOWER:
+	case SeedType::SEED_QUATROSUNFLOWER:
 	case SeedType::SEED_GLOOMSHROOM:
 		aScale = 0.45f;
 		aOffsetX = 7.0f;
@@ -749,11 +754,12 @@ void SeedPacket::MouseDown(int x, int y, int theClickCount)
 		if (!mBoard->PlantingRequirementsMet(aUseSeedType))
 		{
 			mApp->PlaySample(SOUND_BUZZER);
-			if (aUseSeedType == SeedType::SEED_GATLINGPEA)
-			{
-				mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_REPEATER]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_REPEATER);
-			}
-			else if (aUseSeedType == SeedType::SEED_WINTERMELON)
+			//if (aUseSeedType == SeedType::SEED_GATLINGPEA)
+			//{
+			//	mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_REPEATER]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_REPEATER);
+			//}
+			//else
+			if (aUseSeedType == SeedType::SEED_WINTERMELON)
 			{
 				mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_MELONPULT]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_MELONPULT);
 			}

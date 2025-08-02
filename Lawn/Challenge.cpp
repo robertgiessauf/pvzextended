@@ -33,6 +33,7 @@
 int gZombieWaves[NUM_LEVELS] = {  
 	4,  6,  8,  10, 8,  10, 20, 10, 20, 20,
 	10, 20, 10, 20, 10, 10, 20, 10, 20, 20,
+	10, 20, 20, 30, 20, 40, 30, 20, 30, 30, // stones
 	10, 20, 20, 30, 20, 20, 30, 20, 30, 30,
 	10, 20, 10, 20, 20, 10, 20, 10, 20, 20,
 	10, 20, 20, 30, 20, 20, 30, 20, 30, 30,
@@ -194,7 +195,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
+			0, 0, 0, 0, 0, 1, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 1, 1, 0, 0, 0, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -228,7 +229,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			1, 1, 0, 0, 0, 0, 1, 0, 1, 1,
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
 	{ ZOMBIE_LADDER,
@@ -284,7 +285,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 	{ ZOMBIE_WALLNUT_HEAD, 		{
 			0, 0, 0, 0, 1, 0, 1, 0, 1, 1,
 		0, 0, 1, 0, 1, 1, 1, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
+			0, 0, 0, 0, 0, 1, 0, 0, 0, 0, // stones
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 		0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
@@ -298,7 +299,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 1, 0, 1, 1, 0, 0, 0, 0, 0, // stones
+			0, 1, 0, 1, 1, 1, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -309,7 +310,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 0, 1, 0, 1, 1, 1, 0, // stones
+			0, 0, 1, 0, 1, 1, 1, 1, 1, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -504,7 +505,7 @@ void Challenge::StartLevel()
 	}
 	if (mApp->IsLittleTroubleLevel() || mApp->IsStormyNightLevel() || mApp->IsBungeeBlitzLevel() || aGameMode == GAMEMODE_CHALLENGE_INVISIGHOUL)
 	{
-		mBoard->mZombieCountDown = 200;
+		mBoard->mZombieCountDown = ZOMBIE_COUNTDOWN * 2;
 		mBoard->mZombieCountDownStart = mBoard->mZombieCountDown;
 		mConveyorBeltCounter = 200;
 	}
@@ -2596,7 +2597,7 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_NORMAL] = true;
 		aList[ZOMBIE_TRAFFIC_CONE] = true;
 		aList[ZOMBIE_FOOTBALL] = true;
-		aList[ZOMBIE_SNORKEL] = true;
+		//aList[ZOMBIE_SNORKEL] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_BIG_TIME)
 	{

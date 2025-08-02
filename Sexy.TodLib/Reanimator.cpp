@@ -46,6 +46,8 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_SPIKEROCK,                            "reanim\\SpikeRock.reanim",                         0 },
 	{ ReanimationType::REANIM_THREEPEATER,                          "reanim\\ThreePeater.reanim",                       0 },
 	{ ReanimationType::REANIM_QUATROTHREEPEATER,                    "reanim\\QuatroThreePeater.reanim",                 0 },
+		{ ReanimationType::REANIM_QUATRO_SUNFLOWER,                       "reanim\\QuatroSunflower.reanim",                 0 },
+
 	{ ReanimationType::REANIM_MARIGOLD,                             "reanim\\Marigold.reanim",                          0 },
 	{ ReanimationType::REANIM_ICESHROOM,                            "reanim\\IceShroom.reanim",                         0 },
 	{ ReanimationType::REANIM_FIRESHROOM,                           "reanim\\FireShroom.reanim",                        0 },
@@ -110,6 +112,7 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_GARLIC,                               "reanim\\Garlic.reanim",                            0 },
 	{ ReanimationType::REANIM_GOLD_MAGNET,                          "reanim\\GoldMagnet.reanim",                        0 },
 	{ ReanimationType::REANIM_WINTER_MELON,                         "reanim\\WinterMelon.reanim",                       0 },
+
 	{ ReanimationType::REANIM_TWIN_SUNFLOWER,                       "reanim\\TwinSunflower.reanim",                     0 },
 	{ ReanimationType::REANIM_POOL_CLEANER,                         "reanim\\PoolCleaner.reanim",                       0 },
 	{ ReanimationType::REANIM_ROOF_CLEANER,                         "reanim\\RoofCleaner.reanim",                       0 },

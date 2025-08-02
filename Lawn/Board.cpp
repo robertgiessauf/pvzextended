@@ -1357,6 +1357,9 @@ void Board::InitLevel()
 	{
 		mSunMoney = 150;
 	}
+	else if (mApp->IsLittleTroubleLevel()) {
+		mSunMoney = 2000;
+	}
 	else
 	{
 		mSunMoney = 50;
@@ -3570,9 +3573,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		{
 			switch (aPlantingSeedType)
 			{
-			case SeedType::SEED_GATLINGPEA:
-				DisplayAdvice(_S("[ADVICE_ONLY_ON_REPEATERS]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_REPEATERS);
-				break;
+			//case SeedType::SEED_GATLINGPEA:
+			//	DisplayAdvice(_S("[ADVICE_ONLY_ON_REPEATERS]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_REPEATERS);
+			//	break;
 
 			case SeedType::SEED_TWINSUNFLOWER:
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_SUNFLOWER]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_SUNFLOWER);
@@ -7941,10 +7944,10 @@ void Board::KeyChar(SexyChar theChar)
 			if (aPottedPlant)
 			{
 				aPottedPlant->mSeedType = (SeedType)((int)aPottedPlant->mSeedType + 1);
-				if (aPottedPlant->mSeedType == SeedType::SEED_GATLINGPEA)
+				/*if (aPottedPlant->mSeedType == SeedType::SEED_GATLINGPEA)
 				{
 					aPottedPlant->mSeedType = SeedType::SEED_PEASHOOTER;
-				}
+				}*/
 				if (aPottedPlant->mSeedType == SeedType::SEED_FLOWERPOT)
 				{
 					aPottedPlant->mSeedType = SeedType::SEED_KERNELPULT;
@@ -8690,7 +8693,7 @@ bool Board::HasConveyorBeltSeedBank()
 		mApp->IsMiniBossLevel() || 
 		mApp->IsShovelLevel() || 
 		mApp->IsWallnutBowlingLevel() ||
-		mApp->IsLittleTroubleLevel() || 
+		//mApp->IsLittleTroubleLevel() || 
 		mApp->IsStormyNightLevel() || 
 		mApp->IsBungeeBlitzLevel() || 
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT || 
@@ -9574,7 +9577,7 @@ bool Board::PlantingRequirementsMet(SeedType theSeedType)
 {
 	switch (theSeedType)
 	{
-	case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_REPEATER);
+	//case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_REPEATER);
 	case SeedType::SEED_TWINSUNFLOWER:		return CountPlantByType(SeedType::SEED_SUNFLOWER);
 	case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
 	case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);

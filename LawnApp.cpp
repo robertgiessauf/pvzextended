@@ -2579,7 +2579,7 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 		return mPlayerInfo->mPurchases[theSeedType - SeedType::SEED_GATLINGPEA];
 	*/
 
-	if (theSeedType == SeedType::SEED_TWINSUNFLOWER)
+	if (theSeedType == SeedType::SEED_QUATROSUNFLOWER)
 	{
 		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_TWINSUNFLOWER] > 0;
 	}
@@ -2640,7 +2640,7 @@ bool LawnApp::SeedTypeAvailable(SeedType theSeedType)
 bool LawnApp::HasAllUpgrades()
 {
 	int availablePlants = 0;
-	for (int seed = SEED_GATLINGPEA; seed <= SEED_IMITATER; seed++) {
+	for (int seed = SEED_GATLINGPEA; seed <= SEED_IMITATER; seed++) { // TODO!!!!
 		if (SeedTypeAvailable(SeedType(seed))) {
 			availablePlants++;
 		}
