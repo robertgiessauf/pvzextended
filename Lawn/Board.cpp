@@ -2760,16 +2760,13 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		return PlantingReason::PLANTING_NOT_ON_CRATER;
 	}
 	if (mBackground == BACKGROUND_7_STONES) {
-		if (theGridY == 0 && (theGridX == 0 || theGridX == 1)) {
+		if (theGridY == 0 && (theGridX == 0 || theGridX == 3)) {
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
-		if (theGridY == 4 && (theGridX == 0 || theGridX == 1)) {
+		if (theGridY == 2 && (theGridX == 2)) {
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
-		if (theGridY == 1 && (theGridX == 3)) {
-			return PlantingReason::PLANTING_NOT_HERE;
-		}
-		if (theGridY == 3 && (theGridX == 3)) {
+		if (theGridY == 4 && (theGridX == 2)) {
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
 	}

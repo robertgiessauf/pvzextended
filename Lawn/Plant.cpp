@@ -1165,6 +1165,7 @@ void Plant::UpdateGraveBuster()
         {
             aGraveStone->GridItemDie();
             mBoard->mGravesCleared++;
+            IceZombies();
         }
 
         mApp->AddTodParticle(mX + 40, mY + 40, mRenderOrder + 4, ParticleEffect::PARTICLE_GRAVE_BUSTER_DIE);
@@ -3310,6 +3311,13 @@ void Plant::UpdateShooting()
     {
         if (mShootingCounter == 19)
         {
+            Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
+            if (aZombie)
+            {
+                Fire(aZombie, mRow, PlantWeapon::WEAPON_PRIMARY);
+            }
+        }
+        if (mShootingCounter == 10) {
             Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
             if (aZombie)
             {
