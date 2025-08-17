@@ -433,6 +433,7 @@ GameOverDialog::GameOverDialog(const SexyString& theMessage, bool theShowChallen
     mMenuButton->Resize(635 - mX, -10 - mY, 163, 46);
 
     gLawnApp->mBoard->mShowShovel = false;
+    gLawnApp->mBoard->mShowGlove = false;
     gLawnApp->mBoard->mMenuButton->mBtnNoDraw = true;
 }
 

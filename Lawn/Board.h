@@ -172,7 +172,8 @@ public:
 	bool							mHelpDisplayed[NUM_ADVICE_TYPES];						
 	AdviceType						mHelpIndex;												
 	bool							mFinalBossKilled;										
-	bool							mShowShovel;											
+	bool							mShowShovel;
+	bool							mShowGlove;
 	int								mCoinBankFadeCount;										
 	DebugTextMode					mDebugTextMode;											
 	bool							mLevelComplete;											
@@ -310,6 +311,7 @@ public:
 	void							ZombiesWon(Zombie* theZombie = nullptr);
 	void							DrawLevel(Graphics* g);
 	void							DrawShovel(Graphics* g);
+	void							DrawGlove(Graphics* g);
 	void							UpdateZombieSpawning();
 	void							UpdateSunSpawning();
 	/*inline*/ void					ClearAdvice(AdviceType theHelpIndex);
@@ -420,6 +422,7 @@ public:
 	/*inline*/ void					PutZombieInWave(ZombieType theZombieType, int theWaveNumber, ZombiePicker* theZombiePicker);
 	/*inline*/ void					PutInMissingZombies(int theWaveNumber, ZombiePicker* theZombiePicker);
 	Rect							GetShovelButtonRect();
+	Rect							GetGloveButtonRect();
 	void							GetZenButtonRect(GameObjectType theObjectType, Rect& theRect);
 	Plant*							NewPlant(int theGridX, int theGridY, SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
 	void							DoPlantingEffects(int theGridX, int theGridY, Plant* thePlant);

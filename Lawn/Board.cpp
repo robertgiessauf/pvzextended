@@ -643,23 +643,28 @@ void Board::PickZombieWaves()
 			aZombiePoints = aWave / 3 + 1;
 		}
 
-		if (aIsFlagWave)
-		{
-			int aPlainZombiesNum = min(aZombiePoints, 8);
-			//aZombiePoints *= 2.5f; // TODOFIX
-			aZombiePoints *= 15.0f;
-
-			if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
+		if (mApp->mPlayerInfo->mLevel >= 4) {
+			if (aIsFlagWave)
 			{
-				for (int _i = 0; _i < aPlainZombiesNum; _i++)
+				int aPlainZombiesNum = min(aZombiePoints, 8);
+				//aZombiePoints *= 2.5f; // TODOFIX
+				aZombiePoints *= 15.0f;
+
+				if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
 				{
-					PutZombieInWave(ZombieType::ZOMBIE_NORMAL, aWave, &aZombiePicker);
+					for (int _i = 0; _i < aPlainZombiesNum; _i++)
+					{
+						PutZombieInWave(ZombieType::ZOMBIE_NORMAL, aWave, &aZombiePicker);
+					}
+					PutZombieInWave(ZombieType::ZOMBIE_FLAG, aWave, &aZombiePicker);
 				}
-				PutZombieInWave(ZombieType::ZOMBIE_FLAG, aWave, &aZombiePicker);
+			}
+			else {
+				aZombiePoints *= 3.0f;
 			}
 		}
 		else {
-			aZombiePoints *= 3.0f;
+			aZombiePoints *= 2.0f;
 		}
 
 		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)
@@ -1274,6 +1279,16 @@ void Board::InitSurvivalStage()
 Rect Board::GetShovelButtonRect()
 {
 	Rect aRect(GetSeedBankExtraWidth() + 456, 0, Sexy::IMAGE_SHOVELBANK->GetWidth(), Sexy::IMAGE_SEEDBANK->GetHeight());
+	if (mApp->IsSlotMachineLevel() || mApp->IsSquirrelLevel())
+	{
+		aRect.mX = 600;
+	}
+	return aRect;
+}
+
+Rect Board::GetGloveButtonRect()
+{
+	Rect aRect(GetSeedBankExtraWidth() + 456 + Sexy::IMAGE_SHOVELBANK->GetWidth(), 0, Sexy::IMAGE_SHOVELBANK->GetWidth(), Sexy::IMAGE_SEEDBANK->GetHeight());
 	if (mApp->IsSlotMachineLevel() || mApp->IsSquirrelLevel())
 	{
 		aRect.mX = 600;
@@ -3212,6 +3227,16 @@ void Board::UpdateToolTip()
 		mToolTip->mVisible = true;
 		return;
 	}
+	if (aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_GLOVE)
+	{
+		mToolTip->SetLabel(_S("[GLOVE_TOOLTIP]"));
+		Rect aShovelButtonRect = GetGloveButtonRect();
+		mToolTip->mX = aShovelButtonRect.mX + 35;
+		mToolTip->mY = aShovelButtonRect.mY + 72;
+		mToolTip->mCenter = true;
+		mToolTip->mVisible = true;
+		return;
+	}
 
 	if (aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_NEXT_GARDEN)
 	{
@@ -4049,6 +4074,7 @@ bool Board::MouseHitTest(int x, int y, HitResult* theHitResult)
 	}
 
 	Rect aShovelButtonRect = GetShovelButtonRect();
+	Rect aGloveButtonRect = GetGloveButtonRect();
 	if (mSeedBank->MouseHitTest(x, y, theHitResult))
 	{
 		if (mCursorObject->mCursorType == CursorType::CURSOR_TYPE_NORMAL || 
@@ -4059,6 +4085,11 @@ bool Board::MouseHitTest(int x, int y, HitResult* theHitResult)
 	if (mShowShovel && aShovelButtonRect.Contains(x, y) && CanInteractWithBoardButtons())
 	{
 		theHitResult->mObjectType = GameObjectType::OBJECT_TYPE_SHOVEL;
+		return true;
+	}
+	if (mShowGlove && aGloveButtonRect.Contains(x, y) && CanInteractWithBoardButtons())
+	{
+		theHitResult->mObjectType = GameObjectType::OBJECT_TYPE_GLOVE;
 		return true;
 	}
 
@@ -4402,7 +4433,8 @@ void Board::MouseDown(int x, int y, int theClickCount)
 		aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_GLOVE ||
 		aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_MONEY_SIGN ||
 		aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_WHEELBARROW ||
-		aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_TREE_FOOD)
+		aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_TREE_FOOD ||
+		aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_GLOVE)
 	{
 		PickUpTool(aHitResult.mObjectType);
 	}
@@ -6917,6 +6949,23 @@ void Board::DrawShovel(Graphics* g)
 	}
 }
 
+void Board::DrawGlove(Graphics* g)
+{
+	Rect aShovelRect = GetGloveButtonRect();
+	g->DrawImage(Sexy::IMAGE_SHOVELBANK, aShovelRect.mX, aShovelRect.mY);
+
+	if (mCursorObject->mCursorType != CursorType::CURSOR_TYPE_GLOVE)
+	{
+		if (mChallenge->mChallengeState == (ChallengeState)15)
+		{
+			g->SetColorizeImages(true);
+			g->SetColor(GetFlashingColor(mMainCounter, 75));
+		}
+		g->DrawImage(Sexy::IMAGE_ZEN_GARDENGLOVE, aShovelRect.mX - 7, aShovelRect.mY - 3);
+		g->SetColorizeImages(false);
+	}
+}
+
 void Board::DrawDebugText(Graphics* g)
 {
 	SexyString aText;
@@ -7255,6 +7304,10 @@ void Board::DrawUIBottom(Graphics* g)
 	if (mShowShovel)
 	{
 		DrawShovel(g);
+	}
+	if (mShowGlove)
+	{
+		DrawGlove(g);
 	}
 	if (!StageHasFog())
 	{
@@ -7792,6 +7845,20 @@ void Board::KeyChar(SexyChar theChar)
 			if (mCursorObject->mCursorType == CursorType::CURSOR_TYPE_PLANT_FROM_BANK)
 				RefreshSeedPacketFromCursor();
 			PickUpTool(GameObjectType::OBJECT_TYPE_SHOVEL);
+		}
+		else
+		{
+			ClearCursor();
+			mApp->PlayFoley(FoleyType::FOLEY_DROP);
+		}
+	}
+	else if (tolower(theChar) == _S('g') && canUseKeybinds && mShowGlove)
+	{
+		if (mCursorObject->mCursorType != CursorType::CURSOR_TYPE_GLOVE)
+		{
+			if (mCursorObject->mCursorType == CursorType::CURSOR_TYPE_PLANT_FROM_BANK)
+				RefreshSeedPacketFromCursor();
+			PickUpTool(GameObjectType::OBJECT_TYPE_GLOVE);
 		}
 		else
 		{

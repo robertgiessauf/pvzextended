@@ -666,6 +666,7 @@ void CutScene::StartLevelIntro()
 	mApp->mSeedChooserScreen->Move(0, SEED_CHOOSER_OFFSET_Y);
 	mApp->mSeedChooserScreen->mMenuButton->mBtnNoDraw = true;
 	mBoard->mShowShovel = false;
+	mBoard->mShowGlove = false;
 	mBoard->mSeedBank->mCutSceneDarken = 255;
 	mPlacedZombies = false;
 	mPreloaded = false;
@@ -1301,6 +1302,10 @@ void CutScene::ShowShovel()
 	{
 		mBoard->mShowShovel = true;
 	}
+	if (!mApp->IsFirstTimeAdventureMode() || mBoard->mLevel > 1)
+	{
+		mBoard->mShowGlove = true; // TODOFIX
+	}
 }
 
 bool CutScene::IsInShovelTutorial()
@@ -1421,6 +1426,7 @@ void CutScene::StartZombiesWon()
 	mBoard->mMenuButton->mBtnNoDraw = true;
 	mBoard->mFastButton->mBtnNoDraw = true;
 	mBoard->mShowShovel = false;
+	mBoard->mShowGlove = false;
 	mApp->mMusic->StopAllMusic();
 	mBoard->StopAllZombieSounds();
 	mApp->PlaySample(SOUND_LOSEMUSIC);
