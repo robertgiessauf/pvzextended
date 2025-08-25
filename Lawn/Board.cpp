@@ -1338,6 +1338,7 @@ void Board::GetZenButtonRect(GameObjectType theObjectType, Rect& theRect)
 void Board::InitLevel()
 {
 	mMainCounter = 0;
+	_selectedPlanForMove = nullptr;
 	mEnableGraveStones = false;
 	mSodPosition = 0;
 	mPrevBoardResult = mApp->mBoardResult;
@@ -2006,6 +2007,11 @@ SeedType Board::GetSeedTypeInCursor()
 			return aPottedPlant->mSeedType;
 		}
 	}
+
+	//if (_selectedPlanForMove = nullptr)
+	//{
+	//	return _selectedPlanForMove->mSeedType;
+	//}
 
 	if (!IsPlantInCursor())
 	{
@@ -3529,6 +3535,31 @@ void Board::MouseDownCobcannonFire(int x, int y, int theClickCount)
 	ClearCursor();
 }
 
+void Board::MovePlanToNewPosition(Plant *plant, int x, int y)
+{
+	int aGridX = PlantingPixelToGridX(x, y, plant->mSeedType);
+	int aGridY = PlantingPixelToGridY(x, y, plant->mSeedType);
+
+	if (aGridX < 0 || aGridX >= MAX_GRID_SIZE_X || aGridY < 0 || aGridY > MAX_GRID_SIZE_Y)
+	{
+		_selectedPlanForMove = nullptr;
+		mApp->PlayFoley(FoleyType::FOLEY_DROP);
+		return;
+	}
+
+
+	if (CanPlantAt(aGridX, aGridY, plant->mSeedType) == PlantingReason::PLANTING_OK)
+	{
+
+		plant->mPlantCol = aGridX;
+		plant->mRow = aGridY;
+		plant->mX = GridToPixelX(aGridX, aGridY);
+		plant->mY = GridToPixelY(aGridX, aGridY);
+
+		_selectedPlanForMove = nullptr;
+	}
+}
+
 void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 {
 	if (theClickCount < 0)
@@ -3962,6 +3993,11 @@ void Board::MouseDownWithTool(int x, int y, int theClickCount, CursorType theCur
 		{
 			SetTutorialState(CountPlantByType(SeedType::SEED_PEASHOOTER) == 0 ? TutorialState::TUTORIAL_SHOVEL_COMPLETED : TutorialState::TUTORIAL_SHOVEL_KEEP_DIGGING);
 		}
+	}
+	else if (theCursorType == CursorType::CURSOR_TYPE_GLOVE) {
+
+		//mApp->PlayFoley(FoleyType::FOLEY_SOMETHING);
+		_selectedPlanForMove = aPlant;
 	}
 
 	ClearCursor();
@@ -4404,6 +4440,9 @@ void Board::MouseDown(int x, int y, int theClickCount)
 	else if (IsPlantInCursor())
 	{
 		MouseDownWithPlant(x, y, theClickCount);
+	}
+	else if (_selectedPlanForMove != nullptr) {
+		MovePlanToNewPosition(_selectedPlanForMove, x, y);
 	}
 	else if (aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_SEEDPACKET)
 	{

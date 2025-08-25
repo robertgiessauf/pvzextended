@@ -228,6 +228,7 @@ public:
 	bool							mCoinFaded;
 	int								mAchievementCoinCount;
 	int								mGargantuarsKilled;
+	Plant*							_selectedPlanForMove;
 
 public:
 	Board(LawnApp* theApp);
@@ -297,6 +298,7 @@ public:
 	void							UpdateGameObjects();
 	bool							MouseHitTest(int x, int y, HitResult* theHitResult);
 	void							MouseDownWithPlant(int x, int y, int theClickCount);
+	void                            MovePlanToNewPosition(Plant* plant, int x, int y);
 	void							MouseDownWithTool(int x, int y, int theClickCount, CursorType theCursorType);
 	inline void						MouseDownNormal(int x, int y, int theClickCount) { ; }
 	bool							CanInteractWithBoardButtons();
