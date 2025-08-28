@@ -228,7 +228,11 @@ public:
 	bool							mCoinFaded;
 	int								mAchievementCoinCount;
 	int								mGargantuarsKilled;
-	Plant*							_selectedPlanForMove;
+	Plant*							mselectedPlanForMove;
+	bool							mGloveRefreshing;
+	int								mGloveRefreshTime;
+	int								mGloveRefreshCounter;
+	
 
 public:
 	Board(LawnApp* theApp);

@@ -1338,7 +1338,10 @@ void Board::GetZenButtonRect(GameObjectType theObjectType, Rect& theRect)
 void Board::InitLevel()
 {
 	mMainCounter = 0;
-	_selectedPlanForMove = nullptr;
+	mselectedPlanForMove = nullptr;
+	mGloveRefreshing = false;
+	mGloveRefreshCounter = 0;
+	mGloveRefreshTime = 1000;
 	mEnableGraveStones = false;
 	mSodPosition = 0;
 	mPrevBoardResult = mApp->mBoardResult;
@@ -3192,6 +3195,9 @@ void Board::UpdateMousePosition()
 			aPlant->mHighlighted = true;
 		}
 	}
+	if (mselectedPlanForMove != nullptr) {
+		mselectedPlanForMove->mHighlighted = true;
+	}
 }
 
 void Board::UpdateToolTip()
@@ -3542,7 +3548,8 @@ void Board::MovePlanToNewPosition(Plant *plant, int x, int y)
 
 	if (aGridX < 0 || aGridX >= MAX_GRID_SIZE_X || aGridY < 0 || aGridY > MAX_GRID_SIZE_Y)
 	{
-		_selectedPlanForMove = nullptr;
+		mselectedPlanForMove->mHighlighted = false;
+		mselectedPlanForMove = nullptr;
 		mApp->PlayFoley(FoleyType::FOLEY_DROP);
 		return;
 	}
@@ -3556,7 +3563,13 @@ void Board::MovePlanToNewPosition(Plant *plant, int x, int y)
 		plant->mX = GridToPixelX(aGridX, aGridY);
 		plant->mY = GridToPixelY(aGridX, aGridY);
 
-		_selectedPlanForMove = nullptr;
+
+		mselectedPlanForMove->mHighlighted = false;
+		mselectedPlanForMove = nullptr;
+
+
+		mGloveRefreshing = true;
+		mGloveRefreshCounter = 0;
 	}
 }
 
@@ -3997,7 +4010,8 @@ void Board::MouseDownWithTool(int x, int y, int theClickCount, CursorType theCur
 	else if (theCursorType == CursorType::CURSOR_TYPE_GLOVE) {
 
 		//mApp->PlayFoley(FoleyType::FOLEY_SOMETHING);
-		_selectedPlanForMove = aPlant;
+		mselectedPlanForMove = aPlant;
+		mselectedPlanForMove->mHighlighted = true;
 	}
 
 	ClearCursor();
@@ -4309,8 +4323,10 @@ void Board::PickUpTool(GameObjectType theObjectType)
 		break;
 
 	case GameObjectType::OBJECT_TYPE_GLOVE:
-		mCursorObject->mCursorType = CursorType::CURSOR_TYPE_GLOVE;
-		mApp->PlayFoley(FoleyType::FOLEY_DROP);
+		if (!mGloveRefreshing) {
+			mCursorObject->mCursorType = CursorType::CURSOR_TYPE_GLOVE;
+			mApp->PlayFoley(FoleyType::FOLEY_DROP);
+		}
 		break;
 
 	case GameObjectType::OBJECT_TYPE_MONEY_SIGN:
@@ -4441,8 +4457,8 @@ void Board::MouseDown(int x, int y, int theClickCount)
 	{
 		MouseDownWithPlant(x, y, theClickCount);
 	}
-	else if (_selectedPlanForMove != nullptr) {
-		MovePlanToNewPosition(_selectedPlanForMove, x, y);
+	else if (mselectedPlanForMove != nullptr) {
+		MovePlanToNewPosition(mselectedPlanForMove, x, y);
 	}
 	else if (aHitResult.mObjectType == GameObjectType::OBJECT_TYPE_SEEDPACKET)
 	{
@@ -5807,6 +5823,16 @@ void Board::Update()
 		TodParticleSystem* aPoolParticle = mApp->AddTodParticle(450, 295, aRenderPosition, ParticleEffect::PARTICLE_POOL_SPARKLY);
 		mPoolSparklyParticleID = mApp->ParticleGetID(aPoolParticle);
 	}
+	
+	if (mGloveRefreshing)
+	{
+		mGloveRefreshCounter++;
+		if (mGloveRefreshCounter > mGloveRefreshTime)
+		{
+			mGloveRefreshCounter = 0;
+			mGloveRefreshing = false;
+		}
+	}
 
 	UpdateGridItems();
 	UpdateFwoosh();
@@ -6990,8 +7016,29 @@ void Board::DrawShovel(Graphics* g)
 
 void Board::DrawGlove(Graphics* g)
 {
+	float thePercentDark = 0.0f;
+	if (mGloveRefreshing)
+	{
+		if (mGloveRefreshTime == 0)
+		{
+			thePercentDark = 1.0f;
+		}
+		else
+		{
+			thePercentDark = (float)(mGloveRefreshTime - mGloveRefreshCounter) / (float)mGloveRefreshTime;
+		}
+	}
+
 	Rect aShovelRect = GetGloveButtonRect();
+
+	if (thePercentDark > 0.0f)
+	{
+		g->SetColor(Color(164, 164, 164, 255));
+		g->SetColorizeImages(true);
+	}
+
 	g->DrawImage(Sexy::IMAGE_SHOVELBANK, aShovelRect.mX, aShovelRect.mY);
+
 
 	if (mCursorObject->mCursorType != CursorType::CURSOR_TYPE_GLOVE)
 	{
@@ -7003,6 +7050,21 @@ void Board::DrawGlove(Graphics* g)
 		g->DrawImage(Sexy::IMAGE_ZEN_GARDENGLOVE, aShovelRect.mX - 7, aShovelRect.mY - 3);
 		g->SetColorizeImages(false);
 	}
+
+
+	if (thePercentDark > 0.0f)
+	{
+		int aDarknessHeight = FloatRoundToInt(68.0f * thePercentDark) + 2;
+
+		g->SetColor(Color(0, 0, 0, 100));
+		g->SetColorizeImages(true);
+
+		Rect darkRect(aShovelRect.mX, aShovelRect.mY, aShovelRect.mWidth, aDarknessHeight);
+		g->FillRect(darkRect);
+		//g->ClipRect(aShovelRect.mX, aShovelRect.mY, aShovelRect.mWidth, aDarknessHeight);
+
+	}
+	//g->SetColorizeImages(false); // ?
 }
 
 void Board::DrawDebugText(Graphics* g)
