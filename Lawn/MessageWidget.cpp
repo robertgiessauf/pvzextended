@@ -24,6 +24,9 @@ void MessageWidget::ClearReanim()
 {
 	for (int i = 0; i < MAX_MESSAGE_LENGTH; i++)
 	{
+		if (mTextReanimID[i] == REANIMATIONID_NULL) {
+			continue;
+		}
 		Reanimation* aReanim = mApp->ReanimationTryToGet(mTextReanimID[i]);
 		if (aReanim)
 		{

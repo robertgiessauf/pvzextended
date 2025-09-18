@@ -92,7 +92,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 	},
 	{ ZOMBIE_NEWSPAPER,
 		{
-			0, 0, 1, 0, 0, 0, 0, 1, 1, 1,
+			0, 0, 0, 0, 0, 1, 0, 1, 1, 1,
 			1, 1, 1, 0, 1, 0, 0, 0, 0, 0,
 			0, 0, 1, 1, 1, 1, 0, 0, 0, 0, // stones
 			0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
@@ -2562,7 +2562,7 @@ void Challenge::InitZombieWaves()
 	{
 		aList[ZOMBIE_NORMAL] = true;
 		aList[ZOMBIE_TRAFFIC_CONE] = true;
-		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
 		aList[ZOMBIE_POLEVAULTER] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_POGO_PARTY)
@@ -2661,7 +2661,7 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_NEWSPAPER] = true;
 		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
 		aList[ZOMBIE_POLEVAULTER] = true;
-		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
 		aList[ZOMBIE_LADDER] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_COLUMN)
@@ -2676,7 +2676,7 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_NORMAL] = true;
 		aList[ZOMBIE_TRAFFIC_CONE] = true;
 		aList[ZOMBIE_PAIL] = true;
-		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
 		aList[ZOMBIE_ZAMBONI] = true;
 		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
 	}
@@ -2724,7 +2724,7 @@ void Challenge::InitZombieWaves()
 	{
 		aList[ZOMBIE_NORMAL] = true;
 		aList[ZOMBIE_TRAFFIC_CONE] = true;
-		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
 		aList[ZOMBIE_BALLOON] = true;
 	}
 	else

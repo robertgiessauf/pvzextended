@@ -815,6 +815,9 @@ void Board::LoadBackgroundImages()
 	case BackgroundType::BACKGROUND_7_STONES:
 		TodLoadResources("DelayLoad_Background7");
 		break;
+	case BackgroundType::BACKGROUND_8_STONES:
+		TodLoadResources("DelayLoad_Background8");
+		break;
 
 	case BackgroundType::BACKGROUND_GREENHOUSE:
 		TodLoadResources("DelayLoad_GreenHouseGarden");
@@ -859,13 +862,17 @@ void Board::PickBackground()
 		}
 		else if (mLevel <= 4 * LEVELS_PER_AREA)
 		{
+			mBackground = BackgroundType::BACKGROUND_8_STONES;
+		}
+		else if (mLevel <= 5 * LEVELS_PER_AREA)
+		{
 			mBackground = BackgroundType::BACKGROUND_3_POOL;
 		}
 		else if (mApp->IsScaryPotterLevel())
 		{
 			mBackground = BackgroundType::BACKGROUND_2_NIGHT;
 		}
-		else if (mLevel <= 5 * LEVELS_PER_AREA)
+		else if (mLevel <= 6 * LEVELS_PER_AREA)
 		{
 			mBackground = BackgroundType::BACKGROUND_4_FOG;
 		}
@@ -988,7 +995,7 @@ void Board::PickBackground()
 	}
 	LoadBackgroundImages();
 
-	if (mBackground == BackgroundType::BACKGROUND_1_DAY || mBackground == BackgroundType::BACKGROUND_7_STONES || mBackground == BackgroundType::BACKGROUND_GREENHOUSE || mBackground == BackgroundType::BACKGROUND_TREEOFWISDOM)
+	if (mBackground == BackgroundType::BACKGROUND_1_DAY || mBackground == BackgroundType::BACKGROUND_7_STONES || mBackground == BackgroundType::BACKGROUND_8_STONES || mBackground == BackgroundType::BACKGROUND_GREENHOUSE || mBackground == BackgroundType::BACKGROUND_TREEOFWISDOM)
 	{
 		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
@@ -1381,7 +1388,7 @@ void Board::InitLevel()
 	}
 	else
 	{
-		mSunMoney = 50;
+		mSunMoney = 150; // starting money in sun
 	}
 
 	memset(mRowPickingArray, 0, sizeof(mRowPickingArray));
@@ -2783,7 +2790,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	{
 		return PlantingReason::PLANTING_NOT_ON_CRATER;
 	}
-	if (mBackground == BACKGROUND_7_STONES) {
+	if (IsStoneLevel()) {
 		if (theGridY == 0 && (theGridX == 0 || theGridX == 3)) {
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
@@ -5908,6 +5915,7 @@ void Board::DrawBackdrop(Graphics* g)
 	{
 	case BackgroundType::BACKGROUND_1_DAY:				aBgImage = Sexy::IMAGE_BACKGROUND1;						break;
 	case BackgroundType::BACKGROUND_7_STONES:		    aBgImage = Sexy::IMAGE_BACKGROUND7;						break;
+	case BackgroundType::BACKGROUND_8_STONES:		    aBgImage = Sexy::IMAGE_BACKGROUND8;						break;
 	case BackgroundType::BACKGROUND_2_NIGHT:			aBgImage = Sexy::IMAGE_BACKGROUND2;						break;
 	case BackgroundType::BACKGROUND_3_POOL:				aBgImage = Sexy::IMAGE_BACKGROUND3;						break;
 	case BackgroundType::BACKGROUND_4_FOG:				aBgImage = Sexy::IMAGE_BACKGROUND4;						break;
@@ -6759,6 +6767,7 @@ void Board::DrawHouseDoorBottom(Graphics* g)
 	{
 	case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
 	case BackgroundType::BACKGROUND_7_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
+	case BackgroundType::BACKGROUND_8_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY, -171, 241);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY, -172, 246);		break;
@@ -6772,6 +6781,7 @@ void Board::DrawHouseDoorTop(Graphics* g)
 	{
 	case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK, -130, 202);		break;
 	case BackgroundType::BACKGROUND_7_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK, -130, 202);		break;
+	case BackgroundType::BACKGROUND_8_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_MASK, -172, 234);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_MASK, -173, 133);		break;
@@ -8932,6 +8942,7 @@ bool Board::StageIsNight()
 {
 	return 
 		mBackground == BackgroundType::BACKGROUND_2_NIGHT || 
+		mBackground == BackgroundType::BACKGROUND_8_STONES ||
 		mBackground == BackgroundType::BACKGROUND_4_FOG || 
 		mBackground == BackgroundType::BACKGROUND_6_BOSS ||
 		mBackground == BackgroundType::BACKGROUND_MUSHROOM_GARDEN || 
@@ -8959,7 +8970,7 @@ bool Board::StageHasRoof()
 }
 
 bool Board::IsStoneLevel() {
-	return mBackground == BackgroundType::BACKGROUND_7_STONES;
+	return mBackground == BackgroundType::BACKGROUND_7_STONES || mBackground == BackgroundType::BACKGROUND_8_STONES;
 }
 
 bool Board::StageHasPool()

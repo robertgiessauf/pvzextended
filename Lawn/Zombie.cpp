@@ -9201,6 +9201,7 @@ bool Zombie::SetupDrawZombieWon(Graphics* g)
     {
     case BackgroundType::BACKGROUND_1_DAY:
     case BackgroundType::BACKGROUND_7_STONES:
+    case BackgroundType::BACKGROUND_8_STONES:
     case BackgroundType::BACKGROUND_2_NIGHT:
         g->ClipRect(-123 - mX, -mY, BOARD_WIDTH, BOARD_HEIGHT);
         break;
@@ -9493,7 +9494,7 @@ void Zombie::WalkIntoHouse()
         StartWalkAnim(0);
     }
 
-    if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_7_STONES || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT ||
+    if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_7_STONES || mBoard->mBackground == BackgroundType::BACKGROUND_8_STONES || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT ||
         mBoard->mBackground == BackgroundType::BACKGROUND_3_POOL || mBoard->mBackground == BackgroundType::BACKGROUND_4_FOG)
     {
         mPosY = 290.0f;
