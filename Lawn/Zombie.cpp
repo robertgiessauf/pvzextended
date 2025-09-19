@@ -579,7 +579,8 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         aPropellerReanim->mLoopType = ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME;
         aPropellerReanim->AttachToAnotherReanimation(aBodyReanim, "hat");
 
-        mFlyingHealth = 20;
+        mFlyingHealth = 200; //20;
+        mBodyHealth = 1100;
         mZombieRect = Rect(36, 30, 42, 115);
         mZombieAttackRect = Rect(20, 30, 50, 115);
         mVariant = false;
