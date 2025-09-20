@@ -9675,6 +9675,41 @@ Plant* Board::FindUmbrellaPlant(int theGridX, int theGridY)
 	return nullptr;
 }
 
+void Board::DoFwooshColumn(int xPos) {
+	
+	for (int aRow = 0; aRow < MAX_GRID_SIZE_Y; aRow++)
+	{
+		int aRenderOrder = MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, aRow, 1);
+		
+		//int i = floor(xPos / 12);
+		int i = ClampInt((xPos - LAWN_XMIN) / 80, 0, MAX_GRID_SIZE_X - 1);
+
+		Reanimation* aOriReanim = mApp->ReanimationTryToGet(mFwooshID[aRow][i]);
+		if (aOriReanim)
+		{
+			aOriReanim->ReanimationDie();
+		}
+
+		// float aPosX = 750.0f * i / 11.0f + 10.0f;
+		float aPosY = GetPosYBasedOnRow(xPos + 10.0f, aRow) - 10.0f;
+		Reanimation* aFwoosh = mApp->AddReanimation(xPos, aPosY, aRenderOrder, ReanimationType::REANIM_JALAPENO_FIRE);
+		aFwoosh->SetFramesForLayer("anim_flame");
+		aFwoosh->mLoopType = ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME;
+		aFwoosh->mAnimRate *= RandRangeFloat(0.7f, 1.3f);
+
+		float aScale = RandRangeFloat(0.9f, 1.1f);
+		float aFlip = Rand(2) ? 1.0f : -1.0f;
+		aFwoosh->OverrideScale(aScale * aFlip, 1);
+
+		mFwooshID[aRow][i] = mApp->ReanimationGetID(aFwoosh);
+
+
+
+
+	}
+	mFwooshCountDown = 100;
+}
+
 void Board::DoFwoosh(int theRow)
 {
 	int aRenderOrder = MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, theRow, 1);
@@ -9702,15 +9737,42 @@ void Board::DoFwoosh(int theRow)
 	mFwooshCountDown = 100;
 }
 
+//void Board::DoFwoosh(int theRow)
+//{
+//	int aRenderOrder = MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, theRow, 1);
+//	for (int i = 0; i < 12; i++)
+//	{
+//		Reanimation* aOriReanim = mApp->ReanimationTryToGet(mFwooshID[theRow][i]);
+//		if (aOriReanim)
+//		{
+//			aOriReanim->ReanimationDie();
+//		}
+//
+//		float aPosX = 750.0f * i / 11.0f + 10.0f;
+//		float aPosY = GetPosYBasedOnRow(aPosX + 10.0f, theRow) - 10.0f;
+//		Reanimation* aFwoosh = mApp->AddReanimation(aPosX, aPosY, aRenderOrder, ReanimationType::REANIM_JALAPENO_FIRE);
+//		aFwoosh->SetFramesForLayer("anim_flame");
+//		aFwoosh->mLoopType = ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME;
+//		aFwoosh->mAnimRate *= RandRangeFloat(0.7f, 1.3f);
+//
+//		float aScale = RandRangeFloat(0.9f, 1.1f);
+//		float aFlip = Rand(2) ? 1.0f : -1.0f;
+//		aFwoosh->OverrideScale(aScale * aFlip, 1);
+//
+//		mFwooshID[theRow][i] = mApp->ReanimationGetID(aFwoosh);
+//	}
+//	mFwooshCountDown = 100;
+//}
+
 void Board::UpdateFwoosh()
 {
 	if (mFwooshCountDown == 0)
 		return;
 
-	int aFwooshRemaining = TodAnimateCurve(50, 0, --mFwooshCountDown, 12, 0, TodCurves::CURVE_LINEAR);
+	// int aFwooshRemaining = TodAnimateCurve(50, 0, --mFwooshCountDown, 12, 0, TodCurves::CURVE_LINEAR);
 	for (int aRow = 0; aRow < MAX_GRID_SIZE_Y; aRow++)
 	{
-		for (int i = 0; i < 12 - aFwooshRemaining; i++)
+		for (int i = 0; i < 12; i++)
 		{
 			Reanimation* aFwoosh = mApp->ReanimationTryToGet(mFwooshID[aRow][i]);
 			if (aFwoosh)

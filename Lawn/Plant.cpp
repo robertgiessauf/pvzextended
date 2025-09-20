@@ -52,7 +52,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
 
     
     { SeedType::SEED_TANGLEKELP,        nullptr, ReanimationType::REANIM_TANGLEKELP,    17, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TANGLE_KELP") },
-    { SeedType::SEED_JALAPENO,          nullptr, ReanimationType::REANIM_JALAPENO,      11, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("JALAPENO") },
+    { SeedType::SEED_JALAPENO,          nullptr, ReanimationType::REANIM_JALAPENO,      11, 25,    500,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("JALAPENO") },
     { SeedType::SEED_SPIKEWEED,         nullptr, ReanimationType::REANIM_SPIKEWEED,     22, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPIKEWEED") },
     { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
     { SeedType::SEED_TALLNUT,           nullptr, ReanimationType::REANIM_TALLNUT,       28, 125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TALL_NUT") },
@@ -4336,6 +4336,22 @@ void Plant::IceZombies()
     }
 }
 
+void Plant::BurnColumn(int xPos, int damage)
+{
+    int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
+
+    Zombie* aZombie = nullptr;
+    while (mBoard->IterateZombies(aZombie))
+    {
+        if (abs((aZombie->mPosX + aZombie->mWidth/2) - xPos) < 70 && aZombie->EffectedByDamage(aDamageRangeFlags))
+        {
+            aZombie->RemoveColdEffects();
+            aZombie->ApplyBurn(damage);
+        }
+    }
+
+}
+
 void Plant::BurnRow(int theRow, int damage)
 {
     int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
@@ -4450,12 +4466,12 @@ void Plant::DoSpecial()
     {
         mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
         mApp->PlayFoley(FoleyType::FOLEY_JUICY);
-
-        mBoard->DoFwoosh(mRow);
+        
+        mBoard->DoFwooshColumn(aPosX);
         mBoard->ShakeBoard(3, -4);
 
-        BurnRow(mRow);
-        mBoard->mIceTimer[mRow] = 20;
+        BurnColumn(aPosX);
+        //mBoard->mIceTimer[mRow] = 20;
 
         Die();
         break;

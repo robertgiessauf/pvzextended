@@ -227,6 +227,7 @@ public:
     /*inline*/ bool         NotOnGround();
     void                    DoSquashDamage();
     void                    BurnRow(int theRow, int damage = 1800);
+    void                    BurnColumn(int xPos, int damage = 1800);
     void                    IceZombies();
     void                    BlowAwayFliers(int theX, int theRow);
     void                    UpdateGraveBuster();

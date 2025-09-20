@@ -388,6 +388,7 @@ public:
 	Plant*							FindUmbrellaPlant(int theGridX, int theGridY);
 	void							SetTutorialState(TutorialState theTutorialState);
 	void							DoFwoosh(int theRow);
+	void							DoFwooshColumn(int xPos);
 	void							UpdateFwoosh();
 	Plant*							SpecialPlantHitTest(int x, int y);
 	void							UpdateMousePosition();
