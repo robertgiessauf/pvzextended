@@ -2388,6 +2388,9 @@ bool LawnApp::IsScaryPotterLevel()
 	if (mGameMode >= GameMode::GAMEMODE_SCARY_POTTER_1 && mGameMode <= GameMode::GAMEMODE_SCARY_POTTER_ENDLESS)
 		return true;
 
+
+	return false; // TODO TODOFIX
+
 	if (mPlayedQuickplay)
 		return mQuickLevel == 35;
 
@@ -2420,6 +2423,20 @@ bool LawnApp::IsBungeeBlitzLevel()
 		return mQuickLevel == 45;
 
 	return IsAdventureMode() && mPlayerInfo->mLevel == 45;
+}
+
+bool LawnApp::IsLastStandLevel() {
+	if (mBoard == nullptr) {
+		return false;
+	}
+
+	if (mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
+		return true;
+
+	if (mPlayedQuickplay)
+		return mQuickLevel == 35;
+
+	return IsAdventureMode() && mPlayerInfo->mLevel == 35;
 }
 
 bool LawnApp::IsMiniBossLevel()

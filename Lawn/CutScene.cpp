@@ -529,7 +529,7 @@ void CutScene::PlaceStreetZombies()
 		}
 	}
 
-	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
+	if (mApp->IsLastStandLevel())
 	{
 		for (int aZombieType = 0; aZombieType < (int)ZombieType::NUM_ZOMBIE_TYPES; aZombieType++)
 		{
@@ -707,7 +707,7 @@ void CutScene::StartLevelIntro()
 		mApp->IsSquirrelLevel() ||
 		mApp->IsWallnutBowlingLevel() ||
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIQUARIUM ||
-		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND ||
+		mApp->IsLastStandLevel() ||
 		mApp->mGameMode == GameMode::GAMEMODE_TREE_OF_WISDOM ||
 		mApp->IsIZombieLevel() ||
 		mApp->IsWhackAZombieLevel() ||
