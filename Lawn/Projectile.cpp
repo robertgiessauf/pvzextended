@@ -19,7 +19,7 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_PUFF,          0,  20  },
 	{ ProjectileType::PROJECTILE_WINTERMELON,   0,  80  },
 	{ ProjectileType::PROJECTILE_FIREBALL,      0,  40  },
-	{ ProjectileType::PROJECTILE_STAR,          0,  20  },
+	{ ProjectileType::PROJECTILE_STAR,          0,  40  },
 	{ ProjectileType::PROJECTILE_SPIKE,         0,  40  },
 	{ ProjectileType::PROJECTILE_BASKETBALL,    0,  75  },
 	{ ProjectileType::PROJECTILE_KERNEL,        0,  20  },
@@ -389,7 +389,7 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_BYPASSES_SHIELD, true);
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_STAR)
 	{
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_FREEZE, true);
 	}
