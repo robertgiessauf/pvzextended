@@ -3258,6 +3258,11 @@ void Zombie::OverrideParticleColor(TodParticleSystem* aParticle)
             aParticle->OverrideColor(nullptr, Color(75, 75, 255, 255));
             aParticle->OverrideExtraAdditiveDraw(nullptr, true);
         }
+        else if (mMoosCounter > 0)
+        {
+            aParticle->OverrideColor(nullptr, Color(75, 255, 75, 255));
+            aParticle->OverrideExtraAdditiveDraw(nullptr, true);
+        }
     }
 }
 
@@ -3743,6 +3748,10 @@ float Zombie::ZombieTargetLeadX(float theTime)
     {
         aSpeed *= CHILLED_SPEED_FACTOR;
     }
+    if (mMoosCounter > 0)
+    {
+        aSpeed *= MOOS_SPEED_FACTOR;
+    }
     if (IsWalkingBackwards())
     {
         aSpeed = -aSpeed;
@@ -3930,6 +3939,9 @@ void Zombie::UpdateZombieWalking()
             {
                 aSpeed *= CHILLED_SPEED_FACTOR;
             }
+            if (mMoosCounter > 0) {
+                aSpeed *= MOOS_SPEED_FACTOR;
+            }
         }
         else if (mZombieType == ZombieType::ZOMBIE_ZAMBONI || mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || mZombiePhase == ZombiePhase::PHASE_DOLPHIN_IN_JUMP || 
             IsBobsledTeamWithSled() || mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT || mZombiePhase == ZombiePhase::PHASE_SNORKEL_INTO_POOL)
@@ -3946,6 +3958,9 @@ void Zombie::UpdateZombieWalking()
             if (IsMovingAtChilledSpeed())
             {
                 aSpeed *= CHILLED_SPEED_FACTOR;
+            }
+            if (mMoosCounter > 0) {
+                aSpeed *= MOOS_SPEED_FACTOR;
             }
         }
 
@@ -4015,6 +4030,9 @@ void Zombie::UpdateZombieWalking()
             {
                 aSpeed *= CHILLED_SPEED_FACTOR;
             }
+            if (mMoosCounter > 0) {
+                aSpeed *= MOOS_SPEED_FACTOR;
+            }
 
             if (IsWalkingBackwards())
             {
@@ -4030,8 +4048,8 @@ void Zombie::UpdateZombieWalking()
 
 Plant* Zombie::IsStandingOnSpikeweed()
 {
-    if (mZombieType == ZombieType::ZOMBIE_ZAMBONI || mZombieType == ZombieType::ZOMBIE_CATAPULT)
-        return nullptr;
+    //if (mZombieType == ZombieType::ZOMBIE_ZAMBONI || mZombieType == ZombieType::ZOMBIE_CATAPULT)
+    //    return nullptr;
 
     Rect aZombieRect = GetZombieRect();
 
@@ -4437,6 +4455,14 @@ void Zombie::UpdatePlaying()
             UpdateAnimSpeed();
         }
     }
+    if (mMoosCounter > 0)
+    {
+        mMoosCounter--;
+        if (mMoosCounter == 0)
+        {
+            UpdateAnimSpeed();
+        }
+    }
     if (mButteredCounter > 0)
     {
         mButteredCounter--;
@@ -4769,7 +4795,11 @@ void Zombie::Animate()
         int aFrameLength = 6;
         if (mChilledCounter > 0)
         {
-            aFrameLength = 12;
+            aFrameLength *= 2;
+        }
+        if (mMoosCounter > 0)
+        {
+            aFrameLength *= 2;
         }
         if (mAnimCounter >= mAnimFrames * aFrameLength)
         {
@@ -5536,6 +5566,12 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
         aExtraAdditiveColor = aColorOverride;
         aEnableExtraAdditiveDraw = true;
     }
+    else if (mMoosCounter > 0)
+    {
+        aColorOverride = Color(75, 255, 75, aFadeAlpha);
+        aExtraAdditiveColor = aColorOverride;
+        aEnableExtraAdditiveDraw = true;
+    }
     //else if (mZombieType == ZombieType::ZOMBIE_STRONG_BITE)
     //{
     //    aColorOverride = Color(255, 75, 75, 255);
@@ -6180,9 +6216,9 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
     if (thePlant->IsSpiky())
     {
         return 
-            mZombieType == ZombieType::ZOMBIE_GARGANTUAR || 
-            mZombieType == ZombieType::ZOMBIE_REDEYE_GARGANTUAR || 
-            mZombieType == ZombieType::ZOMBIE_ZAMBONI || 
+            //mZombieType == ZombieType::ZOMBIE_GARGANTUAR || 
+            //mZombieType == ZombieType::ZOMBIE_REDEYE_GARGANTUAR || 
+            //mZombieType == ZombieType::ZOMBIE_ZAMBONI || 
             mBoard->IsPoolSquare(thePlant->mPlantCol, thePlant->mRow) || 
             mBoard->GetFlowerPotAt(thePlant->mPlantCol, thePlant->mRow);  
     }
@@ -6452,7 +6488,7 @@ void Zombie::ApplyAnimRate(float theAnimRate)
     Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
     if (aBodyReanim)
     {
-        aBodyReanim->mAnimRate = IsMovingAtChilledSpeed() ? theAnimRate * 0.5f : theAnimRate;
+        aBodyReanim->mAnimRate = (IsMovingAtChilledSpeed() || mMoosCounter > 0) ? theAnimRate * 0.5f : theAnimRate;
     }
 }
 
@@ -6686,6 +6722,10 @@ void Zombie::CheckIfPreyCaught()
     {
         aTicksBetweenEats *= 2;
     }
+    if (mMoosCounter > 0)
+    {
+        aTicksBetweenEats *= 2;
+    }
     if (mZombieAge % aTicksBetweenEats != 0)
     {
         return;
@@ -6909,7 +6949,7 @@ void Zombie::EatPlant(Plant* thePlant)
         return;
     }
 
-    if (mChilledCounter > 0 && mZombieAge % 2 == 1)
+    if ((mMoosCounter > 0 || mChilledCounter > 0) && mZombieAge % 2 == 1)
         return;
 
     if (mApp->IsIZombieLevel() && thePlant->mSeedType == SeedType::SEED_SUNFLOWER)
@@ -7127,6 +7167,11 @@ void Zombie::DropLoot()
 
     mDroppedLoot = true;
     int aZombieValue = GetZombieDefinition(mZombieType).mZombieValue;
+    
+    if (Rand(3) == 0) {
+        return;
+    }
+
     if (mApp->IsLittleTroubleLevel() && Rand(4) != 0)
     {
         return;
@@ -7351,6 +7396,14 @@ void Zombie::StopZombieSound()
     }
 }
 
+void Zombie::ApplyMoos()
+{
+    int aChillTime = 1000;
+    mMoosCounter = max(aChillTime, mMoosCounter);
+
+    UpdateAnimSpeed();
+}
+
 void Zombie::ApplyChill(bool theIsIceTrap)
 {
     if (!CanBeChilled())
@@ -7567,6 +7620,10 @@ int Zombie::TakeHelmDamage(int theDamage, unsigned int theDamageFlags)
     {
         ApplyChill(false);
     }
+    if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_MOOS))
+    {
+        ApplyMoos();
+    }
     if (mHelmHealth == 0)
     {
         DropHelm(theDamageFlags);
@@ -7667,6 +7724,10 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
     if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_FREEZE))
     {
         ApplyChill(false);
+    }
+    if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_MOOS))
+    {
+        ApplyMoos();
     }
 
     int aBodyHealthOrigin = mBodyHealth;

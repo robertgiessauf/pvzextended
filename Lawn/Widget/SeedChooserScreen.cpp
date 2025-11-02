@@ -736,7 +736,7 @@ void SeedChooserScreen::OnStartButton()
 		!CheckSeedUpgrade(SEED_SPIKEROCK, SEED_SPIKEWEED) ||
 		!CheckSeedUpgrade(SEED_COBCANNON, SEED_KERNELPULT) ||
 		!CheckSeedUpgrade(SEED_GOLD_MAGNET, SEED_MAGNETSHROOM) ||
-		!CheckSeedUpgrade(SEED_GLOOMSHROOM, SEED_FUMESHROOM) ||
+		//!CheckSeedUpgrade(SEED_GLOOMSHROOM, SEED_FUMESHROOM) ||
 		!CheckSeedUpgrade(SEED_CATTAIL, SEED_LILYPAD))
 		return;
 

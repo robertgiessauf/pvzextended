@@ -634,10 +634,10 @@ void Board::PickZombieWaves()
 		{
 			aZombiePoints = (mChallenge->mSurvivalStage * GetNumWavesPerSurvivalStage() + aWave) * 2 / 5 + 1;
 		}
-		else if (mApp->IsAdventureMode() && mApp->HasFinishedAdventure() && mLevel != 5)
-		{
-			aZombiePoints = aWave * 2 / 5 + 1;
-		}
+		////else if (mApp->IsAdventureMode() && mApp->HasFinishedAdventure() && mLevel != 5)
+		////{
+		////	aZombiePoints = aWave * 2 / 5 + 1;
+		////}
 		else
 		{
 			aZombiePoints = aWave / 3 + 1;
@@ -648,7 +648,7 @@ void Board::PickZombieWaves()
 			{
 				int aPlainZombiesNum = min(aZombiePoints, 8);
 				//aZombiePoints *= 2.5f; // TODOFIX
-				aZombiePoints *= 15.0f;
+				aZombiePoints *= 5.0f;
 
 				if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
 				{
@@ -2118,7 +2118,8 @@ Plant* Board::AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedTyp
 		mMaxSunPlants = aSunPlantsCount;  //mMaxSunPlants = max(aSunPlantsCount, mMaxSunPlants);
 	}
 
-	if (theSeedType == SeedType::SEED_PEASHOOTER ||
+	if (theSeedType == SeedType::SEED_PEADRONE || 
+		theSeedType == SeedType::SEED_PEASHOOTER ||
 		theSeedType == SeedType::SEED_SNOWPEA ||
 		theSeedType == SeedType::SEED_FIREPEA ||
 		theSeedType == SeedType::SEED_THREEPEATER ||
@@ -2133,7 +2134,8 @@ Plant* Board::AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedTyp
 	if (theSeedType == SeedType::SEED_CABBAGEPULT ||
 		theSeedType == SeedType::SEED_KERNELPULT ||
 		theSeedType == SeedType::SEED_MELONPULT ||
-		theSeedType == SeedType::SEED_WINTERMELON)
+		theSeedType == SeedType::SEED_WINTERMELON ||
+		theSeedType == SeedType::SEED_PUFFSHROOMPULT)
 	{
 		mCatapultsUsed = true;
 	}
@@ -3507,13 +3509,13 @@ void Board::UpdateToolTip()
 			mToolTip->SetWarningText(_S("[REQUIRES_MAGNETSHROOM]"));
 		}
 	}
-	else if (aUseSeedType == SeedType::SEED_GLOOMSHROOM)
-	{
-		if (!PlantingRequirementsMet(aUseSeedType))
-		{
-			mToolTip->SetWarningText(_S("[REQUIRES_FUMESHROOM]"));
-		}
-	}
+	//else if (aUseSeedType == SeedType::SEED_GLOOMSHROOM)
+	//{
+	//	if (!PlantingRequirementsMet(aUseSeedType))
+	//	{
+	//		mToolTip->SetWarningText(_S("[REQUIRES_FUMESHROOM]"));
+	//	}
+	//}
 	else if (aUseSeedType == SeedType::SEED_CATTAIL)
 	{
 		if (!PlantingRequirementsMet(aUseSeedType))
@@ -3654,9 +3656,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_SUNFLOWER]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_SUNFLOWER);
 				break;
 
-			case SeedType::SEED_GLOOMSHROOM:
-				DisplayAdvice(_S("[ADVICE_ONLY_ON_FUMESHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_FUMESHROOM);
-				break;
+			//case SeedType::SEED_GLOOMSHROOM:
+			//	DisplayAdvice(_S("[ADVICE_ONLY_ON_FUMESHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_FUMESHROOM);
+			//	break;
 
 			case SeedType::SEED_CATTAIL:
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_LILYPAD]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_LILYPAD);
@@ -9817,7 +9819,7 @@ bool Board::PlantingRequirementsMet(SeedType theSeedType)
 	{
 	//case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_REPEATER);
 	case SeedType::SEED_TWINSUNFLOWER:		return CountPlantByType(SeedType::SEED_SUNFLOWER);
-	case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
+	//case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
 	case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);
 	case SeedType::SEED_WINTERMELON:		return CountPlantByType(SeedType::SEED_MELONPULT);
 	case SeedType::SEED_GOLD_MAGNET:		return CountPlantByType(SeedType::SEED_MAGNETSHROOM);

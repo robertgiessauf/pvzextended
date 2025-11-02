@@ -2591,7 +2591,7 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 	if (IsTrialStageLocked() && theSeedType >= SeedType::SEED_JALAPENO)
 		return false;
 
-	/*  优化
+	/* 
 	if (theSeedType >= SeedType::SEED_TWINSUNFLOWER && theSeedType <= SeedType::SEED_IMITATER)
 		return mPlayerInfo->mPurchases[theSeedType - SeedType::SEED_GATLINGPEA];
 	*/
@@ -2600,10 +2600,10 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 	{
 		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_TWINSUNFLOWER] > 0;
 	}
-	if (theSeedType == SeedType::SEED_GLOOMSHROOM)
-	{
-		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_GLOOMSHROOM] > 0;
-	}
+	//if (theSeedType == SeedType::SEED_GLOOMSHROOM)
+	//{
+	//	return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_GLOOMSHROOM] > 0;
+	//}
 	if (theSeedType == SeedType::SEED_CATTAIL)
 	{
 		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_CATTAIL] > 0;

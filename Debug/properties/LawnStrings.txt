@@ -58,6 +58,13 @@ Puff-shroom
 [PUFF_SHROOM_TOOLTIP]
 Shoots short-ranged spores at the enemy
 
+
+[PUFF_PULT]
+Puff-pult
+
+[PUFF_PULT_TOOLTIP]
+Catapults spores at the enemy
+
 [SUN_SHROOM]
 Sun-shroom
 
@@ -530,6 +537,21 @@ Puff-shrooms are cheap, but can only fire a short distance.
 {SHORTLINE}
 {FLAVOR}"I only recently became aware of the existence of zombies," says Puff-shroom. "Like many fungi, 
 I'd just assumed they were fairy tales or movie monsters. This whole experience has been a huge eye-opener for me."
+
+
+
+[PUFF_PULT_DESCRIPTION_HEADER]
+Puff pults can reach zombies at the back and are effective on the roof, but fire slower than puff shrooms.
+
+[PUFF_PULT_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} normal
+{NOCTURNAL}Sleeps during the day
+{SHORTLINE}
+{FLAVOR}Puff shroom drank a magic potion that turned him into a catapult. Now he is a puff pult.
+
+
+
 
 [SUN_SHROOM_DESCRIPTION_HEADER]
 Sun-shrooms give small sun at first and normal sun later.

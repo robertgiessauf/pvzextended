@@ -32,6 +32,7 @@ constexpr const int TICKS_BETWEEN_EATS = 4;
 constexpr const int DAMAGE_PER_EAT = TICKS_BETWEEN_EATS;
 constexpr const float THOWN_ZOMBIE_GRAVITY = 0.05f;
 constexpr const float CHILLED_SPEED_FACTOR = 0.4f;
+constexpr const float MOOS_SPEED_FACTOR = 0.4f;
 constexpr const float CLIP_HEIGHT_LIMIT = -100.0f;
 constexpr const float CLIP_HEIGHT_OFF = -200.0f;
 const Color ZOMBIE_MINDCONTROLLED_COLOR = Color(128, 0, 192, 255);
@@ -117,7 +118,8 @@ public:
     bool                            mHitUmbrella;                               
     Rect                            mZombieRect;                                
     Rect                            mZombieAttackRect;                          
-    int                             mChilledCounter;                            
+    int                             mChilledCounter;       
+    int                             mMoosCounter;
     int                             mButteredCounter;                           
     int                             mIceTrapCounter;                            
     bool                            mMindControlled;                            
@@ -185,6 +187,7 @@ public:
     /*inline*/ void                 SetRow(int theRow);
     float                           GetPosYBasedOnRow(int theRow);
     void                            ApplyChill(bool theIsIceTrap);
+    void                            ApplyMoos();
     void                            UpdateZombieBungee();
     void                            BungeeLanding();
     bool                            EffectedByDamage(unsigned int theDamageRangeFlags);

@@ -454,6 +454,8 @@ void CreditScreen::PreLoadCredits()
     ReanimationPreload(ReanimationType::REANIM_PUFFSHROOM);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SUNSHROOM, true);
     ReanimationPreload(ReanimationType::REANIM_SUNSHROOM);
+    ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_PUFFPULT, true);
+    ReanimationPreload(ReanimationType::REANIM_PUFFPULT);
 
     ReanimatorDefinition* aMain2Def = &gReanimatorDefArray[(int)ReanimationType::REANIM_CREDITS_MAIN2];
     for (int aTrackIndex = 0; aTrackIndex < aMain2Def->mTrackCount; aTrackIndex++)

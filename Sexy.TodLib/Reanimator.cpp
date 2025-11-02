@@ -74,7 +74,8 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_BLOVER,                               "reanim\\Blover.reanim",                            0 },
 	{ ReanimationType::REANIM_FLOWER_POT,                           "reanim\\Pot.reanim",                               0 },
 	{ ReanimationType::REANIM_CACTUS,                               "reanim\\Cactus.reanim",                            0 },
-	{ ReanimationType::REANIM_DANCER,                               "reanim\\Zombie_disco.reanim",						0 },
+	{ ReanimationType::REANIM_PEADRONE,  	                        "reanim\\Peadrone.reanim",                          0 },
+    { ReanimationType::REANIM_DANCER,                               "reanim\\Zombie_disco.reanim",						0 },
 	{ ReanimationType::REANIM_TANGLEKELP,                           "reanim\\Tanglekelp.reanim",                        0 },
 	{ ReanimationType::REANIM_STARFRUIT,                            "reanim\\Starfruit.reanim",                         0 },
 	{ ReanimationType::REANIM_POLEVAULTER,                          "reanim\\Zombie_polevaulter.reanim",                0 },
@@ -166,7 +167,9 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_CREDITS_ANYHOUR,                      "reanim\\Credits_Anyhour.reanim",                   3 },
 	{ ReanimationType::REANIM_CREDITS_WEARETHEUNDEAD,               "reanim\\Credits_WeAreTheUndead.reanim",            1 },
 	{ ReanimationType::REANIM_CREDITS_DISCOLIGHTS,                  "reanim\\Credits_DiscoLights.reanim",               1 },
-	{ ReanimationType::REANIM_FLAG,                                 "reanim\\Zombie_FlagPole.reanim",                   0 }
+	{ ReanimationType::REANIM_FLAG,                                 "reanim\\Zombie_FlagPole.reanim",                   0 },
+	{ ReanimationType::REANIM_PUFFPULT, "reanim\\Puffpult.reanim", 0 }
+
 };
 
 ReanimatorTransform::ReanimatorTransform() :
