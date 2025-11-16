@@ -917,7 +917,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT:
 	case GameMode::GAMEMODE_CHALLENGE_WHACK_A_ZOMBIE:
 	case GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER:
-	case GameMode::GAMEMODE_SCARY_POTTER_1:
+	/*case GameMode::GAMEMODE_SCARY_POTTER_1:*/
 	case GameMode::GAMEMODE_SCARY_POTTER_2:
 	case GameMode::GAMEMODE_SCARY_POTTER_3:
 	case GameMode::GAMEMODE_SCARY_POTTER_4:
@@ -950,7 +950,8 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2:
 	case GameMode::GAMEMODE_UPSELL:
 	case GameMode::GAMEMODE_INTRO:
-		mBackground = BackgroundType::BACKGROUND_3_POOL;
+	case GameMode::GAMEMODE_SCARY_POTTER_1:
+		mBackground = BackgroundType::BACKGROUND_4_FOG;
 		break;
 
 	case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_4:
@@ -1638,7 +1639,7 @@ void Board::InitLawnMowers()
 	{
 		if (aGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED && aRow >= 5)
 			continue;
-		if ((!mApp->IsScaryPotterLevel() || (mApp->IsAdventureMode() && (mLevel == 35 || mApp->mQuickLevel == 35))) && (aGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || mPlantRow[aRow] != PlantRowType::PLANTROW_DIRT))
+		if ((!mApp->IsScaryPotterLevel() /*|| (mApp->IsAdventureMode() && (mLevel == 35 || mApp->mQuickLevel == 35)) */) && (aGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || mPlantRow[aRow] != PlantRowType::PLANTROW_DIRT))
 		{
 			LawnMower* aLawnMower = mLawnMowers.DataArrayAlloc();
 			aLawnMower->LawnMowerInitialize(aRow);
@@ -9009,7 +9010,7 @@ bool Board::StageHasZombieWalkInFromRight()
 
 bool Board::StageHasFog()
 {
-	return !mApp->IsStormyNightLevel() && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL && mBackground == BackgroundType::BACKGROUND_4_FOG;
+	return !mApp->IsStormyNightLevel() && mApp->mGameMode != GameMode::GAMEMODE_SCARY_POTTER_1 && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL && mBackground == BackgroundType::BACKGROUND_4_FOG;
 }
 
 int Board::LeftFogColumn()

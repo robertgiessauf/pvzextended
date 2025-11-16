@@ -3844,14 +3844,15 @@ void Challenge::ScaryPotterPopulate()
 	TodWeightedGridArray aGridArray[MAX_SCARY_POTS];
 	for (int aGridX = 0; aGridX < MAX_GRID_SIZE_X; aGridX++)
 	{
-		for (int aGridY = 0; aGridY < MAX_GRID_SIZE_Y - 1; aGridY++)
+		int maxY = mApp->mGameMode == GameMode::GAMEMODE_SCARY_POTTER_1 ? MAX_GRID_SIZE_Y : MAX_GRID_SIZE_Y - 1;
+		for (int aGridY = 0; aGridY < maxY; aGridY++)
 		{
 			aGridArray[aGridArrayCount].mX = aGridX;
 			aGridArray[aGridArrayCount].mY = aGridY;
 			aGridArray[aGridArrayCount].mWeight = 1;
 			aGridArrayCount++;
 
-			TOD_ASSERT(aGridArrayCount <= MAX_SCARY_POTS);
+			//TOD_ASSERT(aGridArrayCount <= MAX_SCARY_POTS);
 		}
 	}
 
@@ -3910,11 +3911,13 @@ void Challenge::ScaryPotterPopulate()
 			ScaryPotterDontPlaceInCol(1, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(2, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(3, aGridArray, aGridArrayCount);
+
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_LILYPAD, 4, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_PEASHOOTER, 5, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SNOWPEA, 5, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SQUASH, 5, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_NORMAL, SEED_NONE, 6, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PAIL, SEED_NONE, 3, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SNOWPEA, 3, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SQUASH, 4, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_NORMAL, SEED_NONE, 8, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PAIL, SEED_NONE, 5, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_JACK_IN_THE_BOX, SEED_NONE, 1, aGridArray, aGridArrayCount);
 			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_LEAF, 2);
 			break;
