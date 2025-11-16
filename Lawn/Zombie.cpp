@@ -52,7 +52,8 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_SQUASH_HEAD,       REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("SQUASH_ZOMBIE")},
     { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")},
     { ZOMBIE_STRONG_BITE,       REANIM_ZOMBIE,              2,      1,      1,      4000,   _S("ZOMBIE_STRONG_BITE")},
-    { ZOMBIE_GIGA_FOOTBALL,     REANIM_ZOMBIE_FOOTBALL_GIGA,7,      16,     5,      2000,   _S("FOOTBALL_ZOMBIE_GIGA")},
+    { ZOMBIE_GRAVE,             REANIM_ZOMBIE,              2,      1,      10,      4000,   _S("ZOMBIE_GRAVE")},
+    { ZOMBIE_GIGA_FOOTBALL,     REANIM_ZOMBIE_FOOTBALL_GIGA,7,      16,     5,      4000,   _S("FOOTBALL_ZOMBIE_GIGA")},
 };
 
 static ZombieType gBossZombieList[] = {  
@@ -85,6 +86,10 @@ Zombie::Zombie()
 void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Zombie* theParentZombie, int theFromWave)
 {
     TOD_ASSERT(theType >= 0 && theType <= ZombieType::NUM_ZOMBIE_TYPES);
+
+
+    aGraveRow = Rand(3); // 1; //0;
+    aGraveCol = Rand(4); // 2; //4;
 
     mFromWave = theFromWave;
     mRow = theRow;
@@ -206,7 +211,6 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         LoadPlainZombieReanim();
         AttachShield();
         break;
-
     case ZombieType::ZOMBIE_YETI:  
         mBodyHealth = 1350;
         mPhaseCounter = RandRangeInt(1500, 2000);
@@ -599,7 +603,8 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
             mPhaseCounter = 300 + Rand(12);
             PlayZombieReanim("anim_moonwalk", ReanimLoopType::REANIM_LOOP, 0, 24.0f);
         }
-        mBodyHealth = 500;
+        //mBodyHealth = 500;
+        mBodyHealth = 270 + 350;
         mVariant = false;
         break;
 
@@ -708,6 +713,30 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
         aBodyReanim->mFrameBasePose = 0;
         TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 50.0f, 0.0f, 0.2f, -0.8f, 0.8f);
+
+        //mHelmType = HelmType::HELMTYPE_WALLNUT;
+        //mHelmHealth = 1100;
+        mVariant = false;
+        break;
+    }
+    case ZombieType::ZOMBIE_GRAVE:
+    {
+
+        mBodyHealth = 370;
+        LoadPlainZombieReanim();
+        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("anim_head", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("Zombie_tie", RENDER_GROUP_HIDDEN);
+
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_body");
+
+        //Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_GRAVE_BUSTER);
+        //aHeadReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        //mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
+        //AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
+        //aBodyReanim->mFrameBasePose = 0;
+        //TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 50.0f, 0.0f, 0.2f, -0.8f, 0.8f);
 
         //mHelmType = HelmType::HELMTYPE_WALLNUT;
         //mHelmHealth = 1100;
@@ -6169,7 +6198,24 @@ void Zombie::Draw(Graphics* g)
         {
             DrawZombie(g, aDrawPos);
         }
+
     }
+
+        if (mZombieType == ZombieType::ZOMBIE_GRAVE)
+        {
+
+            int aCelWidth = IMAGE_TOMBSTONES->GetCelWidth();
+            int aCelHeight = IMAGE_TOMBSTONES->GetCelHeight();
+
+            Rect aSrcRect(aCelWidth * aGraveCol, aCelHeight * aGraveRow, aCelWidth, aCelHeight);
+
+            g->DrawImage(IMAGE_TOMBSTONES, aDrawPos.mHeadX - aCelWidth/2, aDrawPos.mHeadY - aCelHeight/2 + 10, aSrcRect);
+
+
+            //TodDrawImageScaledF(g, IMAGE_TOMBSTONES, /*mX + aDrawPos.mHeadX*/ aDrawPos.mHeadX, /*mY + aDrawPos.mHeadY*/ aDrawPos.mHeadY, .2, .2);
+
+        }
+
     if (mIceTrapCounter > 0)
     {
         DrawIceTrap(g, aDrawPos, true);
@@ -7277,6 +7323,18 @@ void Zombie::BungeeDropPlant()
     }
 }
 
+void Zombie::GraveDie() {
+    int gridX = mBoard->PixelToGridX(mX, mY) + 1;
+    int gridY = mBoard->PixelToGridY(mX, mY) + 1;
+
+    if ((gridX >= 0 && gridX < MAX_GRID_SIZE_X)&&
+         (gridY >= 0 && gridY < MAX_GRID_SIZE_Y)) {
+
+            mBoard->AddAGraveStone(gridX, gridY);
+        }
+
+}
+
 void Zombie::BungeeDie()
 {
     BungeeDropPlant();
@@ -7319,6 +7377,10 @@ void Zombie::DieNoLoot()
     if (mZombieType == ZombieType::ZOMBIE_BOSS)
     {
         BossDie();
+    }
+    if (mZombieType == ZombieType::ZOMBIE_GRAVE)
+    {
+        GraveDie();
     }
 }
 

@@ -1108,33 +1108,33 @@ void Board::PickBackground()
 			}
 			else if (mLevel == 11 || mLevel == 12 || mLevel == 13)
 			{
-				AddGraveStones(6, 1, aLevelRNG);
+				// AddGraveStones(6, 1, aLevelRNG);
 				AddGraveStones(7, 1, aLevelRNG);
-				AddGraveStones(8, 2, aLevelRNG);
+				AddGraveStones(8, 1, aLevelRNG); // AddGraveStones(8, 2, aLevelRNG);
 			}
 			else if (mLevel == 14 || mLevel == 16)
 			{
-				AddGraveStones(5, 1, aLevelRNG);
+				//AddGraveStones(5, 1, aLevelRNG);
 				AddGraveStones(6, 1, aLevelRNG);
 				AddGraveStones(7, 2, aLevelRNG);
-				AddGraveStones(8, 3, aLevelRNG);
+				//AddGraveStones(8, 3, aLevelRNG);
 			}
 			else if (mLevel == 17 || mLevel == 18 || mLevel == 19)
 			{
-				AddGraveStones(4, 1, aLevelRNG);
+				//AddGraveStones(4, 1, aLevelRNG);
 				AddGraveStones(5, 2, aLevelRNG);
-				AddGraveStones(6, 2, aLevelRNG);
+				//AddGraveStones(6, 2, aLevelRNG);
 				AddGraveStones(7, 3, aLevelRNG);
 				AddGraveStones(8, 3, aLevelRNG);
 			}
 			else if (mLevel >= 20)
 			{
-				AddGraveStones(3, 1, aLevelRNG);
+				//AddGraveStones(3, 1, aLevelRNG);
 				AddGraveStones(4, 2, aLevelRNG);
 				AddGraveStones(5, 2, aLevelRNG);
-				AddGraveStones(6, 2, aLevelRNG);
+				//AddGraveStones(6, 2, aLevelRNG);
 				AddGraveStones(7, 3, aLevelRNG);
-				AddGraveStones(8, 3, aLevelRNG);
+				//AddGraveStones(8, 3, aLevelRNG);
 			}
 			else
 			{
@@ -1377,7 +1377,7 @@ void Board::InitLevel()
 	}
 	else if (mApp->IsIZombieLevel())
 	{
-		mSunMoney = 150;
+		mSunMoney = 200;
 	}
 	else if (mApp->IsFirstTimeAdventureMode() && mLevel == 1)
 	{
@@ -1388,7 +1388,7 @@ void Board::InitLevel()
 	}
 	else
 	{
-		mSunMoney = 150; // starting money in sun
+		mSunMoney = 200; // starting money in sun
 	}
 
 	memset(mRowPickingArray, 0, sizeof(mRowPickingArray));
@@ -2770,6 +2770,12 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		}
 
 		return PlantingReason::PLANTING_OK;
+	}
+	if (theSeedType == SeedType::SEED_PEADRONE) {
+		if (aPlantOnLawn.mFlyingPlant)
+		{
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
 	}
 	if (aHasGrave)
 	{

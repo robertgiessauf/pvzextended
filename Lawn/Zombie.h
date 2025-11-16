@@ -89,6 +89,10 @@ public:
     };
 
 public:
+
+    int aGraveRow;
+    int aGraveCol;
+
 	ZombieType			            mZombieType;                                
 	ZombiePhase			            mZombiePhase;                               
 	float				            mPosX;                                      
@@ -318,6 +322,7 @@ public:
     void                            DrawDancerReanim(Graphics* g, const ZombieDrawPosition& theDrawPos);
     void                            DrawBungeeReanim(Graphics* g, const ZombieDrawPosition& theDrawPos);
     void                            DrawBungeeTarget(Graphics* g);
+    void                            GraveDie();
     void                            BungeeDie();
     void                            ZamboniDeath(unsigned int theDamageFlags);
     void                            CatapultDeath(unsigned int theDamageFlags);

@@ -306,6 +306,17 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		}
 	},
 	{
+		ZOMBIE_GRAVE,
+		{
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			1, 0, 0, 1, 0, 0, 1, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
+			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		}
+	},
+	{
 		ZOMBIE_GIGA_FOOTBALL,
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
