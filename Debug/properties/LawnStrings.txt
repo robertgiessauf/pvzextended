@@ -2494,10 +2494,10 @@ Seeing Stars
 Can You Dig It?
 
 [SCARY_POTTER_1]
-Vasebreaker
+Vases in the pool
 
 [SCARY_POTTER_2]
-To the Left
+It's foggy
 
 [SCARY_POTTER_3]
 Third Vase

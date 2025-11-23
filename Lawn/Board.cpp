@@ -918,7 +918,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_WHACK_A_ZOMBIE:
 	case GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER:
 	/*case GameMode::GAMEMODE_SCARY_POTTER_1:*/
-	case GameMode::GAMEMODE_SCARY_POTTER_2:
+	//case GameMode::GAMEMODE_SCARY_POTTER_2:
 	case GameMode::GAMEMODE_SCARY_POTTER_3:
 	case GameMode::GAMEMODE_SCARY_POTTER_4:
 	case GameMode::GAMEMODE_SCARY_POTTER_5:
@@ -950,6 +950,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2:
 	case GameMode::GAMEMODE_UPSELL:
 	case GameMode::GAMEMODE_INTRO:
+	case GameMode::GAMEMODE_SCARY_POTTER_2:
 	case GameMode::GAMEMODE_SCARY_POTTER_1:
 		mBackground = BackgroundType::BACKGROUND_4_FOG;
 		break;
@@ -1449,10 +1450,11 @@ void Board::InitLevel()
 	}
 	else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1)
 	{
-		TOD_ASSERT(mSeedBank->mNumPackets == 3);
+		TOD_ASSERT(mSeedBank->mNumPackets == 4);
 		mSeedBank->mSeedPackets[0].SetPacketType(SeedType::SEED_ZOMBIE_NORMAL);
 		mSeedBank->mSeedPackets[1].SetPacketType(SeedType::SEED_ZOMBIE_PAIL);
 		mSeedBank->mSeedPackets[2].SetPacketType(SeedType::SEED_ZOMBIE_FOOTBALL);
+		mSeedBank->mSeedPackets[3].SetPacketType(SeedType::SEED_ZOMBIE_PEASHOOTER);
 	}
 	else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_2)
 	{
@@ -1460,6 +1462,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[0].SetPacketType(SeedType::SEED_ZOMBIE_NORMAL);
 		mSeedBank->mSeedPackets[1].SetPacketType(SeedType::SEED_ZOMBIE_SCREEN_DOOR);
 		mSeedBank->mSeedPackets[2].SetPacketType(SeedType::SEED_ZOMBIE_PAIL);
+		mSeedBank->mSeedPackets[2].SetPacketType(SeedType::SEED_ZOMBIE_FOOTBALL);
 	}
 	else if (aGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_3)
 	{
@@ -3442,6 +3445,10 @@ void Board::UpdateToolTip()
 		mToolTip->SetLabel(_S("[GARGANTUAR]"));
 	}
 	else if (aUseSeedType == SeedType::SEED_ZOMBIE_IMP)
+	{
+		mToolTip->SetLabel(_S("[IMP]"));
+	}
+	else if (aUseSeedType == SeedType::SEED_ZOMBIE_PEASHOOTER)
 	{
 		mToolTip->SetLabel(_S("[IMP]"));
 	}
@@ -8919,7 +8926,10 @@ int Board::GetNumSeedsInBank()
 	{
 		return 2;
 	}
-	if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1 || mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_2 ||
+	if (mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1) {
+		return 4;
+	}
+	if (/*mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1 || */ mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_2 ||
 		mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_3 || mApp->mGameMode == GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_4)
 	{
 		return 3;

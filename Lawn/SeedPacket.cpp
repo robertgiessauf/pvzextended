@@ -293,7 +293,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	if (theSeedType == SeedType::SEED_ZOMBIE_NORMAL || theSeedType == SeedType::SEED_ZOMBIE_TRAFFIC_CONE || theSeedType == SeedType::SEED_ZOMBIE_POLEVAULTER
 		|| theSeedType == SeedType::SEED_ZOMBIE_PAIL || theSeedType == SeedType::SEED_ZOMBIE_LADDER || theSeedType == SeedType::SEED_ZOMBIE_DIGGER
 		|| theSeedType == SeedType::SEED_ZOMBIE_BUNGEE || theSeedType == SeedType::SEED_ZOMBIE_FOOTBALL || theSeedType == SeedType::SEED_ZOMBIE_BALLOON
-		|| theSeedType == SeedType::SEED_ZOMBIE_SCREEN_DOOR || theSeedType == SeedType::SEED_ZOMBONI || theSeedType == SeedType::SEED_ZOMBIE_POGO
+		|| theSeedType == SeedType::SEED_ZOMBIE_SCREEN_DOOR || theSeedType == SeedType::SEED_ZOMBONI || theSeedType == SeedType::SEED_ZOMBIE_POGO || theSeedType == SeedType::SEED_ZOMBIE_PEASHOOTER
 		|| theSeedType == SeedType::SEED_ZOMBIE_DANCER || theSeedType == SeedType::SEED_ZOMBIE_GARGANTUAR || theSeedType == SeedType::SEED_ZOMBIE_IMP
 		)
 		aPacketBackground = 9;
@@ -457,6 +457,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	case SeedType::SEED_ZOMBIE_DIGGER:
 	case SeedType::SEED_ZOMBIE_SCREEN_DOOR:
 	case SeedType::SEED_ZOMBIE_POGO:
+	case SeedType::SEED_ZOMBIE_PEASHOOTER:
 		aScale = 0.35f;
 		aOffsetX = -3.0f;
 		aOffsetY = -10.0f;

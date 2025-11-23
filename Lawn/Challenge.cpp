@@ -3817,7 +3817,8 @@ void Challenge::ScaryPotterChangePotType(GridItemState thePotType, int theCount)
 		if (aGridItem->mGridItemType == GRIDITEM_SCARY_POT)
 		{
 			if ((thePotType == GRIDITEM_STATE_SCARY_POT_LEAF && aGridItem->mScaryPotType == SCARYPOT_SEED) ||
-				(thePotType == GRIDITEM_STATE_SCARY_POT_ZOMBIE && aGridItem->mZombieType == ZOMBIE_GARGANTUAR))
+				(thePotType == GRIDITEM_STATE_SCARY_POT_ZOMBIE && aGridItem->mScaryPotType == SCARYPOT_ZOMBIE))
+				//(thePotType == GRIDITEM_STATE_SCARY_POT_ZOMBIE && aGridItem->mZombieType == ZOMBIE_GARGANTUAR))
 			{
 				aPotArray[aPotCount].mItem = (int)aGridItem;
 				aPotArray[aPotCount].mWeight = 1;
@@ -3844,7 +3845,7 @@ void Challenge::ScaryPotterPopulate()
 	TodWeightedGridArray aGridArray[MAX_SCARY_POTS];
 	for (int aGridX = 0; aGridX < MAX_GRID_SIZE_X; aGridX++)
 	{
-		int maxY = mApp->mGameMode == GameMode::GAMEMODE_SCARY_POTTER_1 ? MAX_GRID_SIZE_Y : MAX_GRID_SIZE_Y - 1;
+		int maxY = (mApp->mGameMode == GameMode::GAMEMODE_SCARY_POTTER_1 || mApp->mGameMode == GameMode::GAMEMODE_SCARY_POTTER_2) ? MAX_GRID_SIZE_Y : MAX_GRID_SIZE_Y - 1;
 		for (int aGridY = 0; aGridY < maxY; aGridY++)
 		{
 			aGridArray[aGridArrayCount].mX = aGridX;
@@ -3919,36 +3920,44 @@ void Challenge::ScaryPotterPopulate()
 			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_NORMAL, SEED_NONE, 8, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PAIL, SEED_NONE, 5, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_JACK_IN_THE_BOX, SEED_NONE, 1, aGridArray, aGridArrayCount);
-			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_LEAF, 2);
+			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_LEAF, 1);
+			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_ZOMBIE, 1);
 			break;
 		case GAMEMODE_SCARY_POTTER_2:
 			ScaryPotterDontPlaceInCol(0, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(1, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(2, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(8, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_LEFTPEATER, 7, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_LILYPAD, 4, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_CATTAIL, 1, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_PLANTERN, 2, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_LEFTPEATER, 5, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SNOWPEA, 3, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_WALLNUT, 3, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_TALLNUT, 2, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_POTATOMINE, 2, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_NORMAL, SEED_NONE, 6, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PAIL, SEED_NONE, 3, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_NORMAL, SEED_NONE, 4, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PAIL, SEED_NONE, 4, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_DOLPHIN_RIDER, SEED_NONE, 2, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_JACK_IN_THE_BOX, SEED_NONE, 1, aGridArray, aGridArrayCount);
-			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_LEAF, 2);
+			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_LEAF, 2);			
+			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_ZOMBIE, 2);
+
 			break;
 		case GAMEMODE_SCARY_POTTER_3:
 			ScaryPotterDontPlaceInCol(0, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(1, aGridArray, aGridArrayCount);
 			ScaryPotterDontPlaceInCol(2, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_LEFTPEATER, 6, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SNOWPEA, 4, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_TALLNUT, 6, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_PUFFSHROOM, 4, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_SQUASH, 2, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_HYPNOSHROOM, 3, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_WALLNUT, 3, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_SEED, ZOMBIE_INVALID, SEED_PUFFSHROOMPULT, 3, aGridArray, aGridArrayCount);
 			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_NORMAL, SEED_NONE, 8, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PAIL, SEED_NONE, 2, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_DANCER, SEED_NONE, 1, aGridArray, aGridArrayCount);
-			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_JACK_IN_THE_BOX, SEED_NONE, 1, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_PEA_HEAD, SEED_NONE, 2, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_TALLNUT_HEAD, SEED_NONE, 1, aGridArray, aGridArrayCount);
+			ScaryPotterPlacePot(SCARYPOT_ZOMBIE, ZOMBIE_WALLNUT_HEAD, SEED_NONE, 1, aGridArray, aGridArrayCount);
 			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_LEAF, 2);
+			ScaryPotterChangePotType(GRIDITEM_STATE_SCARY_POT_ZOMBIE, 2);
 			break;
 		case GAMEMODE_SCARY_POTTER_4:
 			ScaryPotterDontPlaceInCol(0, aGridArray, aGridArrayCount);
@@ -4318,6 +4327,7 @@ ZombieType Challenge::IZombieSeedTypeToZombieType(SeedType theSeedType)
 	case SEED_ZOMBIE_DANCER:		return ZOMBIE_DANCER;
 	case SEED_ZOMBIE_GARGANTUAR:	return ZOMBIE_GARGANTUAR;
 	case SEED_ZOMBIE_IMP:			return ZOMBIE_IMP;
+	case SEED_ZOMBIE_PEASHOOTER:    return ZOMBIE_PEA_HEAD;
 	default:						TOD_ASSERT();
 	}
 }
@@ -4488,21 +4498,21 @@ void Challenge::IZombieInitLevel()
 		IZombiePlacePlantInSquare(SEED_SUNFLOWER, 3, 2);
 		IZombiePlacePlantInSquare(SEED_SUNFLOWER, 3, 3);
 		IZombiePlacePlants(SEED_SUNFLOWER, 7, -1);
-		IZombiePlacePlants(SEED_SQUASH, 3, -1);
-		IZombiePlacePlants(SEED_PEASHOOTER, 6, -1);
-		IZombiePlacePlants(SEED_SNOWPEA, 2, -1);
+		IZombiePlacePlants(SEED_SQUASH, 1, -1);
+		IZombiePlacePlants(SEED_PEASHOOTER, 7, -1);
+		IZombiePlacePlants(SEED_SNOWPEA, 3, -1);
 		break;
 	case GAMEMODE_PUZZLE_I_ZOMBIE_2:
-		IZombiePlacePlantInSquare(SEED_SPIKEWEED, 3, 0);
-		IZombiePlacePlantInSquare(SEED_SUNFLOWER, 2, 0);
+		IZombiePlacePlantInSquare(SEED_SPIKEWEED, 2, 0);
+		IZombiePlacePlantInSquare(SEED_SUNFLOWER,3, 0);
 		IZombiePlacePlantInSquare(SEED_SUNFLOWER, 3, 3);
-		IZombiePlacePlants(SEED_SPIKEWEED, 1, 0);
-		IZombiePlacePlants(SEED_PEASHOOTER, 1, 0);
-		IZombiePlacePlants(SEED_SNOWPEA, 2, 3);
+		IZombiePlacePlants(SEED_SPIKEWEED, 2, 0);
+		IZombiePlacePlants(SEED_SNOWPEA, 1, 3);
 		IZombiePlacePlants(SEED_SUNFLOWER, 1, 3);
 		IZombiePlacePlants(SEED_SUNFLOWER, 4, -1);
 		IZombiePlacePlants(SEED_SPIKEWEED, 2, -1);
-		IZombiePlacePlants(SEED_SNOWPEA, 2, -1);
+		IZombiePlacePlants(SEED_SNOWPEA, 3, -1);
+		IZombiePlacePlants(SEED_FUMESHROOM, 5, -1);
 		IZombiePlacePlants(SEED_PEASHOOTER, 4, -1);
 		break;
 	case GAMEMODE_PUZZLE_I_ZOMBIE_3:
@@ -4766,7 +4776,8 @@ bool Challenge::IsZombieSeedType(SeedType theSeedType)
 		theSeedType == SEED_ZOMBIE_POGO ||
 		theSeedType == SEED_ZOMBIE_DANCER ||
 		theSeedType == SEED_ZOMBIE_GARGANTUAR ||
-		theSeedType == SEED_ZOMBIE_IMP;
+		theSeedType == SEED_ZOMBIE_IMP ||
+		theSeedType == SEED_ZOMBIE_PEASHOOTER;
 }
 
 void Challenge::IZombieSetPlantFilterEffect(Plant* thePlant, FilterEffect theFilterEffect)

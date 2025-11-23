@@ -41,6 +41,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
       { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12,250 ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
     { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,      5, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
+        { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
+
     { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
 
     { SeedType::SEED_STARFRUIT,         nullptr, ReanimationType::REANIM_STARFRUIT, 16,150  ,   30,     PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
@@ -62,7 +64,6 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_TANGLEKELP,        nullptr, ReanimationType::REANIM_TANGLEKELP,    17, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TANGLE_KELP") },
     { SeedType::SEED_JALAPENO,          nullptr, ReanimationType::REANIM_JALAPENO,      11, 75,    2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("JALAPENO") },
     { SeedType::SEED_SPIKEWEED,         nullptr, ReanimationType::REANIM_SPIKEWEED,     22, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPIKEWEED") },
-    { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
     { SeedType::SEED_TWINSUNFLOWER,     nullptr, ReanimationType::REANIM_TWIN_SUNFLOWER,1,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("TWIN_SUNFLOWER") },
     { SeedType::SEED_TALLNUT,           nullptr, ReanimationType::REANIM_TALLNUT,       28, 125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TALL_NUT") },
     
@@ -5226,6 +5227,7 @@ int Plant::GetCost(SeedType theSeedType, SeedType theImitaterType)
     case SeedType::SEED_ZOMBIE_SCREEN_DOOR:         return 100;
     case SeedType::SEED_ZOMBONI:                    return 175;
     case SeedType::SEED_ZOMBIE_POGO:                return 200;
+    case SeedType::SEED_ZOMBIE_PEASHOOTER:          return 150;
     case SeedType::SEED_ZOMBIE_DANCER:              return 350;
     case SeedType::SEED_ZOMBIE_GARGANTUAR:          return 300;
     case SeedType::SEED_ZOMBIE_IMP:                 return 50;
