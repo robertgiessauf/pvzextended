@@ -20,10 +20,11 @@
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  
     { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE")},
     { ZOMBIE_FLAG,              REANIM_ZOMBIE,              1,      1,      1,      0,      _S("FLAG_ZOMBIE")},
+    { ZOMBIE_GHOST,             REANIM_ZOMBIE_GHOST,        5,      1,      1,      4000,   _S("GHOST_ZOMBIE")},
     { ZOMBIE_TRAFFIC_CONE,      REANIM_ZOMBIE,              2,      3,      1,      4000,   _S("CONEHEAD_ZOMBIE")},
     { ZOMBIE_POLEVAULTER,       REANIM_POLEVAULTER,         2,      6,      5,      2000,   _S("POLE_VAULTING_ZOMBIE")},
     { ZOMBIE_PAIL,              REANIM_ZOMBIE,              4,      8,      1,      3000,   _S("BUCKETHEAD_ZOMBIE")},
-    { ZOMBIE_NEWSPAPER,         REANIM_ZOMBIE_NEWSPAPER,    2,      2/*11*/,     1,      1000,   _S("NEWSPAPER_ZOMBIE")},
+    { ZOMBIE_NEWSPAPER,         REANIM_ZOMBIE_NEWSPAPER,    2,      2/*11*/,1,      1000,   _S("NEWSPAPER_ZOMBIE")},
     { ZOMBIE_DOOR,              REANIM_ZOMBIE,              4,      13,     5,      3500,   _S("SCREEN_DOOR_ZOMBIE")},
     { ZOMBIE_FOOTBALL,          REANIM_ZOMBIE_FOOTBALL,     7,      16,     5,      2000,   _S("FOOTBALL_ZOMBIE")},
     { ZOMBIE_DANCER,            REANIM_DANCER,              5,      18,     5,      1000,   _S("DANCING_ZOMBIE")},
@@ -87,6 +88,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
 {
     TOD_ASSERT(theType >= 0 && theType <= ZombieType::NUM_ZOMBIE_TYPES);
 
+    mIsInLight = false;
 
     aGraveRow = Rand(3); // 1; //0;
     aGraveCol = Rand(4); // 2; //4;
@@ -3282,6 +3284,10 @@ void Zombie::OverrideParticleColor(TodParticleSystem* aParticle)
             aParticle->OverrideColor(nullptr, ZOMBIE_MINDCONTROLLED_COLOR);
             aParticle->OverrideExtraAdditiveDraw(nullptr, true);
         }
+        else if (mZombieType == ZOMBIE_GHOST && !mIsInLight) {
+            aParticle->OverrideColor(nullptr, Color(255, 255, 255, 100));
+            aParticle->OverrideExtraAdditiveDraw(nullptr, true);
+        }
         else if (mChilledCounter > 0 || mIceTrapCounter > 0)
         {
             aParticle->OverrideColor(nullptr, Color(75, 75, 255, 255));
@@ -4075,6 +4081,29 @@ void Zombie::UpdateZombieWalking()
     }
 }
 
+Plant* Zombie::IsInLight()
+{
+    //if (mZombieType == ZombieType::ZOMBIE_ZAMBONI || mZombieType == ZombieType::ZOMBIE_CATAPULT)
+    //    return nullptr;
+
+    Rect aZombieRect = GetZombieRect();
+
+    Plant* aPlant = nullptr;
+    while (mBoard->IteratePlants(aPlant))
+    {
+        if (aPlant->mSeedType == SEED_PLANTERN)
+        {
+            Rect aPlantAttackRect = aPlant->GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
+            if (GetRectOverlap(aPlantAttackRect, aZombieRect) > 0)
+            {
+                return aPlant;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 Plant* Zombie::IsStandingOnSpikeweed()
 {
     //if (mZombieType == ZombieType::ZOMBIE_ZAMBONI || mZombieType == ZombieType::ZOMBIE_CATAPULT)
@@ -4180,6 +4209,10 @@ void Zombie::Update()
 
     if (doUpdate)
     {
+
+        if (mZombieType == ZombieType::ZOMBIE_GHOST) {
+            mIsInLight = IsInLight() != nullptr;
+        }
         if (mZombiePhase == ZombiePhase::PHASE_ZOMBIE_BURNED)
         {
             UpdateBurn();
@@ -7790,6 +7823,10 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
     if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_MOOS))
     {
         ApplyMoos();
+    }
+
+    if (mZombieType == ZOMBIE_GHOST && !mIsInLight) {
+        return;
     }
 
     int aBodyHealthOrigin = mBodyHealth;

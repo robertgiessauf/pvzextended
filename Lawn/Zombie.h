@@ -93,6 +93,8 @@ public:
     int aGraveRow;
     int aGraveCol;
 
+    bool mIsInLight;
+
 	ZombieType			            mZombieType;                                
 	ZombiePhase			            mZombiePhase;                               
 	float				            mPosX;                                      
@@ -224,6 +226,7 @@ public:
     void                            UpdateZombieBobsled();
     void                            BobsledCrash();
     Plant*                          IsStandingOnSpikeweed();
+    Plant*                          IsInLight();
     void                            CheckForZombieStep();
     void                            CountExpectedMowers() { ; }
     /*inline*/ void                 OverrideParticleColor(TodParticleSystem* aParticle);
