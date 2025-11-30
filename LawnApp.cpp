@@ -2608,10 +2608,10 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 	//{
 	//	return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_GLOOMSHROOM] > 0;
 	//}
-	if (theSeedType == SeedType::SEED_CATTAIL)
-	{
-		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_CATTAIL] > 0;
-	}
+	//if (theSeedType == SeedType::SEED_CATTAIL)
+	//{
+	//	return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_CATTAIL] > 0;
+	//}
 	if (theSeedType == SeedType::SEED_WINTERMELON)
 	{
 		return mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PLANT_WINTERMELON] > 0;

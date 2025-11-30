@@ -42,6 +42,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,      5, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
         { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
+            { SeedType::SEED_CATTAIL,           nullptr, ReanimationType::REANIM_CATTAIL,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CATTAIL") },
 
     { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
 
@@ -88,7 +89,6 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
 
     { SeedType::SEED_QUATROSUNFLOWER,     nullptr, ReanimationType::REANIM_QUATRO_SUNFLOWER, 1,  275,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("QUATRO_SUNFLOWER") },
 
-    { SeedType::SEED_CATTAIL,           nullptr, ReanimationType::REANIM_CATTAIL,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CATTAIL") },
     { SeedType::SEED_WINTERMELON,       nullptr, ReanimationType::REANIM_WINTER_MELON,  27, 200,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("WINTER_MELON") },
     { SeedType::SEED_GOLD_MAGNET,       nullptr, ReanimationType::REANIM_GOLD_MAGNET,   27, 50,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GOLD_MAGNET") },
     { SeedType::SEED_SPIKEROCK,         nullptr, ReanimationType::REANIM_SPIKEROCK,     27, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPIKEROCK") },
@@ -5313,8 +5313,8 @@ bool Plant::IsAquatic(SeedType theSeedType)
     return
         theSeedType == SeedType::SEED_LILYPAD ||
         theSeedType == SeedType::SEED_TANGLEKELP ||
-        theSeedType == SeedType::SEED_SEASHROOM ||
-        theSeedType == SeedType::SEED_CATTAIL;
+        theSeedType == SeedType::SEED_SEASHROOM; // ||
+        //theSeedType == SeedType::SEED_CATTAIL;
 }
 
 bool Plant::IsFlying(SeedType theSeedtype)
@@ -5324,15 +5324,15 @@ bool Plant::IsFlying(SeedType theSeedtype)
 
 bool Plant::IsUpgrade(SeedType theSeedtype)
 {
-    return 
+    return
         //theSeedtype == SeedType::SEED_GATLINGPEA || 
-        theSeedtype == SeedType::SEED_WINTERMELON || 
-        theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
-        theSeedtype == SeedType::SEED_SPIKEROCK || 
-        theSeedtype == SeedType::SEED_COBCANNON || 
-        theSeedtype == SeedType::SEED_GOLD_MAGNET || 
+        theSeedtype == SeedType::SEED_WINTERMELON ||
+        theSeedtype == SeedType::SEED_TWINSUNFLOWER ||
+        theSeedtype == SeedType::SEED_SPIKEROCK ||
+        theSeedtype == SeedType::SEED_COBCANNON ||
+        theSeedtype == SeedType::SEED_GOLD_MAGNET; // ||
         //theSeedtype == SeedType::SEED_GLOOMSHROOM || 
-        theSeedtype == SeedType::SEED_CATTAIL;
+        //theSeedtype == SeedType::SEED_CATTAIL;
 }
 
 Rect Plant::GetPlantRect()

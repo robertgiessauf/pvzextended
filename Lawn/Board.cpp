@@ -2956,10 +2956,10 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	{
 		return PlantingReason::PLANTING_NEEDS_UPGRADE;
 	}
-	else if (theSeedType == SeedType::SEED_CATTAIL && aGridSquare != GridSquareType::GRIDSQUARE_POOL)
-	{
-		return PlantingReason::PLANTING_NOT_HERE;
-	}
+	//else if (theSeedType == SeedType::SEED_CATTAIL && aGridSquare != GridSquareType::GRIDSQUARE_POOL)
+	//{
+	//	return PlantingReason::PLANTING_NOT_HERE;
+	//}
 
 	return PlantingReason::PLANTING_OK;
 }
@@ -3546,13 +3546,13 @@ void Board::UpdateToolTip()
 	//		mToolTip->SetWarningText(_S("[REQUIRES_FUMESHROOM]"));
 	//	}
 	//}
-	else if (aUseSeedType == SeedType::SEED_CATTAIL)
-	{
-		if (!PlantingRequirementsMet(aUseSeedType))
-		{
-			mToolTip->SetWarningText(_S("[REQUIRES_LILY_PAD]"));
-		}
-	}
+	//else if (aUseSeedType == SeedType::SEED_CATTAIL)
+	//{
+	//	if (!PlantingRequirementsMet(aUseSeedType))
+	//	{
+	//		mToolTip->SetWarningText(_S("[REQUIRES_LILY_PAD]"));
+	//	}
+	//}
 
 	mToolTip->mX = (SEED_PACKET_WIDTH - mToolTip->mWidth) / 2 + mSeedBank->mX + aSeedPacket->mOffsetX + aSeedPacket->mX;
 	mToolTip->mY = mSeedBank->mY + aSeedPacket->mY + 70;
@@ -3690,9 +3690,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 			//	DisplayAdvice(_S("[ADVICE_ONLY_ON_FUMESHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_FUMESHROOM);
 			//	break;
 
-			case SeedType::SEED_CATTAIL:
-				DisplayAdvice(_S("[ADVICE_ONLY_ON_LILYPAD]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_LILYPAD);
-				break;
+			//case SeedType::SEED_CATTAIL:
+			//	DisplayAdvice(_S("[ADVICE_ONLY_ON_LILYPAD]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_LILYPAD);
+			//	break;
 
 			case SeedType::SEED_WINTERMELON:
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_MELONPULT]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_MELONPULT);
@@ -9854,7 +9854,7 @@ bool Board::PlantingRequirementsMet(SeedType theSeedType)
 	//case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_REPEATER);
 	case SeedType::SEED_TWINSUNFLOWER:		return CountPlantByType(SeedType::SEED_SUNFLOWER);
 	//case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
-	case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);
+	//case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);
 	case SeedType::SEED_WINTERMELON:		return CountPlantByType(SeedType::SEED_MELONPULT);
 	case SeedType::SEED_GOLD_MAGNET:		return CountPlantByType(SeedType::SEED_MAGNETSHROOM);
 	case SeedType::SEED_SPIKEROCK:			return CountPlantByType(SeedType::SEED_SPIKEWEED);

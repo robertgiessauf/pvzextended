@@ -784,10 +784,10 @@ void SeedPacket::MouseDown(int x, int y, int theClickCount)
 			{
 				mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_FUMESHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_FUMESHROOM);
 			}*/
-			else if (aUseSeedType == SeedType::SEED_CATTAIL)
-			{
-				mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_LILYPAD]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_LILYPAD);
-			}
+			//else if (aUseSeedType == SeedType::SEED_CATTAIL)
+			//{
+			//	mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_LILYPAD]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_LILYPAD);
+			//}
 			else
 			{
 				TOD_ASSERT();
