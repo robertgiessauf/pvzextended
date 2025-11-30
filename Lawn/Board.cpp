@@ -819,6 +819,10 @@ void Board::LoadBackgroundImages()
 		TodLoadResources("DelayLoad_Background8");
 		break;
 
+	case BackgroundType::BACKGROUND_9_WINTER:
+		TodLoadResources("DelayLoad_Background9");
+		break;
+
 	case BackgroundType::BACKGROUND_GREENHOUSE:
 		TodLoadResources("DelayLoad_GreenHouseGarden");
 		TodLoadResources("DelayLoad_GreenHouseOverlay");
@@ -940,6 +944,10 @@ void Board::PickBackground()
 		mBackground = BackgroundType::BACKGROUND_2_NIGHT;
 		break;
 
+	case GameMode::GAMEMODE_WINTER:
+		mBackground = BackgroundType::BACKGROUND_9_WINTER;
+		break;
+
 	case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_3:
 	case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_3:
 	case GameMode::GAMEMODE_SURVIVAL_ENDLESS_STAGE_3:
@@ -1047,6 +1055,14 @@ void Board::PickBackground()
 	}
 	else if (mBackground == BackgroundType::BACKGROUND_5_ROOF || mBackground == BackgroundType::BACKGROUND_6_BOSS)
 	{
+		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[2] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[3] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[5] = PlantRowType::PLANTROW_DIRT;
+	}
+	else if (mBackground == BackgroundType::BACKGROUND_9_WINTER) {
 		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[2] = PlantRowType::PLANTROW_NORMAL;
@@ -5941,6 +5957,7 @@ void Board::DrawBackdrop(Graphics* g)
 	case BackgroundType::BACKGROUND_GREENHOUSE:			aBgImage = Sexy::IMAGE_BACKGROUND_GREENHOUSE;			break;
 	case BackgroundType::BACKGROUND_ZOMBIQUARIUM:		aBgImage = Sexy::IMAGE_AQUARIUM1;						break;
 	case BackgroundType::BACKGROUND_TREEOFWISDOM:		aBgImage = nullptr;										break;
+	case BackgroundType::BACKGROUND_9_WINTER:		    aBgImage = Sexy::IMAGE_BACKGROUND9;					    break;
 	default:											TOD_ASSERT();											break;
 	}
 

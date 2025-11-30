@@ -144,6 +144,7 @@ public:
 	LawnApp();
 	virtual ~LawnApp();
 
+	bool							isSnowLevel();
 	float							GetSpeedVal();
 	bool							KillNewOptionsDialog();
 	virtual void					GotFocus();

@@ -405,6 +405,7 @@ void CreditScreen::PreLoadCredits()
     ReanimationPreload(ReanimationType::REANIM_SUNFLOWER);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SUN, true);
     ReanimationPreload(ReanimationType::REANIM_SUN);
+    ReanimationPreload(ReanimationType::REANIM_SUNSNOW);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_CREDITS_CRAZYDAVE, true);
     ReanimationPreload(ReanimationType::REANIM_CREDITS_CRAZYDAVE);
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE, true);

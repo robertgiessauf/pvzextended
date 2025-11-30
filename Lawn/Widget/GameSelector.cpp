@@ -261,6 +261,21 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mQuickPlayButton->SetDisabled(false);
 	mQuickPlayButton->mVisible = true;
 
+	mAdventure2PlayButton = MakeNewButton(
+		GameSelector::GameSelector_Wintergame,
+		this,
+		"",
+		nullptr,
+		Sexy::IMAGE_ADVENTURE2_BUTTON,
+		Sexy::IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT,
+		Sexy::IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT
+	);
+	mAdventure2PlayButton->Resize(300, mApp->mHeight - Sexy::IMAGE_ADVENTURE2_BUTTON->mHeight - 100, Sexy::IMAGE_ADVENTURE2_BUTTON->mWidth, Sexy::IMAGE_ADVENTURE2_BUTTON->mHeight);
+	mAdventure2PlayButton->mClip = false;
+	mAdventure2PlayButton->mMouseVisible = false;
+	mAdventure2PlayButton->SetDisabled(false);
+	mAdventure2PlayButton->mVisible = true;
+
 
 	mCreditsButton = MakeNewButton(
 		GameSelector::GameSelector_Credits,
@@ -356,6 +371,8 @@ GameSelector::~GameSelector()
 		delete mHelpButton;
 	if (mOverlayWidget)
 		delete mOverlayWidget;
+	if (mAdventure2PlayButton)
+		delete mAdventure2PlayButton;
 	if (mStoreButton)
 		delete mStoreButton;
 	if (mAlmanacButton)
@@ -389,6 +406,7 @@ void GameSelector::SyncButtons()
 	mAlmanacButton->mVisible = aAlmanacAvailable;
 	mQuickPlayButton->mDisabled = !mApp->HasFinishedAdventure();
 	mQuickPlayButton->mVisible = mApp->HasFinishedAdventure();
+	mAdventure2PlayButton->mVisible = true; //mApp->HasFinishedAdventure();
 	mStoreButton->mDisabled = !aStoreOpen;
 	mStoreButton->mVisible = aStoreOpen;
 
@@ -825,6 +843,7 @@ void GameSelector::Update()
 		mCreditsButton->SetButtonOffset(aPosX, aPosY);
 		mAchievementButton->SetButtonOffset(aPosX, aPosY);
 		mQuickPlayButton->SetButtonOffset(aPosX, aPosY);
+		mAdventure2PlayButton->SetButtonOffset(aPosX, aPosY);
 
 
 		mAchievementButton->MarkDirty();
@@ -833,6 +852,7 @@ void GameSelector::Update()
 		mHelpButton->MarkDirty();
 		mQuitButton->MarkDirty();
 		mStoreButton->MarkDirty();
+		mAdventure2PlayButton->MarkDirty();
 
 
 		mMovementTimer--;
@@ -857,6 +877,7 @@ void GameSelector::Update()
 			mZenGardenButton->SetDisabled(false);
 			mAchievementButton->SetDisabled(false);
 			mQuickPlayButton->SetDisabled(false);
+			mAdventure2PlayButton->SetDisabled(false);
 			mEnableButtonsTransition = false;
 		}
 	}
@@ -940,6 +961,7 @@ void GameSelector::Update()
 			mCreditsButton->mMouseVisible = true;
 			mAchievementButton->mMouseVisible = true;
 			mQuickPlayButton->mMouseVisible = true;
+			mAdventure2PlayButton->mMouseVisible = true;
 
 			if (mApp->mPlayerInfo == nullptr)
 			{
@@ -1041,6 +1063,7 @@ void GameSelector::Update()
 		TrackButton(mCreditsButton, "woodsign3", 0.0f, 0.0f);
 		TrackButton(mAchievementButton, "SelectorScreen_BG_Left", 20.f, 480.f);
 		TrackButton(mQuickPlayButton, "SelectorScreen_BG_Right", 80.f, 230.f);
+		TrackButton(mAdventure2PlayButton, "SelectorScreen_BG_Right", 55.f, 340.f);
 		aSelectorReanim->SetImageOverride("woodsign2", (mChangeUserButton->mIsOver || mChangeUserButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN2_PRESS : nullptr);
 		aSelectorReanim->SetImageOverride("woodsign3", (mCreditsButton->mIsOver || mCreditsButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS : nullptr);
 	}
@@ -1079,6 +1102,7 @@ void GameSelector::AddedToManager(WidgetManager* theWidgetManager)
 		theWidgetManager->AddWidget(mAchievementButton);
 	if (HAS_QUICKPLAY)
 		theWidgetManager->AddWidget(mQuickPlayButton);
+	theWidgetManager->AddWidget(mAdventure2PlayButton);
 }
 
 void GameSelector::RemovedFromManager(WidgetManager* theWidgetManager)
@@ -1102,6 +1126,7 @@ void GameSelector::RemovedFromManager(WidgetManager* theWidgetManager)
 		theWidgetManager->RemoveWidget(mAchievementButton);
 	if (HAS_QUICKPLAY)
 		theWidgetManager->RemoveWidget(mQuickPlayButton);
+	theWidgetManager->RemoveWidget(mAdventure2PlayButton);
 }
 
 void GameSelector::OrderInManagerChanged()
@@ -1317,6 +1342,7 @@ void GameSelector::ClickedAdventure()
 	mZenGardenButton->SetDisabled(true);
 	mAchievementButton->SetDisabled(true);
 	mQuickPlayButton->SetDisabled(true);
+	mAdventure2PlayButton->SetDisabled(true);
 
 	Reanimation* aHandReanim = mApp->AddReanimation(-70.0f, 10.0f, 0, ReanimationType::REANIM_ZOMBIE_HAND);
 	aHandReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
@@ -1394,6 +1420,9 @@ void GameSelector::ButtonDepress(int theId)
 
 		break;
 	}
+	case GameSelector::GameSelector_Wintergame:
+		StartWinterGame();
+		break;
 	case GameSelector::GameSelector_Almanac:
 		mApp->DoAlmanacDialog()->WaitForResult(true);
 		mApp->mMusic->MakeSureMusicIsPlaying(MusicTune::MUSIC_TUNE_TITLE_CRAZY_DAVE_MAIN_THEME);
@@ -1417,6 +1446,7 @@ void GameSelector::ButtonDepress(int theId)
 		mZenGardenButton->SetDisabled(true);
 		mAchievementButton->SetDisabled(true);
 		mQuickPlayButton->SetDisabled(true);
+		mAdventure2PlayButton->SetDisabled(true);
 		break;
 	case GameSelector::GameSelector_QuickPlay:
 		mMovementTimer = 75;
@@ -1437,6 +1467,7 @@ void GameSelector::ButtonDepress(int theId)
 		mZenGardenButton->SetDisabled(true);
 		mAchievementButton->SetDisabled(true);
 		mQuickPlayButton->SetDisabled(true);
+		mAdventure2PlayButton->SetDisabled(true);
 		break;
 	case GameSelector::GameSelector_ZenGarden:
 		mApp->KillGameSelector();
@@ -1449,6 +1480,36 @@ void GameSelector::ButtonDepress(int theId)
 		mApp->ShowMiniCreditScreen();
 		break;
 	}
+}
+
+void GameSelector::StartWinterGame() {
+
+	//mApp->mMusic->StopAllMusic();
+	//mApp->PlaySample(Sexy::SOUND_LOSEMUSIC);
+	//mStartingGame = true;
+	//mAdventureButton->SetDisabled(true);
+	//mMinigameButton->SetDisabled(true);
+	//mPuzzleButton->SetDisabled(true);
+	//mOptionsButton->SetDisabled(true);
+	//mQuitButton->SetDisabled(true);
+	//mHelpButton->SetDisabled(true);
+	//mChangeUserButton->SetDisabled(true);
+	//mCreditsButton->SetDisabled(true);
+	//mStoreButton->SetDisabled(true);
+	//mAlmanacButton->SetDisabled(true);
+	//mSurvivalButton->SetDisabled(true);
+	//mZenGardenButton->SetDisabled(true);
+	//mAchievementButton->SetDisabled(true);
+	//mQuickPlayButton->SetDisabled(true);
+	//mAdventure2PlayButton->SetDisabled(true);
+
+	mApp->KillGameSelector();
+	mApp->PreNewGame(GameMode::GAMEMODE_WINTER, false);
+	//if (ShouldDoZenTuturialBeforeAdventure())
+	//	mApp->mZenGarden->SetupForZenTutorial();
+
+	//mApp->mGameMode = GameMode::GAMEMODE_WINTER;
+	//mApp->NewGame();
 }
 
 int GameSelector::CalcYPos(int ogY, int theY)

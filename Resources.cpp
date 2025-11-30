@@ -20,6 +20,7 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theManager, const char *theNa
 	if (strcmp(theName, "DelayLoad_Background6") == 0) return ExtractDelayLoad_Background6Resources(theManager);
     if (strcmp(theName, "DelayLoad_Background7") == 0) return ExtractDelayLoad_Background7Resources(theManager);
 	if (strcmp(theName, "DelayLoad_Background8") == 0) return ExtractDelayLoad_Background8Resources(theManager);
+	if (strcmp(theName, "DelayLoad_Background9") == 0) return ExtractDelayLoad_Background9Resources(theManager);
 	if (strcmp(theName,"DelayLoad_BackgroundUnsodded")==0) return ExtractDelayLoad_BackgroundUnsoddedResources(theManager);
 	if (strcmp(theName,"DelayLoad_ChallengeScreen")==0) return ExtractDelayLoad_ChallengeScreenResources(theManager);
 	if (strcmp(theName,"DelayLoad_Credits")==0) return ExtractDelayLoad_CreditsResources(theManager);
@@ -193,6 +194,7 @@ bool Sexy::ExtractDelayLoad_AwardScreenResources(ResourceManager *theManager)
 Image* Sexy::IMAGE_BACKGROUND1;
 Image* Sexy::IMAGE_BACKGROUND7;
 Image* Sexy::IMAGE_BACKGROUND8;
+Image* Sexy::IMAGE_BACKGROUND9;
 Image* Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY;
 Image* Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK;
 
@@ -237,6 +239,22 @@ bool Sexy::ExtractDelayLoad_Background8Resources(ResourceManager* theManager)
 	try
 	{
 		IMAGE_BACKGROUND8 = aMgr.GetImageThrow("IMAGE_BACKGROUND8");
+	}
+	catch (ResourceManagerException&)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool Sexy::ExtractDelayLoad_Background9Resources(ResourceManager* theManager)
+{
+	gNeedRecalcVariableToIdMap = true;
+
+	ResourceManager& aMgr = *theManager;
+	try
+	{
+		IMAGE_BACKGROUND9 = aMgr.GetImageThrow("IMAGE_BACKGROUND9");
 	}
 	catch (ResourceManagerException&)
 	{
@@ -1007,6 +1025,8 @@ Image* Sexy::IMAGE_PROJECTILESNOWPEA;
 Image* Sexy::IMAGE_PROJECTILE_STAR;
 Image* Sexy::IMAGE_PUFFSHROOM_PUFF1;
 Image* Sexy::IMAGE_QUICKPLAY_BUTTON;
+Image* Sexy::IMAGE_ADVENTURE2_BUTTON;
+Image* Sexy::IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT;
 Image* Sexy::IMAGE_QUICKPLAY_BUTTON_HIGHLIGHT;
 Image* Sexy::IMAGE_RAIN;
 Image* Sexy::IMAGE_REANIM_CABBAGEPULT_CABBAGE;
@@ -1365,6 +1385,9 @@ bool Sexy::ExtractLoadingImagesResources(ResourceManager *theManager)
 		IMAGE_PROJECTILE_STAR = aMgr.GetImageThrow("IMAGE_PROJECTILE_STAR");
 		IMAGE_PUFFSHROOM_PUFF1 = aMgr.GetImageThrow("IMAGE_PUFFSHROOM_PUFF1");
 		IMAGE_QUICKPLAY_BUTTON = aMgr.GetImageThrow("IMAGE_QUICKPLAY_BUTTON");
+
+		IMAGE_ADVENTURE2_BUTTON = aMgr.GetImageThrow("IMAGE_ADVENTURE2_BUTTON");
+		IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT = aMgr.GetImageThrow("IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT");
 		IMAGE_QUICKPLAY_BUTTON_HIGHLIGHT = aMgr.GetImageThrow("IMAGE_QUICKPLAY_BUTTON_HIGHLIGHT");
 		IMAGE_RAIN = aMgr.GetImageThrow("IMAGE_RAIN");
 		IMAGE_REANIM_CABBAGEPULT_CABBAGE = aMgr.GetImageThrow("IMAGE_REANIM_CABBAGEPULT_CABBAGE");
@@ -2068,6 +2091,8 @@ static void* gResources[] =
 	&IMAGE_ACHIEVEMENT_HIGHLIGHT,
 	&IMAGE_QUICKPLAY_BUTTON,
 	&IMAGE_QUICKPLAY_BUTTON_HIGHLIGHT,
+	&IMAGE_ADVENTURE2_BUTTON,
+	&IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT,
 	&IMAGE_SELECTORSCREEN_ZENGARDENHIGHLIGHT,
 	&IMAGE_STORE_SPEECHBUBBLE,
 	&IMAGE_STORE_SPEECHBUBBLE2,

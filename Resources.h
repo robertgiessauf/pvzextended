@@ -73,6 +73,10 @@ namespace Sexy
 	bool ExtractDelayLoad_Background8Resources(ResourceManager* theMgr);
 	extern Image* IMAGE_BACKGROUND8;
 
+	bool ExtractDelayLoad_Background9Resources(ResourceManager* theMgr);
+	extern Image* IMAGE_BACKGROUND9;
+
+
 	// DelayLoad_Background2 Resources
 	bool ExtractDelayLoad_Background2Resources(ResourceManager *theMgr);
 	extern Image* IMAGE_BACKGROUND2;
@@ -373,6 +377,8 @@ namespace Sexy
 	extern Image* IMAGE_PROJECTILE_STAR;
 	extern Image* IMAGE_PUFFSHROOM_PUFF1;
 	extern Image* IMAGE_QUICKPLAY_BUTTON;
+	extern Image* IMAGE_ADVENTURE2_BUTTON;
+	extern Image* IMAGE_ADVENTURE2_BUTTON_HIGHLIGHT;
 	extern Image* IMAGE_QUICKPLAY_BUTTON_HIGHLIGHT;
 	extern Image* IMAGE_RAIN;
 	extern Image* IMAGE_REANIM_CABBAGEPULT_CABBAGE;

@@ -811,6 +811,11 @@ void Projectile::DoImpact(Zombie* theZombie)
 	{
 		unsigned int aDamageFlags = GetDamageFlags(theZombie);
 		int damage = GetProjectileDef().mDamage;
+		if (mApp->isSnowLevel()) {
+			if (mProjectileType == PROJECTILE_SNOWPEA) {
+				damage += 10;
+			}
+		}
 		//if (passThrought) {
 		//	damage = 2; //damage / 10;
 		//}

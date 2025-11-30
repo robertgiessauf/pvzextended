@@ -143,6 +143,9 @@
 <Image id="STORE_SPEECHBUBBLE" path="Store_SpeechBubble" />
 <Image id="STORE_SPEECHBUBBLE2" path="Store_SpeechBubble2" />
 
+<Image id="ADVENTURE2_BUTTON" path="quickplay/adv_mode_2_sign"  />
+<Image id="ADVENTURE2_BUTTON_HIGHLIGHT" path="quickplay/adv_mode_2_sign_highlight"  />
+
 <!-- Misc small items -->
 <Image id="SHOVEL" path="shovel" />
 <Image id="SHOVEL_HI_RES" path="shovel_hi_res" />
@@ -638,6 +641,13 @@
 <SetDefaults path="images" idprefix="IMAGE_" />
 <Image id="BACKGROUND8" path="background8" ddsurface="" a8r8g8b8="" />
 </Resources>
+
+
+<Resources id="DelayLoad_Background9">
+<SetDefaults path="images" idprefix="IMAGE_" />
+<Image id="BACKGROUND9" path="background9" ddsurface="" a8r8g8b8="" />
+</Resources>
+
 
 <Resources id="DelayLoad_Background4">
 <SetDefaults path="images" idprefix="IMAGE_" />

@@ -42,7 +42,8 @@ private:
         GameSelector_Survival = 110,
         GameSelector_Achievement = 111,
         GameSelector_QuickPlay = 112,
-        GameSelector_Credits = 113
+        GameSelector_Wintergame = 113,
+        GameSelector_Credits = 114
     };
 
 public:
@@ -58,6 +59,7 @@ public:
     NewLawnButton*              mZenGardenButton;           
     NewLawnButton*              mAchievementButton;                
     NewLawnButton*              mQuickPlayButton;
+    NewLawnButton*              mAdventure2PlayButton;
     NewLawnButton*              mCreditsButton;
     NewLawnButton*              mSurvivalButton;            
     NewLawnButton*              mChangeUserButton;          
@@ -115,6 +117,7 @@ public:
     /*inline*/ bool             ShouldDoZenTuturialBeforeAdventure();
     void                        AddPreviewProfiles();
     void                        KeyChar();
+    void                        StartWinterGame();
     int                         CalcYPos(int ogY, int newY);
     int                         CalcXPos(int ogX, int newX);
 };

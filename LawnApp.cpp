@@ -885,6 +885,10 @@ float LawnApp::GetSpeedVal()
 	return mSpeedModifier;
 }
 
+bool LawnApp::isSnowLevel() {
+	return mGameMode == GameMode::GAMEMODE_WINTER;
+}
+
 void LawnApp::FinishUserDialog(bool isYes)
 {
 	UserDialog* aUserDialog = (UserDialog*)GetDialog(Dialogs::DIALOG_USERDIALOG);
@@ -3361,6 +3365,7 @@ void LawnApp::PreloadForUser()
 	mCompletedLoadingThreadTasks += 68;
 	ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_FINAL_WAVE, true);
 	ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SUN, true);
+	ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SUNSNOW, true);
 	ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_TEXT_FADE_ON, true);
 	mCompletedLoadingThreadTasks += 68;
 	ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE, true);

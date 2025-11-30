@@ -669,6 +669,21 @@ Squashes will smash the first zombie that gets close to it.
 {SHORTLINE}
 {FLAVOR}"I'm ready!" yells Squash. "Let's do it! Put me in! There's nobody better! I'm your guy! C'mon! Whaddya waiting for? I need this!"
 
+
+[QUATROTHREEPEATER]
+Quatro Threepeater
+
+[QUATROTHREEPEATER_DESCRIPTION_HEADER]
+Quatro Threepeater shoot four peas in three lanes.
+
+[QUATROTHREEPEATER_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} normal (for each pea)
+{KEYWORD}Range:{STAT} three lanes
+{SHORTLINE}
+{FLAVOR}Nobody is really sure how Quatro Threepeater came to be. Was he engineered? Mutated? Accidentally left too close to a microwave? All we know is he fires four peas across three lanes with such frantic enthusiasm that even nearby plants have started ducking for safety.
+
+
 [THREEPEATER_DESCRIPTION_HEADER]
 Threepeaters shoot peas in three lanes.
 
