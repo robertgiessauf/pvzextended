@@ -186,7 +186,8 @@ public:
     bool                    mAnimPing;                      
     bool                    mDead;                          
     bool                    mSquished;                      
-    bool                    mIsAsleep;                      
+    bool                    mIsAsleep;
+    bool                    mIsFroozen;
     bool                    mIsOnBoard;                     
     bool                    mHighlighted;                   
 

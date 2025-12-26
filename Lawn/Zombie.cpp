@@ -30,7 +30,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_DANCER,            REANIM_DANCER,              5,      18,     5,      1000,   _S("DANCING_ZOMBIE")},
     { ZOMBIE_BACKUP_DANCER,     REANIM_BACKUP_DANCER,       1,      18,     1,      0,      _S("BACKUP_DANCER")},
     { ZOMBIE_DUCKY_TUBE,        REANIM_ZOMBIE,              1,      31,     5,      0,      _S("DUCKY_TUBE_ZOMBIE")},
-    { ZOMBIE_SNORKEL,           REANIM_SNORKEL,             3,      33,     10,     2000,   _S("SNORKEL_ZOMBIE")},
+    { ZOMBIE_SNORKEL,           REANIM_SNORKEL,             3,      53,     10,     2000,   _S("SNORKEL_ZOMBIE")},
     { ZOMBIE_ZAMBONI,           REANIM_ZOMBIE_ZAMBONI,      7,      26,     10,     2000,   _S("ZOMBONI")},
     { ZOMBIE_BOBSLED,           REANIM_BOBSLED,             3,      26,     10,     2000,   _S("ZOMBIE_BOBSLED_TEAM")},
     { ZOMBIE_DOLPHIN_RIDER,     REANIM_ZOMBIE_DOLPHINRIDER, 3,      28,     10,     1500,   _S("DOLPHIN_RIDER_ZOMBIE")},
@@ -42,7 +42,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_BUNGEE,            REANIM_BUNGEE,              3,      41,     10,     1000,   _S("BUNGEE_ZOMBIE") },
     { ZOMBIE_LADDER,            REANIM_LADDER,              4,      43,     10,     1000,   _S("LADDER_ZOMBIE")},
     { ZOMBIE_CATAPULT,          REANIM_CATAPULT,            5,      46,     10,     1500,   _S("CATAPULT_ZOMBIE")},
-    { ZOMBIE_GARGANTUAR,        REANIM_GARGANTUAR,          10,     48,     15,     1500,   _S("GARGANTUAR")},
+    { ZOMBIE_GARGANTUAR,        REANIM_GARGANTUAR,          10,     18,     15,     1500,   _S("GARGANTUAR")},
     { ZOMBIE_IMP,               REANIM_IMP,                 10,     48,     1,      0,      _S("IMP")},
     { ZOMBIE_BOSS,              REANIM_BOSS,                10,     50,     1,      0,      _S("BOSS")},
     { ZOMBIE_REDEYE_GARGANTUAR, REANIM_GARGANTUAR,          10,     48,     15,     6000,   _S("REDEYED_GARGANTUAR")},
@@ -4086,15 +4086,14 @@ Plant* Zombie::IsInLight()
     //if (mZombieType == ZombieType::ZOMBIE_ZAMBONI || mZombieType == ZombieType::ZOMBIE_CATAPULT)
     //    return nullptr;
 
-    Rect aZombieRect = GetZombieRect();
+    //Rect aZombieRect = GetZombieRect();
 
     Plant* aPlant = nullptr;
     while (mBoard->IteratePlants(aPlant))
     {
         if (aPlant->mSeedType == SEED_PLANTERN)
         {
-            Rect aPlantAttackRect = aPlant->GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
-            if (GetRectOverlap(aPlantAttackRect, aZombieRect) > 0)
+            if (GetCircleRectOverlap(mX, mY, 120, aPlant->GetPlantRect()))
             {
                 return aPlant;
             }

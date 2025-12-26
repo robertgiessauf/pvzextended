@@ -147,7 +147,8 @@ public:
 	int								mShakeAmountX;											
 	int								mShakeAmountY;											
 	BackgroundType					mBackground;											
-	int								mLevel;													
+	int								mLevel;
+	int								mFroozenCountdown;
 	int								mSodPosition;											
 	int								mPrevMouseX;											
 	int								mPrevMouseY;											
@@ -357,6 +358,7 @@ public:
 	void							DrawUIBottom(Graphics* g);
 	void							DrawUITop(Graphics* g);
 	void							KillAllPlantsInRadius(int theX, int theY, int theRadius);
+	void							UnfreezeAllPlantsInRadius(int theX, int theY, int theRadius);
 	Plant*							GetPumpkinAt(int theGridX, int theGridY);
 	Plant*							GetFlowerPotAt(int theGridX, int theGridY);
 	bool							LawnHasNocturnal();

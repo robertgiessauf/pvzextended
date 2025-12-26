@@ -253,13 +253,15 @@ void Projectile::CheckForCollision()
 	if (mMotionType == ProjectileMotion::MOTION_HOMING)
 	{
 		Zombie* aZombie = mBoard->ZombieTryToGet(mTargetZombieID);
-		if (aZombie && aZombie->EffectedByDamage((unsigned int)mDamageRangeFlags))
+		if (aZombie)
 		{
-			Rect aProjectileRect = GetProjectileRect();
-			Rect aZombieRect = aZombie->GetZombieRect();
-			if (GetRectOverlap(aProjectileRect, aZombieRect) >= 0 && mPosY > aZombieRect.mY&& mPosY < aZombieRect.mY + aZombieRect.mHeight)
-			{
-				DoImpact(aZombie);
+			if (aZombie->EffectedByDamage((unsigned int)mDamageRangeFlags)) {
+				Rect aProjectileRect = GetProjectileRect();
+				Rect aZombieRect = aZombie->GetZombieRect();
+				if (GetRectOverlap(aProjectileRect, aZombieRect) >= 0 && mPosY > aZombieRect.mY && mPosY < aZombieRect.mY + aZombieRect.mHeight)
+				{
+					DoImpact(aZombie);
+				}
 			}
 		}
 		return;
@@ -306,6 +308,23 @@ void Projectile::CheckForCollision()
 		}
 
 		DoImpact(aZombie);
+	}
+}
+
+void Projectile::ChooseNextTarget() {
+	Zombie* aZombie = nullptr;
+	Zombie* atargetZombie = nullptr;
+	while (mBoard->IterateZombies(aZombie))
+	{
+		if (!aZombie->IsDeadOrDying() && aZombie->mZombieType != ZombieType::ZOMBIE_GHOST) {
+			if (atargetZombie == nullptr ||
+				(abs(aZombie->mX - mX) < abs(atargetZombie->mX - mX))) {
+				atargetZombie = aZombie;
+			}
+		}
+	}
+	if (atargetZombie != nullptr) {
+		mTargetZombieID = mBoard->ZombieGetID(atargetZombie);
 	}
 }
 
@@ -618,21 +637,27 @@ void Projectile::UpdateNormalMotion()
 	else if (mMotionType == ProjectileMotion::MOTION_HOMING)
 	{
 		Zombie* aZombie = mBoard->ZombieTryToGet(mTargetZombieID);
-		if (aZombie && aZombie->EffectedByDamage((unsigned int)mDamageRangeFlags))
+		if (aZombie && !aZombie->IsDeadOrDying())
 		{
-			Rect aZombieRect = aZombie->GetZombieRect();
-			SexyVector2 aTargetCenter(aZombie->ZombieTargetLeadX(0.0f), aZombieRect.mY + aZombieRect.mHeight / 2);
-			SexyVector2 aProjectileCenter(mPosX + mWidth / 2, mPosY + mHeight / 2);
-			SexyVector2 aToTarget = (aTargetCenter - aProjectileCenter).Normalize();
-			SexyVector2 aMotion(mVelX, mVelY);
+			if (aZombie->EffectedByDamage((unsigned int)mDamageRangeFlags)) {
+				Rect aZombieRect = aZombie->GetZombieRect();
+				SexyVector2 aTargetCenter(aZombie->ZombieTargetLeadX(0.0f), aZombieRect.mY + aZombieRect.mHeight / 2);
+				SexyVector2 aProjectileCenter(mPosX + mWidth / 2, mPosY + mHeight / 2);
+				SexyVector2 aToTarget = (aTargetCenter - aProjectileCenter).Normalize();
+				SexyVector2 aMotion(mVelX, mVelY);
 
-			aMotion += aToTarget * (0.001f * mProjectileAge);
-			aMotion = aMotion.Normalize();
-			aMotion *= 2.0f;
+				aMotion += aToTarget * (0.001f * mProjectileAge);
+				aMotion = aMotion.Normalize();
+				aMotion *= 2.0f;
 
-			mVelX = aMotion.x;
-			mVelY = aMotion.y;
-			mRotation = -atan2(mVelY, mVelX);
+				mVelX = aMotion.x;
+				mVelY = aMotion.y;
+				mRotation = -atan2(mVelY, mVelX);
+			}
+		}
+		else {
+			//mPosY += 1;
+			ChooseNextTarget();
 		}
 
 		mPosY += mVelY;

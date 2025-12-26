@@ -52,9 +52,9 @@ public:
     int                     mCobTargetRow;          
     ZombieID                mTargetZombieID;        
     int                     mLastPortalX;     
-    bool                    passThrought;
 
 public:
+    bool                    passThrought;
     Projectile();
     ~Projectile();
 
@@ -70,6 +70,7 @@ public:
     void                    UpdateLobMotion();
     void                    CheckForHighGround();
     bool                    CantHitHighGround();
+    void                    ChooseNextTarget();
     void                    DoSplashDamage(Zombie* theZombie);
     ProjectileDefinition&   GetProjectileDef();
     unsigned int            GetDamageFlags(Zombie* theZombie/* = nullptr*/);

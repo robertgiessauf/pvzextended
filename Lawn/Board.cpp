@@ -61,6 +61,7 @@ Board::Board(LawnApp* theApp)
 	}
 	mCoinBankFadeCount = 0;
 	mLevel = 0;
+	mFroozenCountdown = 0;
 	mCursorObject = new CursorObject();
 	mCursorPreview = new CursorPreview();
 	mSeedBank = new SeedBank();
@@ -5794,6 +5795,36 @@ void Board::Update()
 		return;
 	}
 
+	if (mFroozenCountdown > 0) {
+		mFroozenCountdown--;
+		//if (mFroozenCountdown == 0) {
+		//	Plant* aPlant = nullptr;
+		//	while (IteratePlants(aPlant))
+		//	{
+		//		aPlant->mIsFroozen = false;
+		//	}
+		//}
+	}
+	else {
+		if (mApp->isSnowLevel()) {
+			if (rand() % 1000 == 0) {
+				mFroozenCountdown = 3000;
+				Plant* aPlant = nullptr;
+				int lane = rand() % MAX_GRID_SIZE_Y;
+				while (IteratePlants(aPlant))
+				{
+					if (this->PixelToGridY(aPlant->mX, aPlant->mY) == lane && 
+						(aPlant->mSeedType != SEED_FIREPEA &&
+							aPlant->mSeedType != SEED_FIRESHROOM &&
+							aPlant->mSeedType != SEED_JALAPENO && 
+							aPlant->mSeedType != SEED_TORCHWOOD)) {
+						aPlant->mIsFroozen = true;
+					}
+				}
+			}
+		}
+	}
+
 	bool aDisabled = !CanInteractWithBoardButtons() || mIgnoreMouseUp;
 	if (!mMenuButton->mBtnNoDraw)
 	{
@@ -9476,6 +9507,18 @@ void Board::KillAllPlantsInRadius(int theX, int theY, int theRadius)
 		{
 			mPlantsEaten++;
 			aPlant->Die();
+		}
+	}
+}
+
+void Board::UnfreezeAllPlantsInRadius(int theX, int theY, int theRadius)
+{
+	Plant* aPlant = nullptr;
+	while (IteratePlants(aPlant))
+	{
+		if (GetCircleRectOverlap(theX, theY, theRadius, aPlant->GetPlantRect()))
+		{
+			aPlant->mIsFroozen = false;
 		}
 	}
 }

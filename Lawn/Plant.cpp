@@ -31,31 +31,31 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 125,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FIREPEASHOOTER") },
     { SeedType::SEED_PUFFSHROOM,        nullptr, ReanimationType::REANIM_PUFFSHROOM,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PUFF_SHROOM") },
+    { SeedType::SEED_GRAVEBUSTER,       nullptr, ReanimationType::REANIM_GRAVE_BUSTER,  40,175 ,     3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GRAVE_BUSTER") },
     { SeedType::SEED_SUNSHROOM,         nullptr, ReanimationType::REANIM_SUNSHROOM,     7,  25,     750,    PlantSubClass::SUBCLASS_NORMAL,     1800,   _S("SUN_SHROOM") },
     { SeedType::SEED_FUMESHROOM,        nullptr, ReanimationType::REANIM_FUMESHROOM,    9,  100,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FUME_SHROOM") },
-    { SeedType::SEED_GLOOMSHROOM,       nullptr, ReanimationType::REANIM_GLOOMSHROOM,   27, 250,    2000,   PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("GLOOM_SHROOM") },
-    { SeedType::SEED_HYPNOSHROOM,       nullptr, ReanimationType::REANIM_HYPNOSHROOM,   10, 50,     2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("HYPNO_SHROOM") },
-    { SeedType::SEED_SCAREDYSHROOM,     nullptr, ReanimationType::REANIM_SCRAREYSHROOM, 33, 25,     750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("SCAREDY_SHROOM") },
-    { SeedType::SEED_ICESHROOM,         nullptr, ReanimationType::REANIM_ICESHROOM,     36, 75,     4000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("ICE_SHROOM") },
-    { SeedType::SEED_DOOMSHROOM,        nullptr, ReanimationType::REANIM_DOOMSHROOM,    20, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DOOM_SHROOM") },
+       { SeedType::SEED_SCAREDYSHROOM,     nullptr, ReanimationType::REANIM_SCRAREYSHROOM, 33, 25,     750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("SCAREDY_SHROOM") },
+     { SeedType::SEED_HYPNOSHROOM,       nullptr, ReanimationType::REANIM_HYPNOSHROOM,   10, 50,     2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("HYPNO_SHROOM") },
+{ SeedType::SEED_GLOOMSHROOM,       nullptr, ReanimationType::REANIM_GLOOMSHROOM,   27, 250,    2000,   PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("GLOOM_SHROOM") },
+       { SeedType::SEED_DOOMSHROOM,        nullptr, ReanimationType::REANIM_DOOMSHROOM,    20, 125,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DOOM_SHROOM") },
       { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12,250 ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
     { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,      5, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
         { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
-            { SeedType::SEED_CATTAIL,           nullptr, ReanimationType::REANIM_CATTAIL,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CATTAIL") },
-
-    { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
+               { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
 
     { SeedType::SEED_STARFRUIT,         nullptr, ReanimationType::REANIM_STARFRUIT, 16,150  ,   30,     PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
+
+    { SeedType::SEED_CATTAIL,           nullptr, ReanimationType::REANIM_CATTAIL,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CATTAIL") },
+    { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 150,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
 
     { SeedType::SEED_PUFFSHROOMPULT,        nullptr, ReanimationType::REANIM_PUFFPULT,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("PUFF_PULT") },
 
         { SeedType::SEED_PLANTERN,          nullptr, ReanimationType::REANIM_PLANTERN,      38, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("PLANTERN") },
+         { SeedType::SEED_ICESHROOM,         nullptr, ReanimationType::REANIM_ICESHROOM,     36, 75,     4000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("ICE_SHROOM") },
 
-    { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 150,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
 { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,         5,  300,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
     { SeedType::SEED_FIRESHROOM,         nullptr, ReanimationType::REANIM_FIRESHROOM,   36, 125,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FIRE_SHROOM") },
-    { SeedType::SEED_GRAVEBUSTER,       nullptr, ReanimationType::REANIM_GRAVE_BUSTER,  40,175 ,     3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GRAVE_BUSTER") },
 
 
 
@@ -150,6 +150,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     memset(mMagnetItems, 0, sizeof(mMagnetItems));
     const PlantDefinition& aPlantDef = GetPlantDefinition(theSeedType);
     mIsAsleep = false;
+    mIsFroozen = false; //mApp->isSnowLevel();
     mWakeUpCounter = 0;
     mOnBungeeState = PlantOnBungeeState::NOT_ON_BUNGEE;
     mPottedPlantIndex = -1;
@@ -1683,7 +1684,7 @@ void Plant::UpdateSquash()
 
 void Plant::UpdateDoomShroom()
 {
-    if (mIsAsleep || mState == PlantState::STATE_DOINGSPECIAL)
+    if (!mIsFroozen && mIsAsleep || mState == PlantState::STATE_DOINGSPECIAL)
         return;
 
     mState = PlantState::STATE_DOINGSPECIAL;
@@ -1703,7 +1704,7 @@ void Plant::UpdateDoomShroom()
 
 void Plant::UpdateIceShroom()
 {
-    if (!mIsAsleep && mState != PlantState::STATE_DOINGSPECIAL)
+    if (!mIsFroozen && !mIsAsleep && mState != PlantState::STATE_DOINGSPECIAL)
     {
         mState = PlantState::STATE_DOINGSPECIAL;
         mDoSpecialCountdown = 100;
@@ -1714,7 +1715,7 @@ void Plant::UpdateIceShroom()
 void Plant::UpdateFireShroom()
 {
     // TODO SEED_FIRESHROOM
-    if (!mIsAsleep && mState != PlantState::STATE_DOINGSPECIAL)
+    if (!mIsFroozen && !mIsAsleep && mState != PlantState::STATE_DOINGSPECIAL)
     {
         mState = PlantState::STATE_DOINGSPECIAL;
         mDoSpecialCountdown = 100;
@@ -2435,7 +2436,7 @@ void Plant::Squish()
     if (NotOnGround())
         return;
 
-    if (!mIsAsleep)
+    if (!mIsAsleep && !mIsFroozen)
     {
         if (mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO ||
             mSeedType == SeedType::SEED_DOOMSHROOM || mSeedType == SeedType::SEED_ICESHROOM || mSeedType == SeedType::SEED_FIRESHROOM)
@@ -2651,7 +2652,7 @@ void Plant::UpdateAbilities()
         }
     }
 
-    if (mIsAsleep || mSquished || mOnBungeeState != PlantOnBungeeState::NOT_ON_BUNGEE)
+    if (mIsFroozen || mIsAsleep || mSquished || mOnBungeeState != PlantOnBungeeState::NOT_ON_BUNGEE)
         return;
     
     UpdateShooting();
@@ -3188,7 +3189,7 @@ void Plant::UpdateBlink()
         }
     }
 
-    if (mIsAsleep)
+    if (mIsAsleep || mIsFroozen)
         return;
 
     if (mBlinkCountdown > 0)
@@ -4100,6 +4101,13 @@ void Plant::Draw(Graphics* g)
     int aImageIndex = mFrame;
     Image* aPlantImage = Plant::GetImage(mSeedType);
 
+
+    if (mIsFroozen) {
+        g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+        g->SetColorizeImages(true);
+        g->SetColor(Color(160, 160, 250, 220));
+    }
+
     if (mSquished)
     {
         if (mSeedType == SeedType::SEED_FLOWERPOT)
@@ -4251,6 +4259,13 @@ void Plant::Draw(Graphics* g)
             }
         }
 
+
+            if (mIsFroozen) {
+            //TodDrawImageCelF(g, aPlantImage, aOffsetX, aOffsetY, aImageIndex, 0);
+            g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+            g->SetColorizeImages(false);
+        }
+
         if (mSeedType == SeedType::SEED_MAGNETSHROOM && !DrawMagnetItemsOnTop())
         {
             DrawMagnetItems(g);
@@ -4363,7 +4378,7 @@ void Plant::IceZombies()
         aZombie->HitIceTrap();
     }
 
-    mBoard->mIceTrapCounter = 300;
+    mBoard->mIceTrapCounter = mApp->isSnowLevel() ? 500 : 300;
     TodParticleSystem* aPoolSparklyParticle = mApp->ParticleTryToGet(mBoard->mPoolSparklyParticleID);
     if (aPoolSparklyParticle)
     {
@@ -4420,6 +4435,13 @@ void Plant::BurnRow(int theRow, int damage)
     if (aBossZombie && aBossZombie->mFireballRow == theRow)
     {
         aBossZombie->BossDestroyIceballInRow(theRow);
+    }
+
+    Plant* aPlant = nullptr;
+    while (mBoard->IteratePlants(aPlant)) {
+        if (mBoard->PixelToGridY(aPlant->mX, aPlant->mY) == theRow && aPlant->mIsFroozen) {
+            aPlant->mIsFroozen = false;
+        }
     }
 }
 
@@ -4517,6 +4539,10 @@ void Plant::DoSpecial()
         Die();
         break;
     }
+    case SeedType::SEED_TORCHWOOD:
+    {
+        mBoard->UnfreezeAllPlantsInRadius(mX, mY, 90);
+    } break;
     case SeedType::SEED_UMBRELLA:
     {
         if (mState != PlantState::STATE_UMBRELLA_TRIGGERED && mState != PlantState::STATE_UMBRELLA_REFLECTING)
@@ -4872,6 +4898,9 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     }
 
     Projectile* aProjectile = mBoard->AddProjectile(aOriginX, aOriginY, mRenderOrder - 1, theRow, aProjectileType);
+    if (mSeedType == SeedType::SEED_CATTAIL) {
+        aProjectile->passThrought = false;
+    }
     aProjectile->mDamageRangeFlags = GetDamageRangeFlags(thePlantWeapon);
 
     if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT ||
