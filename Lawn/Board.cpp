@@ -1405,6 +1405,9 @@ void Board::InitLevel()
 	else if (mApp->IsLittleTroubleLevel()) {
 		mSunMoney = 2000;
 	}
+	else if (mLevel == 35) {
+		mSunMoney = 1000;
+	}
 	else
 	{
 		mSunMoney = 200; // starting money in sun
@@ -2861,9 +2864,9 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		}
 	}
 	Plant* aPumpkinPlant = aPlantOnLawn.mPumpkinPlant;
-	if (aGridSquare == GridSquareType::GRIDSQUARE_POOL && !aHasLilypad && theSeedType != SeedType::SEED_CATTAIL)
+	if (aGridSquare == GridSquareType::GRIDSQUARE_POOL && !aHasLilypad && theSeedType != SeedType::SEED_CATTAIL && theSeedType != SeedType::SEED_BUTTERCAT)
 	{
-		if (!aNormalPlant || aNormalPlant->mSeedType != SeedType::SEED_CATTAIL || theSeedType != SeedType::SEED_PUMPKINSHELL)
+		if (!aNormalPlant || aNormalPlant->mSeedType != SeedType::SEED_CATTAIL || aNormalPlant->mSeedType != SeedType::SEED_BUTTERCAT || theSeedType != SeedType::SEED_PUMPKINSHELL)
 		{
 			return PlantingReason::PLANTING_NOT_ON_WATER;
 		}
@@ -3845,7 +3848,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 			aRightPlant->Die();
 		}
 	}
-	if (aPlantingSeedType == SeedType::SEED_CATTAIL)
+	if (aPlantingSeedType == SeedType::SEED_CATTAIL || aPlantingSeedType == SeedType::SEED_BUTTERCAT)
 	{
 		if (aPlantOnLawn.mUnderPlant)
 		{
@@ -4038,7 +4041,7 @@ void Board::MouseDownWithTool(int x, int y, int theClickCount, CursorType theCur
 		mPlantsShoveled++;
 		aPlant->Die();
 
-		if (aPlant->mSeedType == SeedType::SEED_CATTAIL && GetTopPlantAt(aPlant->mPlantCol, aPlant->mRow, PlantPriority::TOPPLANT_ONLY_PUMPKIN))
+		if ((aPlant->mSeedType == SeedType::SEED_CATTAIL || aPlant->mSeedType == SeedType::SEED_BUTTERCAT) && GetTopPlantAt(aPlant->mPlantCol, aPlant->mRow, PlantPriority::TOPPLANT_ONLY_PUMPKIN))
 		{
 			NewPlant(aPlant->mPlantCol, aPlant->mRow, SeedType::SEED_LILYPAD, SeedType::SEED_NONE);
 		}

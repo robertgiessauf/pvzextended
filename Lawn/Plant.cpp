@@ -45,13 +45,15 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
                { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
 
     { SeedType::SEED_STARFRUIT,         nullptr, ReanimationType::REANIM_STARFRUIT, 16,150  ,   30,     PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
+            { SeedType::SEED_PLANTERN,          nullptr, ReanimationType::REANIM_PLANTERN,      38, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("PLANTERN") },
 
     { SeedType::SEED_CATTAIL,           nullptr, ReanimationType::REANIM_CATTAIL,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CATTAIL") },
+       { SeedType::SEED_BUTTERCAT,           nullptr, ReanimationType::REANIM_BUTTERCAT,       27, 225,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("BUTTERCAT") },
+
     { SeedType::SEED_SQUASH,            nullptr, ReanimationType::REANIM_SQUASH,        21, 150,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SQUASH") },
 
     { SeedType::SEED_PUFFSHROOMPULT,        nullptr, ReanimationType::REANIM_PUFFPULT,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("PUFF_PULT") },
 
-        { SeedType::SEED_PLANTERN,          nullptr, ReanimationType::REANIM_PLANTERN,      38, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("PLANTERN") },
          { SeedType::SEED_ICESHROOM,         nullptr, ReanimationType::REANIM_ICESHROOM,     36, 75,     4000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("ICE_SHROOM") },
 
 { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,         5,  300,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
@@ -438,6 +440,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     case SeedType::SEED_PLANTERN:
     {
         mStateCountdown = 50;
+        mPlantHealth = 4000;
 
         if (!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
         {
@@ -654,6 +657,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     case SeedType::SEED_CHOMPER:
         return 9;
     case SeedType::SEED_CATTAIL:
+    case SeedType::SEED_BUTTERCAT:
         return 11;
     case SeedType::SEED_TANGLEKELP:
         return 5;
@@ -809,7 +813,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
         PlayBodyReanim("anim_shooting", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 14.0f);
         mShootingCounter = 200;
     }
-    else if (mSeedType == SeedType::SEED_CATTAIL)
+    else if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT)
     {
         PlayBodyReanim("anim_shooting", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 30.0f);
         mShootingCounter = 50;
@@ -1052,7 +1056,7 @@ void Plant::UpdateShooter()
         }
     }
 
-    if (mLaunchCounter == 50 && mSeedType == SeedType::SEED_CATTAIL)
+    if (mLaunchCounter == 50 && (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT))
     {
         FindTargetAndFire(mRow, PlantWeapon::WEAPON_PRIMARY);
     }
@@ -2749,6 +2753,11 @@ bool Plant::IsUpgradableTo(SeedType theUpgradedType)
         Plant* aPlant = mBoard->GetTopPlantAt(mPlantCol, mRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
         return aPlant == nullptr || aPlant->mSeedType != SeedType::SEED_CATTAIL;
     }
+    if (theUpgradedType == SeedType::SEED_BUTTERCAT && mSeedType == SeedType::SEED_LILYPAD)
+    {
+        Plant* aPlant = mBoard->GetTopPlantAt(mPlantCol, mRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
+        return aPlant == nullptr || aPlant->mSeedType != SeedType::SEED_BUTTERCAT;
+    }
     return false;
 }
 
@@ -3348,7 +3357,7 @@ void Plant::UpdateShooting()
             Fire(nullptr, mRow, PlantWeapon::WEAPON_PRIMARY);
         }
     }
-    else if (mSeedType == SeedType::SEED_CATTAIL)
+    else if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT)
     {
         if (mShootingCounter == 19)
         {
@@ -3965,7 +3974,7 @@ void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
 {
     if (mSeedType == SeedType::SEED_LILYPAD || mSeedType == SeedType::SEED_STARFRUIT || mSeedType == SeedType::SEED_TANGLEKELP || 
         mSeedType == SeedType::SEED_SEASHROOM || mSeedType == SeedType::SEED_COBCANNON || mSeedType == SeedType::SEED_SPIKEWEED || 
-        mSeedType == SeedType::SEED_SPIKEROCK || mSeedType == SeedType::SEED_GRAVEBUSTER || mSeedType == SeedType::SEED_CATTAIL || 
+        mSeedType == SeedType::SEED_SPIKEROCK || mSeedType == SeedType::SEED_GRAVEBUSTER || mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT ||
         mOnBungeeState == PlantOnBungeeState::RISING_WITH_BUNGEE)
         return;
 
@@ -4734,6 +4743,10 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     case SeedType::SEED_CATTAIL:
         aProjectileType = ProjectileType::PROJECTILE_SPIKE;
         break;
+
+    case SeedType::SEED_BUTTERCAT:
+        aProjectileType = ProjectileType::PROJECTILE_BUTTER;
+        break;
     case SeedType::SEED_CABBAGEPULT:
         aProjectileType = ProjectileType::PROJECTILE_CABBAGE;
         break;
@@ -4792,7 +4805,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + 25;
         aOriginY = mY - 46;
     }
-    else if (mSeedType == SeedType::SEED_CATTAIL)
+    else if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT)
     {
         aOriginX = mX + 20;
         aOriginY = mY - 3;
@@ -4973,7 +4986,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     {
         aProjectile->mMotionType = ProjectileMotion::MOTION_BACKWARDS;
     }
-    else if (mSeedType == SeedType::SEED_CATTAIL)
+    else if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT)
     {
         aProjectile->mVelX = 2.0f;
         aProjectile->mMotionType = ProjectileMotion::MOTION_HOMING;
@@ -5029,7 +5042,7 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
             }
         }
 
-        if (mSeedType != SeedType::SEED_CATTAIL)
+        if (mSeedType != SeedType::SEED_CATTAIL && mSeedType != SeedType::SEED_BUTTERCAT)
         {
             if (mSeedType == SeedType::SEED_GLOOMSHROOM)
             {
@@ -5114,7 +5127,7 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
             ////////////////////
 
             int aWeight = -aZombieRect.mX;
-            if (mSeedType == SeedType::SEED_CATTAIL)
+            if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT)
             {
                 aWeight = -Distance2D(mX + 40.0f, mY + 40.0f, aZombieRect.mX + aZombieRect.mWidth / 2, aZombieRect.mY + aZombieRect.mHeight / 2);
                 if (aZombie->IsFlying())
@@ -5414,6 +5427,7 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
     case SeedType::SEED_GLOOMSHROOM:    aRect = Rect(mX - 80,       mY - 80,        240,                240);                   break;
     case SeedType::SEED_TANGLEKELP:     aRect = Rect(mX,            mY,             mWidth,             mHeight);               break;
     case SeedType::SEED_CATTAIL:        aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
+    case SeedType::SEED_BUTTERCAT:      aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
     default:                            aRect = Rect(mX + 60,       mY,             BOARD_WIDTH,        mHeight);               break;
     }
 

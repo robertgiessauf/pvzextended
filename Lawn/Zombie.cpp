@@ -1270,6 +1270,11 @@ void Zombie::BungeeLiftTarget()
         mBoard->NewPlant(mTargetCol, mRow, SeedType::SEED_LILYPAD, SeedType::SEED_NONE);
     }
 
+    if (aPlant->mSeedType == SeedType::SEED_BUTTERCAT && mBoard->GetTopPlantAt(mTargetCol, mRow, PlantPriority::TOPPLANT_ONLY_PUMPKIN))
+    {
+        mBoard->NewPlant(mTargetCol, mRow, SeedType::SEED_LILYPAD, SeedType::SEED_NONE);
+    }
+
     if (mApp->IsIZombieLevel())
     {
         mBoard->mChallenge->IZombiePlantDropRemainingSun(aPlant);
