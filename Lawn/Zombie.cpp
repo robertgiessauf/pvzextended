@@ -213,6 +213,10 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         LoadPlainZombieReanim();
         AttachShield();
         break;
+    case ZombieType::ZOMBIE_GHOST:
+
+        ReanimShowPrefix("Zombie_mustache", RENDER_GROUP_HIDDEN);
+        break;
     case ZombieType::ZOMBIE_YETI:  
         mBodyHealth = 1350;
         mPhaseCounter = RandRangeInt(1500, 2000);

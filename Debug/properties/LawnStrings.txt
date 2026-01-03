@@ -4,6 +4,19 @@ Peashooter
 [PEASHOOTER_TOOLTIP]
 Shoots peas at the enemy
 
+[PEADRONE]
+Peadrone
+
+[PEADRONE_TOOLTIP]
+Shoots peas while flying
+
+
+[BUTTERCAT]
+Butter-Catpad
+
+[BUTTERCAT_TOOLTIP]
+Shoots kernels and butter
+
 [SUNFLOWER]
 Sunflower
 
@@ -78,7 +91,7 @@ Snow-Fume-shroom
 Shoots ice fumes that can pass through screen doors
 
 [GRAVE_BUSTER]
-Grave Buster
+Ice Grave Buster
 
 [GRAVE_BUSTER_TOOLTIP]
 Plant it on a grave to remove the grave
@@ -120,10 +133,10 @@ Lily Pad
 Lets you plant non-aquatic plants on top of it
 
 [SQUASH]
-Squash
+Explodo-Squash
 
 [SQUASH_TOOLTIP]
-Squashes zombies
+Squashes zombies and explodes
 
 [THREEPEATER]
 Threepeater
@@ -168,16 +181,16 @@ Sea-shroom
 Aquatic plant that shoots short-ranged spores
 
 [PLANTERN]
-Plantern
+Plantern-nut
 
 [PLANTERN_TOOLTIP]
-Lights up an area, letting you see through fog
+Lights up an area, letting you see through fog and makes ghost zombies vulnerable
 
 [CACTUS]
-Cactus
+Fire-Cactus
 
 [CACTUS_TOOLTIP]
-Shoots spikes that can pop balloons
+Shoots fire spikes that can pop balloons
 
 [BLOVER]
 Blover
@@ -192,10 +205,10 @@ Split Pea
 Shoots peas forward and backwards
 
 [STARFRUIT]
-Starfruit
+Snow-Starfruit
 
 [STARFRUIT_TOOLTIP]
-Shoots stars in 5 directions
+Shoots snow stars in 5 directions
 
 [PUMPKIN]
 Pumpkin
@@ -773,7 +786,7 @@ Planterns light up an area, letting you see through fog.
 {KEYWORD}Range:{STAT} one lane
 {KEYWORD}Special:{STAT} lets you see through fog
 {SHORTLINE}
-{FLAVOR}Plantern defies science. He just does. Other plants eat light and excrete oxygen; Plantern eats 
+{FLAVOR}Plantern nut defies science. He just does. Other plants eat light and excrete oxygen; Plantern eats 
 darkness and excretes light. Plantern's cagey about how he does it. "I'm not gonna say 'sorcery,' I 
 wouldn't use the term 'dark forces,' I just... I think I've said enough."
 

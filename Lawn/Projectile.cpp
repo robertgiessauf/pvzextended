@@ -619,7 +619,7 @@ void Projectile::UpdateLobMotion()
 			if (mBoard->mGargantuarsKilled >= 2 && !mApp->mPlayedQuickplay)
 				mApp->GetAchievement(ACHIEVEMENT_POPCORN_PARTY);
 		}
-		mBoard->KillAllZombiesInRadius(mRow, mPosX + 80, mPosY + 40, 115, 1, true, mDamageRangeFlags);
+		//mBoard->KillAllZombiesInRadius(mRow, mPosX + 80, mPosY + 40, 115, 1, true, mDamageRangeFlags);
 		DoImpact(nullptr);
 	}
 	else
@@ -819,6 +819,9 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 
 void Projectile::DoImpact(Zombie* theZombie)
 {
+	if (mProjectileType == ProjectileType::PROJECTILE_COBBIG) {
+		mBoard->KillAllZombiesInRadius(mRow, mPosX + 80, mPosY + 40, 115, 1, true, mDamageRangeFlags);
+	}
 	if (!passThrought) {
 		PlayImpactSound(theZombie);
 	}

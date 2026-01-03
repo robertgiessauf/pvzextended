@@ -3359,7 +3359,7 @@ void Plant::UpdateShooting()
     }
     else if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT)
     {
-        if (mShootingCounter == 19)
+        if (mShootingCounter == 19 && mSeedType != SeedType::SEED_BUTTERCAT)
         {
             Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
             if (aZombie)
@@ -4714,7 +4714,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         StarFruitFire();
         return;
     }
-
+    int randomVal;
     ProjectileType aProjectileType;
     switch (mSeedType)
     {
@@ -4744,8 +4744,19 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aProjectileType = ProjectileType::PROJECTILE_SPIKE;
         break;
 
-    case SeedType::SEED_BUTTERCAT:
-        aProjectileType = ProjectileType::PROJECTILE_BUTTER;
+    case SeedType::SEED_BUTTERCAT: {
+        randomVal = Sexy::Rand(100);
+        if (randomVal < 80)
+        {
+            aProjectileType = ProjectileType::PROJECTILE_KERNEL;
+        }
+        else if (randomVal < 99) {
+            aProjectileType = ProjectileType::PROJECTILE_BUTTER;
+        }
+        else {
+            aProjectileType = ProjectileType::PROJECTILE_COBBIG;
+        }
+    }
         break;
     case SeedType::SEED_CABBAGEPULT:
         aProjectileType = ProjectileType::PROJECTILE_CABBAGE;
