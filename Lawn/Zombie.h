@@ -380,6 +380,7 @@ public:
     void                            BossHeadSpitEffect();
     void                            DrawBossFireBall(Graphics* g, const ZombieDrawPosition& theDrawPos);
     void                            UpdateZombiePeaHead();
+    void UpdateZombiePeaThreepeater();
     void                            UpdateZombieJalapenoHead();
     void                            ApplyBossSmokeParticles(bool theEnable);
     void                            UpdateZombiquarium();
