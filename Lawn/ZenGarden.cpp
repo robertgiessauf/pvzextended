@@ -1196,7 +1196,7 @@ float ZenGarden::PlantPottedDrawHeightOffset(SeedType theSeedType, float theScal
     {
         aScaleOffsetFix += 5.0f;
     }
-    else if (theSeedType == SeedType::SEED_TORCHWOOD)
+    else if (theSeedType == SeedType::SEED_TORCHWOOD || theSeedType == SeedType::SEED_RANDOMTORCHWOOD)
     {
         aScaleOffsetFix += 3.0f;
     }

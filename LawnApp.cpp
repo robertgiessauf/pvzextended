@@ -2470,9 +2470,9 @@ bool LawnApp::IsFinalBossLevel()
 		return true;
 
 	if (mPlayedQuickplay)
-		return mQuickLevel == 50;
+		return mQuickLevel == 70;
 
-	return IsAdventureMode() && mPlayerInfo->mLevel == 50;
+	return IsAdventureMode() && mPlayerInfo->mLevel == 70;
 }
 
 bool LawnApp::IsChallengeWithoutSeedBank()
@@ -2498,14 +2498,11 @@ bool LawnApp::IsNight()
 	if (IsIceDemo() || mPlayerInfo == nullptr)
 		return false;
 
-	if (mPlayedQuickplay)
-	{
-		return (mQuickLevel >= 11 && mQuickLevel <= 20) || (mQuickLevel >= 31 && mQuickLevel <= 40) || mQuickLevel == 50;
-	}
-	else
-	{
-		return (mPlayerInfo->mLevel >= 11 && mPlayerInfo->mLevel <= 20) || (mPlayerInfo->mLevel >= 31 && mPlayerInfo->mLevel <= 40) || mPlayerInfo->mLevel == 50;
-	}
+	int level = mPlayedQuickplay ? mQuickLevel : mPlayerInfo->mLevel;
+
+
+		return (level >= 11 && level <= 20) || (level >= 31 && level <= 40) || level == 50;
+
 }
 
 int LawnApp::GetCurrentChallengeIndex()

@@ -78,11 +78,13 @@ public:
     void                    UpdateNormalMotion();
     Plant*                  FindCollisionTargetPlant();
     void                    ConvertToFireball(int theGridX);
+    void                    ConvertToRandom(int theGridX);
     void                    ConvertToPea(int theGridX);
     bool                    IsSplashDamage(Zombie* theZombie/* = nullptr*/);
     void                    PlayImpactSound(Zombie* theZombie);
     bool                    IsZombieHitBySplash(Zombie* theZombie);
     bool                    PeaAboutToHitTorchwood();
+    bool                    PeaAboutToHitRandomTorchwood();
     bool                    GetGargantuars(int theRow, int theX, int theY, int theRadius, int theRowRange);
 
 };

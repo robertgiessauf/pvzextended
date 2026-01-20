@@ -230,6 +230,7 @@ void SeedChooserScreen::CrazyDavePickSeeds()
 	if (mBoard->StageHasRoof())
 	{
 		aSeedArray[SEED_TORCHWOOD].mWeight = 0;
+		aSeedArray[SEED_RANDOMTORCHWOOD].mWeight = 0;
 	}
 
 	MTRand aLevelRNG = MTRand(mBoard->GetLevelRandSeed());

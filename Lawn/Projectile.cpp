@@ -170,6 +170,34 @@ Plant* Projectile::FindCollisionTargetPlant()
 	return nullptr;
 }
 
+bool Projectile::PeaAboutToHitRandomTorchwood()
+{
+	if (mMotionType != ProjectileMotion::MOTION_STRAIGHT)
+		return false;
+
+	if (mProjectileType != ProjectileType::PROJECTILE_PEA && mProjectileType != ProjectileType::PROJECTILE_SNOWPEA)
+		return false;
+
+	Plant* aPlant = nullptr;
+	while (mBoard->IteratePlants(aPlant))
+	{
+		if (aPlant->mSeedType == SeedType::SEED_RANDOMTORCHWOOD && aPlant->mRow == mRow && !aPlant->NotOnGround() && mHitTorchwoodGridX != aPlant->mPlantCol)
+		{
+			Rect aPlantAttackRect = aPlant->GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
+			Rect aProjectileRect = GetProjectileRect();
+			aProjectileRect.mX += 40;
+
+			if (GetRectOverlap(aPlantAttackRect, aProjectileRect) > 10)
+			{
+				return true;
+			}
+		}
+
+	}
+
+	return false;
+}
+
 bool Projectile::PeaAboutToHitTorchwood()
 {
 	if (mMotionType != ProjectileMotion::MOTION_STRAIGHT)
@@ -192,6 +220,7 @@ bool Projectile::PeaAboutToHitTorchwood()
 				return true;
 			}
 		}
+
 	}
 
 	return false;
@@ -1242,6 +1271,93 @@ Rect Projectile::GetProjectileRect()
 		return Rect(mX, mY, mWidth, mHeight);
 	}
 }
+
+void Projectile::ConvertToRandom(int theGridX)
+{
+	if (mHitTorchwoodGridX == theGridX)
+		return;
+
+	int options = rand() % 11 + 1;
+	Reanimation* aFirePeaReanim;
+
+	switch (options) {
+	case 1:
+		mProjectileType = ProjectileType::PROJECTILE_FIREBALL;
+		aFirePeaReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_FIRE_PEA);
+		AttachReanim(mAttachmentID, aFirePeaReanim, -25.0f, -25.0f);
+		mApp->PlayFoley(FoleyType::FOLEY_FIREPEA);
+		break;
+	case 2: 
+
+		mProjectileType = ProjectileType::PROJECTILE_SNOWPEA;
+		//animation = ReanimationType::REANIM_SNOWPEA;
+		break;
+	case 3:
+
+		mProjectileType = ProjectileType::PROJECTILE_WINTERMELON;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+	case 4:
+
+		mProjectileType = ProjectileType::PROJECTILE_MELON;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+	case 5:
+
+		mProjectileType = ProjectileType::PROJECTILE_BASKETBALL;
+
+		if (rand() % 6 == 1) {
+			mProjectileType = ProjectileType::PROJECTILE_COBBIG;
+		}
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+	case 6:
+
+		mProjectileType = ProjectileType::PROJECTILE_BUTTER;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+		case 7:
+
+		mProjectileType = ProjectileType::PROJECTILE_KERNEL;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+	case 8:
+
+	mProjectileType = ProjectileType::PROJECTILE_CABBAGE;
+	//animation = ReanimationType::REANIM_WINTER_MELON;
+	break;case 9:
+
+		mProjectileType = ProjectileType::PROJECTILE_PUFF;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;case 10:
+
+			mProjectileType = ProjectileType::PROJECTILE_STAR;
+			//animation = ReanimationType::REANIM_WINTER_MELON;
+			break;
+		case 11:
+
+			mProjectileType = ProjectileType::PROJECTILE_SPIKE;
+			//animation = ReanimationType::REANIM_WINTER_MELON;
+			break;
+	}
+
+	mHitTorchwoodGridX = theGridX;
+
+	//float aOffsetX = -25.0f;
+	//float aOffsetY = -25.0f;
+	//Reanimation* aFirePeaReanim = mApp->AddReanimation(0.0f, 0.0f, 0, animation);
+	//if (mMotionType == ProjectileMotion::MOTION_BACKWARDS)
+	//{
+	//	aFirePeaReanim->OverrideScale(-1.0f, 1.0f);
+	//	aOffsetX += 80.0f;
+	//}
+
+	//aFirePeaReanim->SetPosition(mPosX + aOffsetX, mPosY + aOffsetY);
+	//aFirePeaReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
+	//aFirePeaReanim->mAnimRate = RandRangeFloat(50.0f, 80.0f);
+	//AttachReanim(mAttachmentID, aFirePeaReanim, aOffsetX, aOffsetY);
+}
+
 
 void Projectile::ConvertToFireball(int theGridX)
 {

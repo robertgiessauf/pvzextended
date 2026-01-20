@@ -356,6 +356,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	case SeedType::SEED_SPIKEROCK:
 	case SeedType::SEED_PLANTERN:
 	case SeedType::SEED_TORCHWOOD:
+	case SeedType::SEED_RANDOMTORCHWOOD:
 	case SeedType::SEED_TANGLEKELP:
 		aScale = 0.4f;
 		aOffsetX = 8.0f;

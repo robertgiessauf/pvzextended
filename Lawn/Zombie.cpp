@@ -702,27 +702,27 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
             mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
             AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
             aBodyReanim->mFrameBasePose = 0;
-            TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 65.0f, -5.0f, 0.2f, -1.0f, 1.0f);
+            TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 65.0f, -15.0f, 0.2f, -1.0f, 1.0f);
         }
         {
-            ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("anim_head3");
+            ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("anim_head1");
             aTrackInstance->mImageOverride = IMAGE_BLANK;
             Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_THREEPEATER);
             aHeadReanim->PlayReanim("anim_head_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
             mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
             AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
             aBodyReanim->mFrameBasePose = 0;
-            TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 65.0f, -5.0f, 0.2f, -1.0f, 1.0f);
+            TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 75.0f, -5.0f, 0.2f, -1.0f, 1.0f);
         }
         {
-            ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("anim_head3");
+            ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("anim_head1");
             aTrackInstance->mImageOverride = IMAGE_BLANK;
             Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_THREEPEATER);
             aHeadReanim->PlayReanim("anim_head_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
             mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
             AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
             aBodyReanim->mFrameBasePose = 0;
-            TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 65.0f, -5.0f, 0.2f, -1.0f, 1.0f);
+            TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 55.0f, 5.0f, 0.2f, -1.0f, 1.0f);
         }
 
         mPhaseCounter = 150;

@@ -42,7 +42,9 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,      5, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
         { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
-               { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
+                { SeedType::SEED_RANDOMTORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
+
+    { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
 
     { SeedType::SEED_STARFRUIT,         nullptr, ReanimationType::REANIM_STARFRUIT, 16,150  ,   30,     PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
             { SeedType::SEED_PLANTERN,          nullptr, ReanimationType::REANIM_PLANTERN,      38, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("PLANTERN") },
@@ -454,6 +456,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     }
     case SeedType::SEED_TORCHWOOD:
+    case SeedType::SEED_RANDOMTORCHWOOD:
         break;
     case SeedType::SEED_MARIGOLD:
         TOD_ASSERT(aBodyReanim);
@@ -1461,6 +1464,27 @@ void Plant::UpdateScaredyShroom()
     if (mState != PlantState::STATE_READY)
     {
         mLaunchCounter = mLaunchRate;
+    }
+}
+
+void Plant::UpdateRandomTorchwood() {
+    Rect aAttackRect = GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
+
+    Projectile* aProjectile = nullptr;
+    while (mBoard->IterateProjectiles(aProjectile))
+    {
+        if ((aProjectile->mRow == mRow) &&
+            (aProjectile->mProjectileType == ProjectileType::PROJECTILE_PEA || aProjectile->mProjectileType == ProjectileType::PROJECTILE_SNOWPEA))
+        {
+            Rect aProjectileRect = aProjectile->GetProjectileRect();
+            if (GetRectOverlap(aAttackRect, aProjectileRect) >= 10)
+            {
+                if (aProjectile->mProjectileType == ProjectileType::PROJECTILE_PEA || aProjectile->mProjectileType == ProjectileType::PROJECTILE_SNOWPEA)
+                {
+                    aProjectile->ConvertToRandom(mPlantCol);
+                }
+            }
+        }
     }
 }
 
@@ -2689,6 +2713,7 @@ void Plant::UpdateAbilities()
     else if (MakesSun() || mSeedType == SeedType::SEED_MARIGOLD)                                UpdateProductionPlant();
     else if (mSeedType == SeedType::SEED_GRAVEBUSTER)                                           UpdateGraveBuster();
     else if (mSeedType == SeedType::SEED_TORCHWOOD)                                             UpdateTorchwood();
+    else if (mSeedType == SeedType::SEED_RANDOMTORCHWOOD)                                       UpdateRandomTorchwood();
     else if (mSeedType == SeedType::SEED_POTATOMINE)                                            UpdatePotato();
     else if (mSeedType == SeedType::SEED_SPIKEWEED || mSeedType == SeedType::SEED_SPIKEROCK)    UpdateSpikeweed();
     else if (mSeedType == SeedType::SEED_TANGLEKELP)                                            UpdateTanglekelp();
@@ -5431,6 +5456,7 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
     case SeedType::SEED_SPIKEROCK:      aRect = Rect(mX + 20,       mY,             mWidth - 50,        mHeight);               break;
     case SeedType::SEED_POTATOMINE:     aRect = Rect(mX,            mY,             mWidth - 25,        mHeight);               break;
     case SeedType::SEED_TORCHWOOD:      aRect = Rect(mX + 50,       mY,             30,                 mHeight);               break;
+    case SeedType::SEED_RANDOMTORCHWOOD:      aRect = Rect(mX + 50, mY, 30, mHeight);               break;
     case SeedType::SEED_PUFFSHROOM:
     case SeedType::SEED_SEASHROOM:      aRect = Rect(mX + 60,       mY,             230,                mHeight);               break;
     // TODO to mak fume shroom shoot entire row - auskommentieren der nächsten Zeile
