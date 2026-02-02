@@ -2227,7 +2227,7 @@ void Board::GetPlantsOnLawn(int theGridX, int theGridY, PlantsOnLawn* thePlantOn
 	if (theGridX < 0 || theGridX >= MAX_GRID_SIZE_X || theGridY < 0 || theGridY >= MAX_GRID_SIZE_Y)
 		return;
 
-	if (mApp->IsWallnutBowlingLevel() && !mCutScene->IsInShovelTutorial())
+	if (mApp->IsWallnutBowlingLevel() && !mCutScene->IsInGloveTutorial())
 		return;
 
 	Plant* aPlant = nullptr;
@@ -2288,7 +2288,7 @@ Plant* Board::GetTopPlantAt(int theGridX, int theGridY, PlantPriority thePriorit
 	if (theGridX < 0 || theGridX >= MAX_GRID_SIZE_X || theGridY < 0 || theGridY >= MAX_GRID_SIZE_Y)
 		return nullptr;
 
-	if (mApp->IsWallnutBowlingLevel() && !mCutScene->IsInShovelTutorial())
+	if (mApp->IsWallnutBowlingLevel() && !mCutScene->IsInGloveTutorial())
 		return nullptr;
 
 	PlantsOnLawn aPlantOnLawn;
@@ -2419,7 +2419,7 @@ bool Board::CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel)
 		return false;
 	}
 
-	TOD_ASSERT(gZombieAllowedLevels[theZombieType].mZombieType == theZombieType);
+	//TOD_ASSERT(gZombieAllowedLevels[theZombieType].mZombieType == theZombieType);
 	return gZombieAllowedLevels[theZombieType].mAllowedOnLevel[ClampInt(theLevel - 1, 0, NUM_LEVELS - 1)];
 }
 
@@ -4045,14 +4045,18 @@ void Board::MouseDownWithTool(int x, int y, int theClickCount, CursorType theCur
 		{
 			NewPlant(aPlant->mPlantCol, aPlant->mRow, SeedType::SEED_LILYPAD, SeedType::SEED_NONE);
 		}
-		if (mTutorialState == TutorialState::TUTORIAL_SHOVEL_DIG || mTutorialState == TutorialState::TUTORIAL_SHOVEL_KEEP_DIGGING)
-		{
-			SetTutorialState(CountPlantByType(SeedType::SEED_PEASHOOTER) == 0 ? TutorialState::TUTORIAL_SHOVEL_COMPLETED : TutorialState::TUTORIAL_SHOVEL_KEEP_DIGGING);
-		}
 	}
 	else if (theCursorType == CursorType::CURSOR_TYPE_GLOVE) {
 
-		//mApp->PlayFoley(FoleyType::FOLEY_SOMETHING);
+		// TODOFIX ?
+		if (mTutorialState == TutorialState::TUTORIAL_GLOVE_DIG)
+		{
+			SetTutorialState(TutorialState::TUTORIAL_GLOVE_KEEP_DIGGING);
+		}
+		if (mTutorialState == TutorialState::TUTORIAL_GLOVE_KEEP_DIGGING) {
+			SetTutorialState(TutorialState::TUTORIAL_GLOVE_COMPLETED);
+		}
+
 		mselectedPlanForMove = aPlant;
 		mselectedPlanForMove->mHighlighted = true;
 	}
@@ -4302,16 +4306,12 @@ bool Board::MouseHitTest(int x, int y, HitResult* theHitResult)
 
 void Board::PickUpTool(GameObjectType theObjectType)
 {
-	if (mPaused || (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mCutScene->IsInShovelTutorial()))
+	if (mPaused || (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mCutScene->IsInGloveTutorial()))
 		return;
 
 	switch (theObjectType)
 	{
 	case GameObjectType::OBJECT_TYPE_SHOVEL:
-		if (mTutorialState == TutorialState::TUTORIAL_SHOVEL_PICKUP)
-		{
-			SetTutorialState(TutorialState::TUTORIAL_SHOVEL_DIG);
-		}
 		mCursorObject->mCursorType = CursorType::CURSOR_TYPE_SHOVEL;
 		mApp->PlayFoley(FoleyType::FOLEY_SHOVEL);
 		break;
@@ -4366,6 +4366,10 @@ void Board::PickUpTool(GameObjectType theObjectType)
 		break;
 
 	case GameObjectType::OBJECT_TYPE_GLOVE:
+		if (mTutorialState == TutorialState::TUTORIAL_GLOVE_PICKUP)
+		{
+			SetTutorialState(TutorialState::TUTORIAL_GLOVE_DIG);
+		}
 		if (!mGloveRefreshing) {
 			mCursorObject->mCursorType = CursorType::CURSOR_TYPE_GLOVE;
 			mApp->PlayFoley(FoleyType::FOLEY_DROP);
@@ -4602,10 +4606,10 @@ void Board::ClearCursor()
 			SetTutorialState(TutorialState::TUTORIAL_MORESUN_PICK_UP_SUNFLOWER);
 		}
 	}
-	else if (mTutorialState == TutorialState::TUTORIAL_SHOVEL_DIG)
-	{
-		SetTutorialState(TutorialState::TUTORIAL_SHOVEL_PICKUP);
-	}
+	//else if (mTutorialState == TutorialState::TUTORIAL_GLOVE_DIG)
+	//{
+	//	SetTutorialState(TutorialState::TUTORIAL_GLOVE_PICKUP);
+	//}
 }
 
 bool Board::CanInteractWithBoardButtons()
@@ -5644,26 +5648,26 @@ void Board::SetTutorialState(TutorialState theTutorialState)
 		ClearAdvice(AdviceType::ADVICE_SLOT_MACHINE_PULL);
 		break;
 
-	case TutorialState::TUTORIAL_SHOVEL_PICKUP:
+	case TutorialState::TUTORIAL_GLOVE_PICKUP:
 	{
 		DisplayAdvice(_S("[ADVICE_CLICK_SHOVEL]"), MessageStyle::MESSAGE_STYLE_HINT_STAY, AdviceType::ADVICE_NONE);
-		Rect aShovelButtonRect = GetShovelButtonRect();
+		Rect aShovelButtonRect = GetGloveButtonRect();
 		int aPosX = aShovelButtonRect.mX + aShovelButtonRect.mWidth / 2 - 25;
 		int aPosY = aShovelButtonRect.mY + aShovelButtonRect.mHeight - 65;
 		TutorialArrowShow(aPosX, aPosY);
 		break;
 	}
 
-	case TutorialState::TUTORIAL_SHOVEL_DIG:
+	case TutorialState::TUTORIAL_GLOVE_DIG:
 		DisplayAdvice(_S("[ADVICE_CLICK_PLANT]"), MessageStyle::MESSAGE_STYLE_HINT_STAY, AdviceType::ADVICE_NONE);
 		TutorialArrowRemove();
 		break;
 
-	case TutorialState::TUTORIAL_SHOVEL_KEEP_DIGGING:
+	case TutorialState::TUTORIAL_GLOVE_KEEP_DIGGING:
 		DisplayAdvice(_S("[ADVICE_KEEP_DIGGING]"), MessageStyle::MESSAGE_STYLE_HINT_STAY, AdviceType::ADVICE_NONE);
 		break;
 
-	case TutorialState::TUTORIAL_SHOVEL_COMPLETED:
+	case TutorialState::TUTORIAL_GLOVE_COMPLETED:
 		ClearAdvice(AdviceType::ADVICE_NONE);
 		mCutScene->mCutsceneTime = 1500;
 		mCutScene->mCrazyDaveDialogStart = 2410;
@@ -6383,7 +6387,7 @@ void Board::DrawGameObjects(Graphics* g)
 		{
 			aZPos = MakeRenderOrder(RenderLayer::RENDER_LAYER_UI_BOTTOM, 0, 1);
 		}
-		else if (mCutScene->IsAfterSeedChooser() || mCutScene->IsInShovelTutorial() || mHelpIndex == AdviceType::ADVICE_CLICK_TO_CONTINUE)
+		else if (mCutScene->IsAfterSeedChooser() || mCutScene->IsInGloveTutorial() || mHelpIndex == AdviceType::ADVICE_CLICK_TO_CONTINUE)
 		{
 			aZPos = MakeRenderOrder(RenderLayer::RENDER_LAYER_UI_BOTTOM, 0, 1);
 		}
@@ -9078,9 +9082,9 @@ int Board::LeftFogColumn()
 {
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID)		return 6;
 	if (!mApp->IsAdventureMode())										return 5;
-	if (mLevel == 31)													return 6;
-	if (mLevel >= 32 && mLevel <= 36)									return 5;
-	if (mLevel >= 37 && mLevel <= 40)									return 4;
+	if (mLevel == 31+20)													return 6;
+	if (mLevel >= 32+20 && mLevel <= 36+20)									return 5;
+	if (mLevel >= 37+20 && mLevel <= 40+20)									return 4;
 	TOD_ASSERT();
 }
 

@@ -1674,11 +1674,11 @@ But you can just call me Crazy Dave.
 [CRAZY_DAVE_2403]
 Listen, I've got a surprise for you.
 [CRAZY_DAVE_2404]
-But first, I'll need you to clear your lawn.
+But first, I'll need you to move some plants.
 [CRAZY_DAVE_2405]
-Use your shovel and dig up those plants!
+Use your glove to move those plants!
 [CRAZY_DAVE_2406]
-LET THE DIGGING COMMENCE!{MOUTH_SMALL_OH} {SCREAM}
+LET THE MOVING COMMENCE!{MOUTH_SMALL_OH} {SCREAM}
 
 [CRAZY_DAVE_2410]
 Ok goody, now for the surprise...
@@ -1940,13 +1940,13 @@ Nicely done!
 Don't let the zombies reach your house!
 
 [ADVICE_CLICK_SHOVEL]
-Click on the shovel to pick it up!
+Click on the glove to select it!
 
 [ADVICE_CLICK_PLANT]
-Click on a plant to remove it!
+Click on a plant to move it!
 
 [ADVICE_KEEP_DIGGING]
-Keep digging until your lawn is clear of plants!
+Click on a free spot on the lawn to place your selected plant!
 
 [ADVICE_SURVIVE_FLAGS]
 Can you survive for {FLAGS} flags?

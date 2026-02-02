@@ -201,6 +201,8 @@
 <Image id="WINTERMELON_PARTICLES" path="WinterMelon_particles" cols="9" />
 <Image id="PROJECTILE_STAR" path="Projectile_star" />
 
+<Image id="PROJECTILE_PLASMA" path="Pojectile_plasma" />
+
 <!-- Background -->
 <Image id="SEEDBANK" path="SeedBank" minsubdivide="" />
 <Image id="CONVEYORBELT_BACKDROP" path="ConveyorBelt_backdrop" />

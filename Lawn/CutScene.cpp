@@ -759,7 +759,8 @@ void CutScene::StartLevelIntro()
 			mCrazyDaveDialogStart = 2411;
 			mBoard->mChallenge->mShowBowlingLine = true;
 		}
-		mBoard->mShowShovel = true;
+		//mBoard->mShowShovel = true;
+		mBoard->mShowGlove = true;
 	}
 	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 21)
 	{
@@ -1308,12 +1309,12 @@ void CutScene::ShowShovel()
 	}
 }
 
-bool CutScene::IsInShovelTutorial()
+bool CutScene::IsInGloveTutorial()
 {
 	return
-		mBoard->mTutorialState == TutorialState::TUTORIAL_SHOVEL_PICKUP || 
-		mBoard->mTutorialState == TutorialState::TUTORIAL_SHOVEL_DIG || 
-		mBoard->mTutorialState == TutorialState::TUTORIAL_SHOVEL_KEEP_DIGGING;
+		mBoard->mTutorialState == TutorialState::TUTORIAL_GLOVE_PICKUP || 
+		mBoard->mTutorialState == TutorialState::TUTORIAL_GLOVE_DIG ||
+		mBoard->mTutorialState == TutorialState::TUTORIAL_GLOVE_KEEP_DIGGING;
 }
 
 void CutScene::StartSeedChooser()
@@ -1373,7 +1374,7 @@ void CutScene::Update()
 	}
 
 	bool aCutsceneTimeStop = false;
-	if (mSeedChoosing || mApp->mCrazyDaveMessageIndex != -1 || IsInShovelTutorial())
+	if (mSeedChoosing || mApp->mCrazyDaveMessageIndex != -1 || IsInGloveTutorial())
 	{
 		aCutsceneTimeStop = true;
 	}
@@ -1509,7 +1510,7 @@ void CutScene::AdvanceCrazyDaveDialog(bool theJustSkipping)
 
 	if (mApp->mCrazyDaveMessageIndex == 2406 && !theJustSkipping)
 	{
-		mBoard->SetTutorialState(TutorialState::TUTORIAL_SHOVEL_PICKUP);
+		mBoard->SetTutorialState(TutorialState::TUTORIAL_GLOVE_PICKUP);
 		mApp->CrazyDaveLeave();
 		return;
 	}

@@ -26,7 +26,8 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
 	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
 	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  },
-	{ ProjectileType::PROJECTILE_PUFFPULT,      0,  20  }
+	{ ProjectileType::PROJECTILE_PUFFPULT,      0,  20  },
+	{ ProjectileType::PROJECTILE_PLASMAPEA,     0,  40  },
 };
 
 Projectile::Projectile()
@@ -100,6 +101,22 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	{
 		//TOD_ASSERT();
 		ConvertToFireball(-100);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA)
+	{
+		float aOffsetX = -25.0f;
+		float aOffsetY = -25.0f;
+		Reanimation* aFirePeaReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_FIRE_PEA);
+		if (mMotionType == ProjectileMotion::MOTION_BACKWARDS)
+		{
+			aFirePeaReanim->OverrideScale(-1.0f, 1.0f);
+			aOffsetX += 80.0f;
+		}
+
+		aFirePeaReanim->SetPosition(mPosX + aOffsetX, mPosY + aOffsetY);
+		aFirePeaReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
+		aFirePeaReanim->mAnimRate = RandRangeFloat(50.0f, 80.0f);
+		AttachReanim(mAttachmentID, aFirePeaReanim, aOffsetX, aOffsetY);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_COBBIG)
 	{
@@ -438,7 +455,7 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_BYPASSES_SHIELD, true);
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_STAR)
+	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_STAR || mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA#+)
 	{
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_FREEZE, true);
 	}
@@ -449,7 +466,7 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 {
 	Rect aProjectileRect = GetProjectileRect();
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA)
 	{
 		aProjectileRect.mWidth = 100;
 	}
@@ -465,7 +482,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 	{
 		aRowDeviation = 0;
 	}
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA)
 	{
 		if (aRowDeviation != 0)
 		{
@@ -1067,6 +1084,10 @@ void Projectile::Draw(Graphics* g)
 	{
 		aImage = IMAGE_PROJECTILE_STAR;
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA)
+	{
+		aImage = IMAGE_PROJECTILE_PLASMA;
+	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
 	{	
 		aImage = IMAGE_PUFFSHROOM_PUFF1; //mApp->mResourceManager->GetImage("PuffShroom_puff_normal");
@@ -1277,8 +1298,10 @@ void Projectile::ConvertToRandom(int theGridX)
 	if (mHitTorchwoodGridX == theGridX)
 		return;
 
+
 	int options = rand() % 11 + 1;
 	Reanimation* aFirePeaReanim;
+	options = 15;
 
 	switch (options) {
 	case 1:
@@ -1287,7 +1310,7 @@ void Projectile::ConvertToRandom(int theGridX)
 		AttachReanim(mAttachmentID, aFirePeaReanim, -25.0f, -25.0f);
 		mApp->PlayFoley(FoleyType::FOLEY_FIREPEA);
 		break;
-	case 2: 
+	case 2:
 
 		mProjectileType = ProjectileType::PROJECTILE_SNOWPEA;
 		//animation = ReanimationType::REANIM_SNOWPEA;
@@ -1316,29 +1339,32 @@ void Projectile::ConvertToRandom(int theGridX)
 		mProjectileType = ProjectileType::PROJECTILE_BUTTER;
 		//animation = ReanimationType::REANIM_WINTER_MELON;
 		break;
-		case 7:
+	case 7:
 
 		mProjectileType = ProjectileType::PROJECTILE_KERNEL;
 		//animation = ReanimationType::REANIM_WINTER_MELON;
 		break;
 	case 8:
 
-	mProjectileType = ProjectileType::PROJECTILE_CABBAGE;
-	//animation = ReanimationType::REANIM_WINTER_MELON;
+		mProjectileType = ProjectileType::PROJECTILE_CABBAGE;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
 	break;case 9:
 
 		mProjectileType = ProjectileType::PROJECTILE_PUFF;
 		//animation = ReanimationType::REANIM_WINTER_MELON;
-		break;case 10:
+	break;case 10:
 
-			mProjectileType = ProjectileType::PROJECTILE_STAR;
-			//animation = ReanimationType::REANIM_WINTER_MELON;
-			break;
-		case 11:
+		mProjectileType = ProjectileType::PROJECTILE_STAR;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+	case 11:
 
-			mProjectileType = ProjectileType::PROJECTILE_SPIKE;
-			//animation = ReanimationType::REANIM_WINTER_MELON;
-			break;
+		mProjectileType = ProjectileType::PROJECTILE_SPIKE;
+		//animation = ReanimationType::REANIM_WINTER_MELON;
+		break;
+	case 15:
+		mProjectileType = ProjectileType::PROJECTILE_PLASMAPEA;
+		break;
 	}
 
 	mHitTorchwoodGridX = theGridX;

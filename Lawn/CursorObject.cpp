@@ -37,7 +37,7 @@ CursorObject::CursorObject()
 
 void CursorObject::Update()
 {
-    if (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mBoard->mCutScene->IsInShovelTutorial())
+    if (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mBoard->mCutScene->IsInGloveTutorial())
     {
         mVisible = false;
         return;
@@ -223,7 +223,7 @@ CursorPreview::CursorPreview()
 
 void CursorPreview::Update()
 {
-    if (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mBoard->mCutScene->IsInShovelTutorial())
+    if (mApp->mGameScene != GameScenes::SCENE_PLAYING && !mBoard->mCutScene->IsInGloveTutorial())
     {
         mVisible = false;
         return;

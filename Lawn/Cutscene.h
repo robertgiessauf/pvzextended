@@ -68,7 +68,7 @@ public:
     /*inline*/ bool             IsShowingCrazyDave();
     bool                        IsNonScrollingCutscene();
     bool                        IsScrolledLeftAtStart();
-    /*inline*/ bool             IsInShovelTutorial();
+    /*inline*/ bool             IsInGloveTutorial();
     void                        PlaceLawnItems();
     bool                        CanGetSecondPacketUpgrade();
     int                         ParseDelayTimeFromMessage();

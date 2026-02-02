@@ -4265,7 +4265,7 @@ void Plant::Draw(Graphics* g)
                 g->SetColorizeImages(true);
                 g->SetColor(GetFlashingColor(mBoard->mMainCounter, 90));
             }
-            else if (mBoard && mBoard->mTutorialState == TutorialState::TUTORIAL_SHOVEL_DIG)
+            else if (mBoard && mBoard->mTutorialState == TutorialState::TUTORIAL_GLOVE_DIG)
             {
                 g->SetColorizeImages(true);
                 g->SetColor(GetFlashingColor(mBoard->mMainCounter, 90));
