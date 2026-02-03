@@ -50,6 +50,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_PEA_THREEPEATER,   REANIM_ZOMBIE,              1,       4,     15,      4000,   _S("THREEPEATER_ZOMBIE")},
     { ZOMBIE_WALLNUT_HEAD,      REANIM_ZOMBIE,              4,      /*99*/5,     1,      3000,   _S("WALLNUT_ZOMBIE")},
     { ZOMBIE_JALAPENO_HEAD,     REANIM_ZOMBIE,              3,      99,     10,     1000,   _S("JALAPENO_ZOMBIE")},
+    { ZOMBIE_ICE_HEAD,          REANIM_ZOMBIE,              3,      1,     10,     1000,   _S("ICE_ZOMBIE")},
     { ZOMBIE_GATLING_HEAD,      REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("GATLING_ZOMBIE")},
     { ZOMBIE_SQUASH_HEAD,       REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("SQUASH_ZOMBIE")},
     { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")},
@@ -844,6 +845,30 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mPhaseCounter = (int)(aDistance / mVelX) * ZOMBIE_LIMP_SPEED_FACTOR;
         break;
     }
+
+    case ZombieType::ZOMBIE_ICE_HEAD:
+    {
+        LoadPlainZombieReanim();
+        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("anim_head", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("Zombie_tie", RENDER_GROUP_HIDDEN);
+
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_body");
+        Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_ICESHROOM);
+        aHeadReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
+        AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
+        aBodyReanim->mFrameBasePose = 0;
+        TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 55.0f, -5.0f, 0.2f, -1.0f, 1.0f);
+
+        mVariant = false;
+        mBodyHealth = 500;
+        int aDistance = 275 + Rand(175);
+        mPhaseCounter = (int)(aDistance / mVelX) * ZOMBIE_LIMP_SPEED_FACTOR;
+        break;
+    }
+
 
     case ZombieType::ZOMBIE_GATLING_HEAD:  
     {
@@ -2452,6 +2477,38 @@ void Zombie::BurnRow(int theRow)
     if (aBossZombie && aBossZombie->mFireballRow == theRow)
     {
         aBossZombie->BossDestroyIceballInRow(theRow);
+    }
+}
+
+void Zombie::UpdateZombieIceHead() {
+
+    if (!mHasHead)
+        return;
+
+    if (mPhaseCounter == 0)
+    {
+        //mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
+        //mApp->PlayFoley(FoleyType::FOLEY_JUICY);
+        //mBoard->DoFwoosh(mRow);
+        //mBoard->ShakeBoard(3, -4);
+
+        if (mMindControlled)
+        {
+            // TODO
+            //BurnRow(mRow);
+        }
+        else
+        {
+            Plant* aPlant = nullptr;
+            while (mBoard->IteratePlants(aPlant))
+            {
+                aPlant->mIsFroozen = true;
+                aPlant->mIsFroozenCounter = 500;
+                
+            }
+        }
+        DieNoLoot();
+
     }
 }
 
@@ -4532,6 +4589,10 @@ void Zombie::UpdateActions()
     if (mZombieType == ZombieType::ZOMBIE_JALAPENO_HEAD)
     {
         UpdateZombieJalapenoHead();
+    }
+    if (mZombieType == ZombieType::ZOMBIE_ICE_HEAD)
+    {
+        UpdateZombieIceHead();
     }
     if (mZombieType == ZombieType::ZOMBIE_GATLING_HEAD)
     {

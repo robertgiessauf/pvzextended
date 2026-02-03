@@ -382,6 +382,7 @@ public:
     void                            UpdateZombiePeaHead();
     void UpdateZombiePeaThreepeater();
     void                            UpdateZombieJalapenoHead();
+    void                            UpdateZombieIceHead();
     void                            ApplyBossSmokeParticles(bool theEnable);
     void                            UpdateZombiquarium();
     bool                            ZombiquariumFindClosestBrain();

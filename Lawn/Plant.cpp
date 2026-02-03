@@ -155,6 +155,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     const PlantDefinition& aPlantDef = GetPlantDefinition(theSeedType);
     mIsAsleep = false;
     mIsFroozen = false; //mApp->isSnowLevel();
+    mIsFroozenCounter = 0;
     mWakeUpCounter = 0;
     mOnBungeeState = PlantOnBungeeState::NOT_ON_BUNGEE;
     mPottedPlantIndex = -1;
@@ -3022,6 +3023,12 @@ void Plant::Update()
             Die();
 
         UpdateReanim();
+        if (mIsFroozenCounter > 0) {
+            mIsFroozenCounter--;
+            if (mIsFroozenCounter == 0) {
+                mIsFroozen = false;
+            }
+        }
     }
 }
 

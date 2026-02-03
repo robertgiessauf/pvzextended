@@ -188,6 +188,7 @@ public:
     bool                    mSquished;                      
     bool                    mIsAsleep;
     bool                    mIsFroozen;
+    int                    mIsFroozenCounter;
     bool                    mIsOnBoard;                     
     bool                    mHighlighted;                   
 
