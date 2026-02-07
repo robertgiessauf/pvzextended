@@ -824,6 +824,11 @@ void Board::LoadBackgroundImages()
 		TodLoadResources("DelayLoad_Background9");
 		break;
 
+	case BackgroundType::BACKGROUND_10_CROSSPOOL:
+		TodLoadResources("DelayLoad_Background3");
+		TodLoadResources("DelayLoad_Background10");
+		break;
+
 	case BackgroundType::BACKGROUND_GREENHOUSE:
 		TodLoadResources("DelayLoad_GreenHouseGarden");
 		TodLoadResources("DelayLoad_GreenHouseOverlay");
@@ -871,7 +876,8 @@ void Board::PickBackground()
 		}
 		else if (mLevel <= 5 * LEVELS_PER_AREA)
 		{
-			mBackground = BackgroundType::BACKGROUND_3_POOL;
+			mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+			//mBackground = BackgroundType::BACKGROUND_3_POOL;
 		}
 		else if (mApp->IsScaryPotterLevel())
 		{
@@ -1054,6 +1060,15 @@ void Board::PickBackground()
 		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[5] = PlantRowType::PLANTROW_NORMAL;
 	}
+	else if (mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL)
+	{
+		mPlantRow[0] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[1] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[2] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[3] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[4] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[5] = PlantRowType::PLANTROW_POOL;
+	}
 	else if (mBackground == BackgroundType::BACKGROUND_5_ROOF || mBackground == BackgroundType::BACKGROUND_6_BOSS)
 	{
 		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
@@ -1091,6 +1106,12 @@ void Board::PickBackground()
 			else if (mPlantRow[y] == PlantRowType::PLANTROW_HIGH_GROUND && x >= 4 && x <= 8)
 			{
 				mGridSquareType[x][y] = GridSquareType::GRIDSQUARE_HIGH_GROUND;
+			}
+			if (mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL)
+			{
+				if ((y <= 1 || y >= 4) && (x <= 2 || x >= 5)) {
+					mGridSquareType[x][y] = GridSquareType::GRIDSQUARE_GRASS;
+				}
 			}
 		}
 	}
@@ -2581,7 +2602,14 @@ bool Board::RowCanHaveZombieType(int theRow, ZombieType theZombieType)
 	}
 	if (mPlantRow[theRow] == PlantRowType::PLANTROW_POOL)
 	{
-		if (aCurrentWave < 5 && !IsZombieTypePoolOnly(theZombieType))
+		bool allPoolSquares = true;
+		for (int i = 0; i < MAX_GRID_SIZE_X; i++) {
+			if (mGridSquareType[i][theRow] != GRIDSQUARE_POOL) {
+				allPoolSquares = false;
+				break;
+			}
+		}
+		if (allPoolSquares && aCurrentWave < 5 && !IsZombieTypePoolOnly(theZombieType))
 		{
 			return false;
 		}
@@ -5996,6 +6024,7 @@ void Board::DrawBackdrop(Graphics* g)
 	case BackgroundType::BACKGROUND_ZOMBIQUARIUM:		aBgImage = Sexy::IMAGE_AQUARIUM1;						break;
 	case BackgroundType::BACKGROUND_TREEOFWISDOM:		aBgImage = nullptr;										break;
 	case BackgroundType::BACKGROUND_9_WINTER:		    aBgImage = Sexy::IMAGE_BACKGROUND9;					    break;
+	case BackgroundType::BACKGROUND_10_CROSSPOOL:       aBgImage = Sexy::IMAGE_BACKGROUND10;                   break;
 	default:											TOD_ASSERT();											break;
 	}
 
@@ -6038,7 +6067,7 @@ void Board::DrawBackdrop(Graphics* g)
 	{
 		DrawHouseDoorBottom(g);
 	}
-	if (StageHasPool())
+	if (StageHasPool() && mBackground != BackgroundType::BACKGROUND_10_CROSSPOOL)
 	{
 		mApp->mPoolEffect->PoolEffectDraw(g, StageIsNight());
 	}
@@ -6840,6 +6869,7 @@ void Board::DrawHouseDoorBottom(Graphics* g)
 	case BackgroundType::BACKGROUND_7_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
 	case BackgroundType::BACKGROUND_8_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
+	case BackgroundType::BACKGROUND_10_CROSSPOOL:
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY, -171, 241);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY, -172, 246);		break;
 	default:																													break;
@@ -6854,6 +6884,7 @@ void Board::DrawHouseDoorTop(Graphics* g)
 	case BackgroundType::BACKGROUND_7_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK, -130, 202);		break;
 	case BackgroundType::BACKGROUND_8_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
+	case BackgroundType::BACKGROUND_10_CROSSPOOL:
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_MASK, -172, 234);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_MASK, -173, 133);		break;
 	case BackgroundType::BACKGROUND_5_ROOF:		g->DrawImage(Sexy::IMAGE_BACKGROUND5_GAMEOVER_MASK, -220, 81);		break;
@@ -9049,12 +9080,12 @@ bool Board::IsStoneLevel() {
 
 bool Board::StageHasPool()
 {
-	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG);
+	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG || mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL);
 }
 
 bool Board::StageHas6Rows()
 {
-	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG);
+	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG || mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL);
 }
 
 bool Board::StageHasZombieWalkInFromRight()

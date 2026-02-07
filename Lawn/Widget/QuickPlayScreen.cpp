@@ -97,6 +97,7 @@ void QuickPlayScreen::Draw(Graphics* g)
     case BackgroundType::BACKGROUND_7_STONES:			g->DrawImage(Sexy::IMAGE_BACKGROUND7, -130, 0);                       break;
     case BackgroundType::BACKGROUND_2_NIGHT:			g->DrawImage(Sexy::IMAGE_BACKGROUND2, -130, 0);						break;
     case BackgroundType::BACKGROUND_8_STONES:			g->DrawImage(Sexy::IMAGE_BACKGROUND8, -130, 0);						break;
+    case BackgroundType::BACKGROUND_10_CROSSPOOL:
     case BackgroundType::BACKGROUND_3_POOL:
         g->DrawImage(Sexy::IMAGE_BACKGROUND3, -130, 0);
         DrawPool(g, false);
@@ -233,8 +234,10 @@ void QuickPlayScreen::ChooseBackground()
         mBackground = BackgroundType::BACKGROUND_2_NIGHT;
     } else if (mApp->mQuickLevel <= 3 * LEVELS_PER_AREA)
     {
-        groupName = "DelayLoad_Background7";
-        mBackground = BackgroundType::BACKGROUND_7_STONES;
+        groupName = "DelayLoad_Background10";
+        mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+        //groupName = "DelayLoad_Background7";
+        //mBackground = BackgroundType::BACKGROUND_7_STONES;
     }
     else if (mApp->mQuickLevel <= 4 * LEVELS_PER_AREA)
     {

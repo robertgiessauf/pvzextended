@@ -613,6 +613,11 @@
 <Image id="BACKGROUND1_GAMEOVER_MASK" path="background1_gameover_mask" />
 </Resources>
   
+<Resources id="DelayLoad_Background10">
+<SetDefaults path="images" idprefix="IMAGE_" />
+<Image id="BACKGROUND10" path="background10" ddsurface="" a8r8g8b8="" />
+</Resources>
+
 <Resources id="DelayLoad_BackgroundUnsodded">
 <SetDefaults path="images" idprefix="IMAGE_" />
 <Image id="BACKGROUND1UNSODDED" path="background1unsodded" ddsurface="" a8r8g8b8="" />

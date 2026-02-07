@@ -203,7 +203,10 @@ int TodPickFromSmoothArray(TodSmoothArray* theArray, int theCount)
 	{
 		aTotalAdjustedWeight += TodCalcSmoothWeight(theArray[j].mWeight * aNormalizeFactor, theArray[j].mLastPicked, theArray[j].mSecondLastPicked);
 	}
-	TOD_ASSERT(aTotalAdjustedWeight > 0.0f);
+	//TOD_ASSERT(aTotalAdjustedWeight > 0.0f);
+	if (!(aTotalAdjustedWeight > 0.0f)) {
+		return 0;
+	}
 
 	float aRandWeight = Rand(aTotalAdjustedWeight);
 	float aAccumulatedWeight = 0.0f;

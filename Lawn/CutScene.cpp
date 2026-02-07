@@ -421,6 +421,7 @@ void CutScene::PreloadResources()
 		TodLoadResources("DelayLoad_Background3");
 		TodLoadResources("DelayLoad_Background4");
 		TodLoadResources("DelayLoad_Background5");
+		TodLoadResources("DelayLoad_Background10");
 		TodLoadResources("DelayLoad_ChallengeScreen");
 		Zombie::PreloadZombieResources(ZombieType::ZOMBIE_NORMAL);
 		Zombie::PreloadZombieResources(ZombieType::ZOMBIE_TRAFFIC_CONE);
@@ -891,6 +892,11 @@ void CutScene::StartLevelIntro()
 			else if (mBoard->mBackground == BackgroundType::BACKGROUND_5_ROOF || mBoard->mBackground == BackgroundType::BACKGROUND_6_BOSS)
 			{
 				aHouseMessage = TodStringTranslate(_S("[PLAYERS_ROOF]"));
+			}
+			else if (mBoard->mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL)
+			{
+				// TODO
+				aHouseMessage = TodStringTranslate(_S("[PLAYERS_BACKYARD]"));
 			}
 			else
 			{
