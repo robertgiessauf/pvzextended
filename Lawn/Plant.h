@@ -280,6 +280,7 @@ public:
     /*inline*/ bool         IsOnBoard();
     void                    RemoveEffects();
     void                    UpdateCoffeeBean();
+    void                    UpdateMarigold();
     void                    UpdateUmbrella();
     void                    EndBlink();
     void                    AnimateGarlic();

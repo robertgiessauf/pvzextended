@@ -783,6 +783,7 @@ int Board::GetLevelRandSeed()
 
 void Board::LoadBackgroundImages()
 {
+
 	switch (mBackground)
 	{
 	case BackgroundType::BACKGROUND_1_DAY:
@@ -827,6 +828,11 @@ void Board::LoadBackgroundImages()
 	case BackgroundType::BACKGROUND_10_CROSSPOOL:
 		TodLoadResources("DelayLoad_Background3");
 		TodLoadResources("DelayLoad_Background10");
+		break;
+
+	case BackgroundType::BACKGROUND_11_RIVER:
+		TodLoadResources("DelayLoad_Background3");
+		TodLoadResources("DelayLoad_Background11");
 		break;
 
 	case BackgroundType::BACKGROUND_GREENHOUSE:
@@ -876,7 +882,8 @@ void Board::PickBackground()
 		}
 		else if (mLevel <= 5 * LEVELS_PER_AREA)
 		{
-			mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+			mBackground = BackgroundType::BACKGROUND_11_RIVER;
+			//mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
 			//mBackground = BackgroundType::BACKGROUND_3_POOL;
 		}
 		else if (mApp->IsScaryPotterLevel())
@@ -1069,6 +1076,15 @@ void Board::PickBackground()
 		mPlantRow[4] = PlantRowType::PLANTROW_POOL;
 		mPlantRow[5] = PlantRowType::PLANTROW_POOL;
 	}
+	else if (mBackground == BackgroundType::BACKGROUND_11_RIVER)
+	{
+		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[2] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[3] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[5] = PlantRowType::PLANTROW_DIRT;
+	}
 	else if (mBackground == BackgroundType::BACKGROUND_5_ROOF || mBackground == BackgroundType::BACKGROUND_6_BOSS)
 	{
 		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
@@ -1114,6 +1130,26 @@ void Board::PickBackground()
 				}
 			}
 		}
+	}
+
+
+	if (mBackground == BackgroundType::BACKGROUND_11_RIVER)
+	{
+		mGridSquareType[0][0] = GridSquareType::GRIDSQUARE_DIRT;
+		mGridSquareType[1][0] = GridSquareType::GRIDSQUARE_DIRT;
+		mGridSquareType[6][0] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[7][0] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[8][0] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[4][1] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[5][1] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[6][1] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[2][2] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[3][2] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[4][2] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[0][3] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[1][3] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[2][3] = GridSquareType::GRIDSQUARE_POOL;
+		mGridSquareType[0][4] = GridSquareType::GRIDSQUARE_POOL;
 	}
 
 	MTRand aLevelRNG(GetLevelRandSeed());
@@ -3922,7 +3958,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		TOD_ASSERT();
 	}
 	
-	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN || mApp->IsFinalBossLevel())
 	{
 		for (int aRow = 0; aRow < MAX_GRID_SIZE_Y; aRow++)
 		{
@@ -6024,7 +6060,8 @@ void Board::DrawBackdrop(Graphics* g)
 	case BackgroundType::BACKGROUND_ZOMBIQUARIUM:		aBgImage = Sexy::IMAGE_AQUARIUM1;						break;
 	case BackgroundType::BACKGROUND_TREEOFWISDOM:		aBgImage = nullptr;										break;
 	case BackgroundType::BACKGROUND_9_WINTER:		    aBgImage = Sexy::IMAGE_BACKGROUND9;					    break;
-	case BackgroundType::BACKGROUND_10_CROSSPOOL:       aBgImage = Sexy::IMAGE_BACKGROUND10;                   break;
+	case BackgroundType::BACKGROUND_10_CROSSPOOL:       aBgImage = Sexy::IMAGE_BACKGROUND10;                    break;
+	case BackgroundType::BACKGROUND_11_RIVER:           aBgImage = Sexy::IMAGE_BACKGROUND11;                    break;
 	default:											TOD_ASSERT();											break;
 	}
 
@@ -6869,6 +6906,7 @@ void Board::DrawHouseDoorBottom(Graphics* g)
 	case BackgroundType::BACKGROUND_7_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
 	case BackgroundType::BACKGROUND_8_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
+	case BackgroundType::BACKGROUND_11_RIVER:
 	case BackgroundType::BACKGROUND_10_CROSSPOOL:
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY, -171, 241);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY, -172, 246);		break;
@@ -6885,6 +6923,7 @@ void Board::DrawHouseDoorTop(Graphics* g)
 	case BackgroundType::BACKGROUND_8_STONES:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
 	case BackgroundType::BACKGROUND_10_CROSSPOOL:
+	case BackgroundType::BACKGROUND_11_RIVER:
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_MASK, -172, 234);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_MASK, -173, 133);		break;
 	case BackgroundType::BACKGROUND_5_ROOF:		g->DrawImage(Sexy::IMAGE_BACKGROUND5_GAMEOVER_MASK, -220, 81);		break;

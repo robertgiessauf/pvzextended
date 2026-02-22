@@ -43,6 +43,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
         { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
                 { SeedType::SEED_RANDOMTORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
+                    { SeedType::SEED_MARIGOLD,          nullptr, ReanimationType::REANIM_MARIGOLD,      24, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("MARIGOLD") },
 
     { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
 
@@ -85,7 +86,6 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_GARLIC,            nullptr, ReanimationType::REANIM_GARLIC,        8,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GARLIC") },
     { SeedType::SEED_UMBRELLA,          nullptr, ReanimationType::REANIM_UMBRELLALEAF,  23, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("UMBRELLA_LEAF") },
 
-    { SeedType::SEED_MARIGOLD,          nullptr, ReanimationType::REANIM_MARIGOLD,      24, 50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("MARIGOLD") },
     { SeedType::SEED_MELONPULT,         nullptr, ReanimationType::REANIM_MELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("MELON_PULT") },
 
 
@@ -1145,7 +1145,7 @@ void Plant::UpdateProductionPlant()
         }
         else if (mSeedType == SeedType::SEED_MARIGOLD)
         {
-            mBoard->AddCoin(mX, mY, (Sexy::Rand(100) < 10) ? CoinType::COIN_GOLD : CoinType::COIN_SILVER, CoinMotion::COIN_MOTION_COIN);
+            // mBoard->AddCoin(mX, mY, (Sexy::Rand(100) < 10) ? CoinType::COIN_GOLD : CoinType::COIN_SILVER, CoinMotion::COIN_MOTION_COIN);
         }
 
         if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BIG_TIME)
@@ -2711,7 +2711,7 @@ void Plant::UpdateAbilities()
     else if (mSeedType == SeedType::SEED_MAGNETSHROOM)                                          UpdateMagnetShroom();
     else if (mSeedType == SeedType::SEED_GOLD_MAGNET)                                           UpdateGoldMagnetShroom();
     else if (mSeedType == SeedType::SEED_SUNSHROOM)                                             UpdateSunShroom();
-    else if (MakesSun() || mSeedType == SeedType::SEED_MARIGOLD)                                UpdateProductionPlant();
+    else if (MakesSun())                                UpdateProductionPlant();
     else if (mSeedType == SeedType::SEED_GRAVEBUSTER)                                           UpdateGraveBuster();
     else if (mSeedType == SeedType::SEED_TORCHWOOD)                                             UpdateTorchwood();
     else if (mSeedType == SeedType::SEED_RANDOMTORCHWOOD)                                       UpdateRandomTorchwood();
@@ -2719,7 +2719,7 @@ void Plant::UpdateAbilities()
     else if (mSeedType == SeedType::SEED_SPIKEWEED || mSeedType == SeedType::SEED_SPIKEROCK)    UpdateSpikeweed();
     else if (mSeedType == SeedType::SEED_TANGLEKELP)                                            UpdateTanglekelp();
     else if (mSeedType == SeedType::SEED_SCAREDYSHROOM)                                         UpdateScaredyShroom();
-
+    else if (mSeedType == SeedType::SEED_MARIGOLD)                                              UpdateMarigold();
     if (mSubclass == PlantSubClass::SUBCLASS_SHOOTER)
     {
         UpdateShooter();
@@ -2731,6 +2731,13 @@ void Plant::UpdateAbilities()
         {
             DoSpecial();
         }
+    }
+}
+
+void Plant::UpdateMarigold() {
+    if (FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY))
+    {
+        DoSpecial();
     }
 }
 
@@ -3029,6 +3036,8 @@ void Plant::Update()
                 mIsFroozen = false;
             }
         }
+
+        //if (aPortal->ClosePortal();)
     }
 }
 
@@ -4637,6 +4646,42 @@ void Plant::DoSpecial()
         mBoard->ShakeBoard(3, -4);
 
         Die();
+        break;
+    } case SeedType::SEED_MARIGOLD:
+    {
+        aPosX = mX + mWidth / 2 + 20;
+        aPosY = mY + mHeight / 2;
+
+        //Zombie* target = mBoard->GetAllZombiesInRadius(mRow, mX, mY, 10, 1, DamageFlags::DAMAGE_BYPASSES_SHIELD);
+        Zombie* target = nullptr;
+        while (mBoard->IterateZombies(target))
+        {
+            if (GetCircleRectOverlap(aPosX, aPosY, 30, target->GetZombieRect()))
+            {  float PosOld = target->mPosX;
+               //float RowOld = target->mRow;
+                //do {
+                //    target->mRow = rand() % MAX_GRID_SIZE_Y;
+                //} while (mBoard->mPlantRow[target->mRow] != PLANTROW_POOL && mBoard->mPlantRow[target->mRow] != PLANTROW_NORMAL && mBoard->mPlantRow[target->mRow] != PLANTROW_HIGH_GROUND);
+                //target->mPosY = target->GetPosYBasedOnRow(target->mRow);
+              
+                target->mPosX = 780;
+                mApp->PlaySample(SOUND_PORTAL);
+
+                GridItem *aPortal = mBoard->mGridItems.DataArrayAlloc();
+                aPortal->mGridItemType = GRIDITEM_PORTAL_CIRCLE;
+                aPortal->mGridX = mBoard->PixelToGridX(PosOld, target->mPosY);
+                aPortal->mGridY = target->mRow;
+                aPortal->mRenderOrder = mBoard->MakeRenderOrder(RENDER_LAYER_PARTICLE, aPortal->mGridY, 0);
+                aPortal->OpenPortal();
+
+                aPortal->ClosePortal();
+
+                
+                Die();
+                break;
+            }
+        }
+
         break;
     }
     case SeedType::SEED_INSTANT_COFFEE:

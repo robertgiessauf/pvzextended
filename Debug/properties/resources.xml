@@ -618,6 +618,11 @@
 <Image id="BACKGROUND10" path="background10" ddsurface="" a8r8g8b8="" />
 </Resources>
 
+<Resources id="DelayLoad_Background11">
+<SetDefaults path="images" idprefix="IMAGE_" />
+<Image id="BACKGROUND11" path="background11" ddsurface="" a8r8g8b8="" />
+</Resources>
+
 <Resources id="DelayLoad_BackgroundUnsodded">
 <SetDefaults path="images" idprefix="IMAGE_" />
 <Image id="BACKGROUND1UNSODDED" path="background1unsodded" ddsurface="" a8r8g8b8="" />

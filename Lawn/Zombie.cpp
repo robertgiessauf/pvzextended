@@ -22,7 +22,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_FLAG,              REANIM_ZOMBIE,              1,      1,      1,      0,      _S("FLAG_ZOMBIE")},
     { ZOMBIE_GHOST,             REANIM_ZOMBIE_GHOST,        5,      1,      1,      4000,   _S("GHOST_ZOMBIE")},
     { ZOMBIE_TRAFFIC_CONE,      REANIM_ZOMBIE,              2,      3,      1,      4000,   _S("CONEHEAD_ZOMBIE")},
-    { ZOMBIE_POLEVAULTER,       REANIM_POLEVAULTER,         2,      6,      5,      2000,   _S("POLE_VAULTING_ZOMBIE")},
+    { ZOMBIE_POLEVAULTER,       REANIM_POLEVAULTER,         2,      4,      5,      2000,   _S("POLE_VAULTING_ZOMBIE")},
     { ZOMBIE_PAIL,              REANIM_ZOMBIE,              4,      8,      1,      3000,   _S("BUCKETHEAD_ZOMBIE")},
     { ZOMBIE_NEWSPAPER,         REANIM_ZOMBIE_NEWSPAPER,    2,      2/*11*/,1,      1000,   _S("NEWSPAPER_ZOMBIE")},
     { ZOMBIE_DOOR,              REANIM_ZOMBIE,              4,      13,     5,      3500,   _S("SCREEN_DOOR_ZOMBIE")},
@@ -7160,6 +7160,10 @@ void Zombie::EatPlant(Plant* thePlant)
 
     if (mYuckyFace)
         return;
+
+    if (thePlant->mSeedType == SEED_PEADRONE) {
+        return;
+    }
 
     if (mBoard->GetLadderAt(thePlant->mPlantCol, thePlant->mRow) && mZombieType != ZombieType::ZOMBIE_DIGGER)  
     {

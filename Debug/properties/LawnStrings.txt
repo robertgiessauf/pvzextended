@@ -253,10 +253,10 @@ Umbrella Leaf
 Protects nearby plants from bungees and catapults
 
 [MARIGOLD]
-Marigold
+Portal Flower
 
 [MARIGOLD_TOOLTIP]
-Gives you silver and gold coins
+Transports zombie back to start
 
 [MELON_PULT]
 Melon-pult

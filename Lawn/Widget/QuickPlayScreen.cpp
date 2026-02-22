@@ -234,8 +234,12 @@ void QuickPlayScreen::ChooseBackground()
         mBackground = BackgroundType::BACKGROUND_2_NIGHT;
     } else if (mApp->mQuickLevel <= 3 * LEVELS_PER_AREA)
     {
-        groupName = "DelayLoad_Background10";
-        mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+        groupName = "DelayLoad_Background11";
+        mBackground = BackgroundType::BACKGROUND_11_RIVER;
+
+        //groupName = "DelayLoad_Background10";
+        //mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+
         //groupName = "DelayLoad_Background7";
         //mBackground = BackgroundType::BACKGROUND_7_STONES;
     }

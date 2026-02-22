@@ -893,7 +893,7 @@ void CutScene::StartLevelIntro()
 			{
 				aHouseMessage = TodStringTranslate(_S("[PLAYERS_ROOF]"));
 			}
-			else if (mBoard->mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL)
+			else if (mBoard->mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL || mBoard->mBackground == BackgroundType::BACKGROUND_11_RIVER)
 			{
 				// TODO
 				aHouseMessage = TodStringTranslate(_S("[PLAYERS_BACKYARD]"));
@@ -1042,15 +1042,15 @@ void CutScene::AddGraveStoneParticles()
 void CutScene::AddFlowerPots()
 {
 	int aPotColumns = 0;
-	if (mBoard->mLevel == 41)
+	if (mBoard->mLevel == 61)
 	{
 		aPotColumns = 5;
 	}
-	else if (mBoard->mLevel == 42)
+	else if (mBoard->mLevel == 62)
 	{
 		aPotColumns = 4;
 	}
-	else if (mBoard->mLevel >= 43 && mBoard->mLevel <= 50)
+	else if (mBoard->mLevel >= 63 && mBoard->mLevel <= 70)
 	{
 		aPotColumns = 3;
 	}

@@ -312,7 +312,7 @@ void CursorPreview::Draw(Graphics* g)
         Plant::DrawSeedType(g, mBoard->mCursorObject->mType, mBoard->mCursorObject->mImitaterType, DrawVariation::VARIATION_NORMAL, aOffsetX, aOffsetY);
     }
 
-    if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)
+    if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN || mApp->IsFinalBossLevel())
     {
         for (int y = 0; y < MAX_GRID_SIZE_Y; y++)
         {

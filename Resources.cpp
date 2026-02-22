@@ -22,6 +22,7 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theManager, const char *theNa
 	if (strcmp(theName, "DelayLoad_Background8") == 0) return ExtractDelayLoad_Background8Resources(theManager);
 	if (strcmp(theName, "DelayLoad_Background9") == 0) return ExtractDelayLoad_Background9Resources(theManager);
 	if (strcmp(theName, "DelayLoad_Background10") == 0) return ExtractDelayLoad_Background10Resources(theManager);
+	if (strcmp(theName, "DelayLoad_Background11") == 0) return ExtractDelayLoad_Background11Resources(theManager);
 	if (strcmp(theName,"DelayLoad_BackgroundUnsodded")==0) return ExtractDelayLoad_BackgroundUnsoddedResources(theManager);
 	if (strcmp(theName,"DelayLoad_ChallengeScreen")==0) return ExtractDelayLoad_ChallengeScreenResources(theManager);
 	if (strcmp(theName,"DelayLoad_Credits")==0) return ExtractDelayLoad_CreditsResources(theManager);
@@ -197,6 +198,7 @@ Image* Sexy::IMAGE_BACKGROUND7;
 Image* Sexy::IMAGE_BACKGROUND8;
 Image* Sexy::IMAGE_BACKGROUND9;
 Image* Sexy::IMAGE_BACKGROUND10;
+Image* Sexy::IMAGE_BACKGROUND11;
 Image* Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY;
 Image* Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK;
 
@@ -357,6 +359,23 @@ bool Sexy::ExtractDelayLoad_Background10Resources(ResourceManager* theManager)
 	return true;
 }
 
+bool Sexy::ExtractDelayLoad_Background11Resources(ResourceManager* theManager)
+{
+	gNeedRecalcVariableToIdMap = true;
+
+	ResourceManager& aMgr = *theManager;
+	try
+	{
+		IMAGE_BACKGROUND11 = aMgr.GetImageThrow("IMAGE_BACKGROUND11");
+		IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY = aMgr.GetImageThrow("IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY");
+		IMAGE_BACKGROUND3_GAMEOVER_MASK = aMgr.GetImageThrow("IMAGE_BACKGROUND3_GAMEOVER_MASK");
+	}
+	catch (ResourceManagerException&)
+	{
+		return false;
+	}
+	return true;
+}
 
 // DelayLoad_Background5 Resources
 Image* Sexy::IMAGE_BACKGROUND5;
@@ -2571,6 +2590,7 @@ static void* gResources[] =
 	&IMAGE_BACKGROUND3_GAMEOVER_MASK,
 	&IMAGE_BACKGROUND4,
 	&IMAGE_BACKGROUND10,
+	& IMAGE_BACKGROUND11,
 	&IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY,
 	&IMAGE_BACKGROUND4_GAMEOVER_MASK,
 	&IMAGE_FOG,

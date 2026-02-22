@@ -1,16 +1,16 @@
-Exception: Access Violation (code 0xc0000005) at address 005EA419 in thread 5F48
+Exception: Access Violation (code 0xc0000005) at address 00F48929 in thread 612C
 Module: LawnProject.exe
-Logical Address: 0001:00049419
+Logical Address: 0001:000A7929
 
-0055F3D4 005EA419 std::_Container_base12::_Orphan_all_unlocked_v3+49
-Params: 005A1375 005A1375 00273000 00273000
+007DF1D0 00F48929 Music::MusicUpdate+89
+Params: 00EA1375 00EA1375 009E0000 007DF220
 
 StackWalk failed (error 299)
 
-EAX:FF0464B0 EBX:00273000 ECX:0055F388 EDX:00000000 ESI:005A1375 EDI:005A1375
-EIP:005EA419 ESP:0055F37C  EBP:0055F3D4
+EAX:00000000 EBX:009E0000 ECX:0BB38808 EDX:0BB38808 ESI:00EA1375 EDI:00EA1375
+EIP:00F48929 ESP:007DF170  EBP:007DF1D0
 CS:0023 SS:002B DS:002B ES:002B FS:0053 GS:002B
-Flags:00010282
+Flags:00010206
 
 Windows Ver: NT 6.2  Build 9200
 DDraw Ver: 
@@ -18,8 +18,8 @@ DSound Ver:
 
 Product: PlantsVsZombies
 Version: 1.0.0.1
-Time Loaded: 00:00:23
-Fullscreen: No
-Primary ThreadId: 5F48
+Time Loaded: 00:13:42
+Fullscreen: Yes
+Primary ThreadId: 612C
 Times Played: 0
 

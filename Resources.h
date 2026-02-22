@@ -101,6 +101,9 @@ namespace Sexy
 	bool ExtractDelayLoad_Background10Resources(ResourceManager* theMgr);
 	extern Image* IMAGE_BACKGROUND10;
 
+	bool ExtractDelayLoad_Background11Resources(ResourceManager* theMgr);
+	extern Image* IMAGE_BACKGROUND11;
+
 	// DelayLoad_Background5 Resources
 	bool ExtractDelayLoad_Background5Resources(ResourceManager *theMgr);
 	extern Image* IMAGE_BACKGROUND5;
