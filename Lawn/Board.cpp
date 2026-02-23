@@ -1078,11 +1078,11 @@ void Board::PickBackground()
 	}
 	else if (mBackground == BackgroundType::BACKGROUND_11_RIVER)
 	{
-		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
-		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
-		mPlantRow[2] = PlantRowType::PLANTROW_NORMAL;
-		mPlantRow[3] = PlantRowType::PLANTROW_NORMAL;
-		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[0] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[1] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[2] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[3] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[4] = PlantRowType::PLANTROW_POOL;
 		mPlantRow[5] = PlantRowType::PLANTROW_DIRT;
 	}
 	else if (mBackground == BackgroundType::BACKGROUND_5_ROOF || mBackground == BackgroundType::BACKGROUND_6_BOSS)
@@ -1135,6 +1135,13 @@ void Board::PickBackground()
 
 	if (mBackground == BackgroundType::BACKGROUND_11_RIVER)
 	{
+		for (int x = 0; x < MAX_GRID_SIZE_X; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				mGridSquareType[x][y] = GridSquareType::GRIDSQUARE_GRASS;
+			}
+		}
 		mGridSquareType[0][0] = GridSquareType::GRIDSQUARE_DIRT;
 		mGridSquareType[1][0] = GridSquareType::GRIDSQUARE_DIRT;
 		mGridSquareType[6][0] = GridSquareType::GRIDSQUARE_POOL;
@@ -1150,6 +1157,7 @@ void Board::PickBackground()
 		mGridSquareType[1][3] = GridSquareType::GRIDSQUARE_POOL;
 		mGridSquareType[2][3] = GridSquareType::GRIDSQUARE_POOL;
 		mGridSquareType[0][4] = GridSquareType::GRIDSQUARE_POOL;
+
 	}
 
 	MTRand aLevelRNG(GetLevelRandSeed());

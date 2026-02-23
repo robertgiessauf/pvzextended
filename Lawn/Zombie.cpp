@@ -7046,7 +7046,7 @@ void Zombie::PoolSplash(bool theInToPoolSound)
 
 void Zombie::CheckForPool()
 {
-    if (!Zombie::ZombieTypeCanGoInPool(mZombieType) || IsFlying())
+    if (/*!Zombie::ZombieTypeCanGoInPool(mZombieType) || */ IsFlying())
     {
         return;
     }
@@ -7066,6 +7066,7 @@ void Zombie::CheckForPool()
 
     if (!mInPool && aIsPoolSquare)
     {
+       
         if (mBoard->mIceTrapCounter > 0)
         {
             mIceTrapCounter = mBoard->mIceTrapCounter;
