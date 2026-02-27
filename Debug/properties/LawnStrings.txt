@@ -223,10 +223,10 @@ Magnet-shroom
 Removes helmets and other metal objects from zombies
 
 [CABBAGE_PULT]
-Cabbage-pult
+Cherry-Pult
 
 [CABBAGE_PULT_TOOLTIP]
-Hurls cabbages at the enemy
+Hurls cherry bombs at the enemy
 
 [FLOWER_POT]
 Flower Pot

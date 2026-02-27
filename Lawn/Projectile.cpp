@@ -14,7 +14,7 @@
 ProjectileDefinition gProjectileDefinition[] = {  
 	{ ProjectileType::PROJECTILE_PEA,           0,  20  },
 	{ ProjectileType::PROJECTILE_SNOWPEA,       0,  20  },
-	{ ProjectileType::PROJECTILE_CABBAGE,       0,  40  },
+	{ ProjectileType::PROJECTILE_CABBAGE,       0,  /*40*/ 300  },
 	{ ProjectileType::PROJECTILE_MELON,         0,  80  },
 	{ ProjectileType::PROJECTILE_PUFF,          0,  20  },
 	{ ProjectileType::PROJECTILE_WINTERMELON,   0,  80  },
@@ -868,6 +868,9 @@ void Projectile::DoImpact(Zombie* theZombie)
 	if (mProjectileType == ProjectileType::PROJECTILE_COBBIG) {
 		mBoard->KillAllZombiesInRadius(mRow, mPosX + 80, mPosY + 40, 115, 1, true, mDamageRangeFlags);
 	}
+	if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE) {
+		mBoard->KillAllZombiesInRadius(mRow, mPosX, mPosY, 100, 1, true, mDamageRangeFlags);
+	}
 	if (!passThrought) {
 		PlayImpactSound(theZombie);
 	}
@@ -936,6 +939,17 @@ void Projectile::DoImpact(Zombie* theZombie)
 		mApp->AddTodParticle(mPosX + 80.0f, mPosY + 40.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_POPCORNSPLASH);
 		mApp->PlaySample(SOUND_DOOMSHROOM);
 		mBoard->ShakeBoard(3, -4);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE)
+	{
+		int aRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_GROUND, mCobTargetRow, 2);
+		mApp->AddTodParticle(mPosX + 80.0f, mPosY + 40.0f, aRenderOrder, ParticleEffect::PARTICLE_BLASTMARK);
+		//mApp->AddTodParticle(mPosX + 80.0f, mPosY + 40.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_exp);
+
+		mApp->AddTodParticle(mPosX, mPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
+		mBoard->ShakeBoard(3, -4);
+
+		mApp->PlaySample(SOUND_CHERRYBOMB);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PEA)
 	{
