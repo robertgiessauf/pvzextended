@@ -23,6 +23,12 @@ Sunflower
 [SUNFLOWER_TOOLTIP]
 Gives you additional sun
 
+[QUATRO_SUNFLOWER]
+Tripple Sunflower
+
+[QUATRO_SUNFLOWER_TOOLTIP]
+Gives you two additional sun
+
 [CHERRY_BOMB]
 Cherry Bomb
 
@@ -109,10 +115,10 @@ Scaredy-shroom
 Long-ranged shooter that hides when enemies get near it
 
 [ICE_SHROOM]
-Ice-shroom
+Heal-shroom
 
 [ICE_SHROOM_TOOLTIP]
-Temporarily immobilizes all zombies on the screen
+Heals other plants
 
 [FIRE_SHROOM]
 Fire-shroom

@@ -435,6 +435,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_GATLINGPEA:
+	case SeedType::SEED_GATLINSNOWGPEA:
 		aScale = 0.5f;
 		aOffsetX = 2.0f;
 		aOffsetY = 8.0f;

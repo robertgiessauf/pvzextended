@@ -58,8 +58,9 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_PUFFSHROOMPULT,        nullptr, ReanimationType::REANIM_PUFFPULT,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    200,    _S("PUFF_PULT") },
 
          { SeedType::SEED_ICESHROOM,         nullptr, ReanimationType::REANIM_ICESHROOM,     36, 75,     4000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("ICE_SHROOM") },
+         { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,         5,  300,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
 
-{ SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,         5,  300,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
+{ SeedType::SEED_GATLINSNOWGPEA,        nullptr, ReanimationType::REANIM_GATLINSNOWGPEA,         5,  300,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_SNOWPEA") },
     { SeedType::SEED_FIRESHROOM,         nullptr, ReanimationType::REANIM_FIRESHROOM,   36, 125,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FIRE_SHROOM") },
 
 
@@ -67,7 +68,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_LILYPAD,           nullptr, ReanimationType::REANIM_LILYPAD,       19, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("LILY_PAD") },
 
 
-        { SeedType::SEED_CABBAGEPULT,       nullptr, ReanimationType::REANIM_CABBAGEPULT,   13, 50,    2000,    PlantSubClass::SUBCLASS_SHOOTER,    900,    _S("CABBAGE_PULT") },
+        { SeedType::SEED_CABBAGEPULT,       nullptr, ReanimationType::REANIM_CABBAGEPULT,   13, 700,    5000,    PlantSubClass::SUBCLASS_SHOOTER,    900,    _S("CABBAGE_PULT") },
 
     { SeedType::SEED_TANGLEKELP,        nullptr, ReanimationType::REANIM_TANGLEKELP,    17, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TANGLE_KELP") },
     { SeedType::SEED_JALAPENO,          nullptr, ReanimationType::REANIM_JALAPENO,      11, 75,    2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("JALAPENO") },
@@ -80,10 +81,12 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_SPLITPEA,          nullptr, ReanimationType::REANIM_SPLITPEA,      32, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SPLIT_PEA") },
     { SeedType::SEED_PUMPKINSHELL,      nullptr, ReanimationType::REANIM_PUMPKIN,       25, 125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("PUMPKIN") },
     { SeedType::SEED_MAGNETSHROOM,      nullptr, ReanimationType::REANIM_MAGNETSHROOM,  35, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("MAGNET_SHROOM") },
+    { SeedType::SEED_QUATROSUNFLOWER,     nullptr, ReanimationType::REANIM_QUATRO_SUNFLOWER, 1,  275,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("QUATRO_SUNFLOWER") },
+
     { SeedType::SEED_FLOWERPOT,         nullptr, ReanimationType::REANIM_FLOWER_POT,    33, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FLOWER_POT") },
     { SeedType::SEED_KERNELPULT,        nullptr, ReanimationType::REANIM_KERNELPULT,    13, 100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("KERNEL_PULT") },
     { SeedType::SEED_INSTANT_COFFEE,    nullptr, ReanimationType::REANIM_COFFEEBEAN,    33, 75,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("COFFEE_BEAN") },
-    { SeedType::SEED_GARLIC,            nullptr, ReanimationType::REANIM_GARLIC,        8,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GARLIC") },
+{ SeedType::SEED_GARLIC,            nullptr, ReanimationType::REANIM_GARLIC,        8,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GARLIC") },
     { SeedType::SEED_UMBRELLA,          nullptr, ReanimationType::REANIM_UMBRELLALEAF,  23, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("UMBRELLA_LEAF") },
 
     { SeedType::SEED_MELONPULT,         nullptr, ReanimationType::REANIM_MELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("MELON_PULT") },
@@ -91,7 +94,6 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
 
     { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, 650,     750,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
 
-    { SeedType::SEED_QUATROSUNFLOWER,     nullptr, ReanimationType::REANIM_QUATRO_SUNFLOWER, 1,  275,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("QUATRO_SUNFLOWER") },
 
     { SeedType::SEED_WINTERMELON,       nullptr, ReanimationType::REANIM_WINTER_MELON,  27, 200,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("WINTER_MELON") },
     { SeedType::SEED_GOLD_MAGNET,       nullptr, ReanimationType::REANIM_GOLD_MAGNET,   27, 50,     5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GOLD_MAGNET") },
@@ -228,6 +230,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     case SeedType::SEED_REPEATER:
     case SeedType::SEED_LEFTPEATER:
     case SeedType::SEED_GATLINGPEA:
+    case SeedType::SEED_GATLINSNOWGPEA:
         if (aBodyReanim)
         {
             aBodyReanim->mAnimRate = RandRangeFloat(15.0f, 20.0f);
@@ -797,7 +800,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
             aHeadReanim->mAnimRate = 45.0f;
             mShootingCounter = 26;
         }
-        else if (mSeedType == SeedType::SEED_GATLINGPEA)
+        else if (mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_GATLINSNOWGPEA)
         {
             aHeadReanim->mAnimRate = 38.0f;
             mShootingCounter = 100;
@@ -3126,7 +3129,7 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
             aTrackToAttach = "anim_face2";
         }
     }
-    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_REPEATER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_LEFTPEATER || mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_PEADRONE)
+    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_REPEATER || mSeedType == SeedType::SEED_GATLINSNOWGPEA || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_LEFTPEATER || mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_PEADRONE)
     {
         if (theReanimBody->TrackExists("anim_stem"))
         {
@@ -3391,7 +3394,7 @@ void Plant::UpdateShooting()
             Fire(nullptr, mRow, PlantWeapon::WEAPON_PRIMARY);
         }
     }
-    else if (mSeedType == SeedType::SEED_GATLINGPEA)
+    else if (mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_GATLINSNOWGPEA)
     {
         if (mShootingCounter == 18 || mShootingCounter == 35 || mShootingCounter == 51 || mShootingCounter == 68)
         {
@@ -4607,9 +4610,17 @@ void Plant::DoSpecial()
     }
     case SeedType::SEED_ICESHROOM:
     {
-        mApp->PlayFoley(FoleyType::FOLEY_FROZEN);
-        IceZombies();
-        mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_ICE_TRAP);
+        mApp->PlayFoley(FoleyType::FOLEY_COFFEE);
+        Plant* aPlant = nullptr;
+        while (mBoard->IteratePlants(aPlant))
+        {
+            if (aPlant->mPlantHealth < aPlant->mPlantMaxHealth)
+            {
+                aPlant->mPlantHealth = aPlant->mPlantMaxHealth;
+            }
+        }
+        //IceZombies();
+        //mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_ICE_TRAP);
 
         Die();
         break;
@@ -4809,6 +4820,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aProjectileType = ProjectileType::PROJECTILE_PEA;
         break;
     case SeedType::SEED_SNOWPEA:
+    case SeedType::SEED_GATLINSNOWGPEA:
         aProjectileType = ProjectileType::PROJECTILE_SNOWPEA;
         break;
     case SeedType::SEED_PUFFSHROOM:
@@ -4922,7 +4934,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + aOffsetX - 30;
         aOriginY = mY + aOffsetY - 33;
     }
-    else if (mSeedType == SeedType::SEED_GATLINGPEA)
+    else if (mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_GATLINSNOWGPEA)
     {
         int aOffsetX, aOffsetY;
         GetPeaHeadOffset(aOffsetX, aOffsetY);
