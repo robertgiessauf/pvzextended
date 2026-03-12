@@ -4620,7 +4620,7 @@ void Plant::DoSpecial()
             }
         }
         //IceZombies();
-        //mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_ICE_TRAP);
+        mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_ICE_TRAP);
 
         Die();
         break;
