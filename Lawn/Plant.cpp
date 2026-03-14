@@ -1494,6 +1494,9 @@ void Plant::UpdateRandomTorchwood() {
 
 void Plant::UpdateTorchwood()
 {
+
+    mBoard->UnfreezeAllPlantsInRadius(mX, mY, 90);
+
     Rect aAttackRect = GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
 
     Projectile* aProjectile = nullptr;
@@ -3032,7 +3035,9 @@ void Plant::Update()
         if (mPlantHealth < 0)
             Die();
 
-        UpdateReanim();
+        if (!mIsFroozen) {
+            UpdateReanim();
+        }
         if (mIsFroozenCounter > 0) {
             mIsFroozenCounter--;
             if (mIsFroozenCounter == 0) {
@@ -4592,10 +4597,6 @@ void Plant::DoSpecial()
         Die();
         break;
     }
-    case SeedType::SEED_TORCHWOOD:
-    {
-        mBoard->UnfreezeAllPlantsInRadius(mX, mY, 90);
-    } break;
     case SeedType::SEED_UMBRELLA:
     {
         if (mState != PlantState::STATE_UMBRELLA_TRIGGERED && mState != PlantState::STATE_UMBRELLA_REFLECTING)

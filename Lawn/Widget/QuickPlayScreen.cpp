@@ -234,29 +234,28 @@ void QuickPlayScreen::ChooseBackground()
         mBackground = BackgroundType::BACKGROUND_2_NIGHT;
     } else if (mApp->mQuickLevel <= 3 * LEVELS_PER_AREA)
     {
-        groupName = "DelayLoad_Background11";
-        mBackground = BackgroundType::BACKGROUND_11_RIVER;
-
-        //groupName = "DelayLoad_Background10";
-        //mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
-
-        //groupName = "DelayLoad_Background7";
-        //mBackground = BackgroundType::BACKGROUND_7_STONES;
+        groupName = "DelayLoad_Background7";
+        mBackground = BackgroundType::BACKGROUND_7_STONES;
     }
     else if (mApp->mQuickLevel <= 4 * LEVELS_PER_AREA)
-    {
-        groupName = "DelayLoad_Background8";
-        mBackground = BackgroundType::BACKGROUND_8_STONES;
-    }
-    else if (mApp->mQuickLevel <= 5 * LEVELS_PER_AREA)
     {
         groupName = "DelayLoad_Background3";
         mBackground = BackgroundType::BACKGROUND_3_POOL;
     }
-    else if (mApp->mQuickLevel <= 6 * LEVELS_PER_AREA)
+    else if (mApp->mQuickLevel <= 5 * LEVELS_PER_AREA)
     {
         groupName = "DelayLoad_Background4";
         mBackground = BackgroundType::BACKGROUND_4_FOG;
+    }
+    else if (mApp->mQuickLevel <= 6 * LEVELS_PER_AREA)
+    {
+        groupName = "DelayLoad_Background10";
+        mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+    }
+    else if (mApp->mQuickLevel <= 7 * LEVELS_PER_AREA)
+    {
+        groupName = "DelayLoad_Background11";
+        mBackground = BackgroundType::BACKGROUND_11_RIVER;
     }
     else if (mApp->mQuickLevel < FINAL_LEVEL)
     {

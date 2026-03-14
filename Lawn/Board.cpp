@@ -878,13 +878,11 @@ void Board::PickBackground()
 		}
 		else if (mLevel <= 4 * LEVELS_PER_AREA)
 		{
-			mBackground = BackgroundType::BACKGROUND_8_STONES;
+			mBackground = BackgroundType::BACKGROUND_3_POOL;
 		}
 		else if (mLevel <= 5 * LEVELS_PER_AREA)
 		{
-			mBackground = BackgroundType::BACKGROUND_11_RIVER;
-			//mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
-			//mBackground = BackgroundType::BACKGROUND_3_POOL;
+			mBackground = BackgroundType::BACKGROUND_4_FOG;
 		}
 		else if (mApp->IsScaryPotterLevel())
 		{
@@ -892,7 +890,11 @@ void Board::PickBackground()
 		}
 		else if (mLevel <= 6 * LEVELS_PER_AREA)
 		{
-			mBackground = BackgroundType::BACKGROUND_4_FOG;
+			mBackground = BackgroundType::BACKGROUND_10_CROSSPOOL;
+		}
+		else if (mLevel <= 7 * LEVELS_PER_AREA)
+		{
+			mBackground = BackgroundType::BACKGROUND_11_RIVER;
 		}
 		else if (mLevel < FINAL_LEVEL)
 		{
@@ -9127,7 +9129,7 @@ bool Board::IsStoneLevel() {
 
 bool Board::StageHasPool()
 {
-	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG || mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL);
+	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG || mBackground == BackgroundType::BACKGROUND_10_CROSSPOOL || mBackground == BackgroundType::BACKGROUND_11_RIVER);
 }
 
 bool Board::StageHas6Rows()
@@ -9160,9 +9162,9 @@ int Board::LeftFogColumn()
 {
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID)		return 6;
 	if (!mApp->IsAdventureMode())										return 5;
-	if (mLevel == 31+20)													return 6;
-	if (mLevel >= 32+20 && mLevel <= 36+20)									return 5;
-	if (mLevel >= 37+20 && mLevel <= 40+20)									return 4;
+	if (mLevel == 31+10)													return 6;
+	if (mLevel >= 32+10 && mLevel <= 36+10)									return 5;
+	if (mLevel >= 37+10 && mLevel <= 40+10)									return 4;
 	TOD_ASSERT();
 }
 

@@ -31,13 +31,15 @@
 #include "../SexyAppFramework/WidgetManager.h"
 
 int gZombieWaves[NUM_LEVELS] = {   
-	 4, 10, 20, 10, 20, 10, 20, 10, 20, 20,
-	20, 20, 20, 20, 30, 20, 30, 30, 20, 30,
+	 4, 10, 20, 10, 20, 10, 20, 10, 20, 20, // day
+	20, 20, 20, 20, 30, 20, 30, 30, 20, 30, // night
 	20, 30, 30, 30, 30, 20, 10, 30, 20, 30, // stones
-	20, 30, 30, 30, 30, 20, 10, 30, 20, 30, // stones night
-	20, 20, 40, 30, 20, 30, 40, 30, 30, 30,
-	20, 30, 20, 30, 40, 20, 40, 30, 40, 40,
-	20, 30, 40, 30, 20, 40, 30, 40, 30, 40,
+	//20, 30, 30, 30, 30, 20, 10, 30, 20, 30, // stones night
+	20, 20, 40, 30, 20, 30, 40, 30, 30, 30, // pool
+	20, 30, 20, 30, 40, 20, 40, 30, 40, 40, // fog
+	20, 20, 40, 30, 20, 30, 40, 30, 30, 30, // kreuz pool
+	20, 20, 40, 30, 20, 30, 40, 30, 30, 30, // ganz pool
+	20, 30, 40, 30, 20, 40, 30, 40, 30, 40, // dach
 };
 
 ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  
@@ -46,10 +48,11 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // stones
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // stone night
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // pool
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // foog
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1  // roof
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // kreuz p
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // ganz p
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // roof
 		}
 	},
 	{ ZOMBIE_FLAG, 
@@ -57,6 +60,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // stones
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -71,6 +75,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		}
 	},
@@ -79,6 +84,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // stones
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -93,6 +99,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 1, 1, 1, 1, 0, 0, 0, 1, 1, // stones n
 			1, 0, 0, 1, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 1, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
 	},
@@ -103,6 +110,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 1, 1, 0, 1, 0, 1, 1, 1, 1, // stones
 			1, 1, 1, 0, 1, 0, 1, 1, 1, 1, // stones n
 			1, 1, 0, 1, 0, 0, 1, 0, 1, 1,
+			0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
 			1, 1, 0, 0, 1, 0, 0, 0, 1, 1,
 		}
@@ -115,6 +123,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // stones n
 			1, 1, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
 	},
@@ -125,6 +134,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 1, 0, 1, 1, 1, 1, 0, 1, // stones
 			0, 0, 1, 0, 1, 1, 1, 1, 0, 1, // stones n
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
@@ -137,6 +147,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 1, 0, 1, 1, 1, 1, // stones n
 			0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 0, 0, 1, 0, 0, 0, 0, 0, 1,
 		}
 	},
@@ -148,6 +159,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
 	},
@@ -157,6 +169,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 1
@@ -172,6 +185,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
 	},
 	{ ZOMBIE_ZAMBONI,
@@ -181,6 +195,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+			0, 0, 0, 0, 0, 1, 0, 0, 0, 1,
 			0, 0, 0, 0, 0, 1, 0, 0, 0, 1,
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
@@ -194,6 +209,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
 	},
 	{ ZOMBIE_DOLPHIN_RIDER,
@@ -202,6 +218,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -215,6 +232,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
+			1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
 		}
 	},
@@ -225,6 +243,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 1, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 1, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 1, 0, 1, 0, 0, 1,
+			0, 0, 1, 1, 0, 0, 0, 0, 1, 1,
 			0, 0, 1, 1, 0, 0, 0, 0, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
@@ -237,6 +256,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 1, 1, 0, 0, 1,
+			0, 0, 0, 0, 0, 1, 1, 0, 0, 1,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
 	},
@@ -247,6 +267,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 		}
@@ -260,6 +281,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		}
 	},
@@ -269,6 +291,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 1, 1, 1, 0, 1, 0, 1, 1,
@@ -282,6 +305,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 1, 1, 0, 1, 1,
 		}
 	},
@@ -293,6 +317,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 1, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 		}
 	},
@@ -302,6 +327,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
@@ -316,6 +342,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
 			0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
 			1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
+			1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 		} },
 		{ ZOMBIE_PEA_THREEPEATER, 		{
@@ -323,7 +350,8 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		0, 0, 1, 0, 0, 1, 1, 0, 0, 0,
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones
 		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, // stones n
-		1, 0,0, 0, 0, 0, 0, 0, 1, 1,
+		1, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+		1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 		1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 		0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 	} },
@@ -333,7 +361,8 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 		1, 0, 1, 0, 1, 1, 0, 1, 1, 1, // stones
 		1, 0, 1, 0, 1, 1, 0, 1, 1, 1, // stones n
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		1, 0, 1, 0, 0, 0, 0, 0, 1, 0,  
+		1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
+		1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 		0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 	} },
 	{ ZOMBIE_JALAPENO_HEAD, {0} }, {
@@ -344,6 +373,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 1, 0, 1, 1, 1, 0, 0, 0, 0, // stones
 			0, 1, 0, 1, 1, 1, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
@@ -360,6 +390,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 1, 0, 1, 1, 1, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
 	},
@@ -372,6 +403,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 1, 0, 0, 0, 0, 0, 0, // stones n
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 		}
 	},
@@ -382,6 +414,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 1, 0, 1, 0, 1, 0, 1, 1, // stones
 			0, 0, 1, 0, 1, 0, 1, 0, 1, 1, // stones n
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
