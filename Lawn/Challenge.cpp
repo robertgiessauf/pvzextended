@@ -516,6 +516,7 @@ void Challenge::InitLevel()
 	{
 		mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
 		mBoard->mSeedBank->AddSeed(SEED_JALAPENO);
+		mBoard->mSeedBank->AddSeed(SEED_CARROT);
 		mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
 		mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
 		mConveyorBeltCounter = 1000;

@@ -5897,8 +5897,10 @@ void Board::Update()
 					if (this->PixelToGridY(aPlant->mX, aPlant->mY) == lane && 
 						(aPlant->mSeedType != SEED_FIREPEA &&
 							aPlant->mSeedType != SEED_FIRESHROOM &&
-							aPlant->mSeedType != SEED_JALAPENO && 
-							aPlant->mSeedType != SEED_TORCHWOOD)) {
+							aPlant->mSeedType != SEED_JALAPENO &&
+							aPlant->mSeedType != SEED_CARROT &&
+							aPlant->mSeedType != SEED_TORCHWOOD &&
+							aPlant->mSeedType != SEED_CACTUS)) {
 						aPlant->mIsFroozen = true;
 					}
 				}

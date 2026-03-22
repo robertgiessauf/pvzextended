@@ -42,7 +42,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_REPEATER,           nullptr, ReanimationType::REANIM_REPEATER,      5, 175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
         { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
-                { SeedType::SEED_RANDOMTORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
+                { SeedType::SEED_RANDOMTORCHWOOD,         nullptr, ReanimationType::REANIM_RANDOMTORCHWOOD,     29, 225,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("RANDOM_TORCHWOOD") },
                     { SeedType::SEED_MARIGOLD,          nullptr, ReanimationType::REANIM_MARIGOLD,      24, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("MARIGOLD") },
 
     { SeedType::SEED_PEADRONE,        nullptr, ReanimationType::REANIM_PEADRONE,    0,150  ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    100,    _S("PEADRONE") },
@@ -71,7 +71,9 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
         { SeedType::SEED_CABBAGEPULT,       nullptr, ReanimationType::REANIM_CABBAGEPULT,   13, 700,    5000,    PlantSubClass::SUBCLASS_SHOOTER,    900,    _S("CABBAGE_PULT") },
 
     { SeedType::SEED_TANGLEKELP,        nullptr, ReanimationType::REANIM_TANGLEKELP,    17, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TANGLE_KELP") },
-    { SeedType::SEED_JALAPENO,          nullptr, ReanimationType::REANIM_JALAPENO,      11, 75,    2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("JALAPENO") },
+    { SeedType::SEED_JALAPENO,          nullptr, ReanimationType::REANIM_JALAPENO,      11, 125,    2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("JALAPENO") },
+    { SeedType::SEED_CARROT,          nullptr, ReanimationType::REANIM_CARROT,      11, 75,    2000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CARROT") },
+
     { SeedType::SEED_SPIKEWEED,         nullptr, ReanimationType::REANIM_SPIKEWEED,     22, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPIKEWEED") },
     { SeedType::SEED_TWINSUNFLOWER,     nullptr, ReanimationType::REANIM_TWIN_SUNFLOWER,1,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("TWIN_SUNFLOWER") },
     { SeedType::SEED_TALLNUT,           nullptr, ReanimationType::REANIM_TALLNUT,       28, 125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TALL_NUT") },
@@ -353,6 +355,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     case SeedType::SEED_CHERRYBOMB:
     case SeedType::SEED_JALAPENO:
+    case SeedType::SEED_CARROT:
     {
         TOD_ASSERT(aBodyReanim);
 
@@ -643,6 +646,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
         return thePlantWeapon == PlantWeapon::WEAPON_SECONDARY ? 1 : 2;
     case SeedType::SEED_CHERRYBOMB:
     case SeedType::SEED_JALAPENO:
+    case SeedType::SEED_CARROT:
     case SeedType::SEED_COBCANNON:
     case SeedType::SEED_DOOMSHROOM:
     case SeedType::SEED_WALLNUT:
@@ -1495,7 +1499,7 @@ void Plant::UpdateRandomTorchwood() {
 void Plant::UpdateTorchwood()
 {
 
-    mBoard->UnfreezeAllPlantsInRadius(mX, mY, 90);
+    mBoard->UnfreezeAllPlantsInRadius(mX, mY, 120);
 
     Rect aAttackRect = GetPlantAttackRect(PlantWeapon::WEAPON_PRIMARY);
 
@@ -2473,7 +2477,7 @@ void Plant::Squish()
 
     if (!mIsAsleep && !mIsFroozen)
     {
-        if (mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO ||
+        if (mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO || mSeedType == SeedType::SEED_CARROT ||
             mSeedType == SeedType::SEED_DOOMSHROOM || mSeedType == SeedType::SEED_ICESHROOM || mSeedType == SeedType::SEED_FIRESHROOM)
         {
             DoSpecial();
@@ -3627,7 +3631,7 @@ void Plant::UpdateShooting()
 
 void Plant::Animate()
 {
-    if ((mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO) && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
+    if ((mSeedType == SeedType::SEED_CHERRYBOMB || mSeedType == SeedType::SEED_JALAPENO || mSeedType == SeedType::SEED_CARROT) && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
     {
         mShakeOffsetX = RandRangeFloat(-1.0f, 1.0f);
         mShakeOffsetY = RandRangeFloat(-1.0f, 1.0f);
@@ -4164,6 +4168,14 @@ void Plant::Draw(Graphics* g)
         g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
         g->SetColorizeImages(true);
         g->SetColor(Color(160, 160, 250, 220));
+      /*  Image* ice = GetImageById(IMAGE_ICE_ID);
+        int aCelCol = 0;
+        int aCelRow = 0;
+        float aScale = 3;
+        float aOffsetX = 0.0f;
+        float aOffsetY = PlantDrawHeightOffset(mBoard, this, mSeedType, mPlantCol, mRow);
+        TodDrawImageCelScaledF(g, ice, mX + aOffsetX, mY + aOffsetY, aCelCol, aCelRow, aScale, aScale);*/
+
     }
 
     if (mSquished)
@@ -4318,7 +4330,7 @@ void Plant::Draw(Graphics* g)
         }
 
 
-            if (mIsFroozen) {
+        if (mIsFroozen) {
             //TodDrawImageCelF(g, aPlantImage, aOffsetX, aOffsetY, aImageIndex, 0);
             g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
             g->SetColorizeImages(false);
@@ -4583,15 +4595,29 @@ void Plant::DoSpecial()
         Die();
         break;
     }
+    case SeedType::SEED_CARROT:
+    {
+        mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
+        mApp->PlayFoley(FoleyType::FOLEY_JUICY);
+
+        mBoard->DoFwooshColumn(aPosX);
+        mBoard->ShakeBoard(3, -4);
+
+        BurnColumn(aPosX);
+        //mBoard->mIceTimer[mRow] = 20;
+
+        Die();
+        break;
+    }
     case SeedType::SEED_JALAPENO:
     {
         mApp->PlayFoley(FoleyType::FOLEY_JALAPENO_IGNITE);
         mApp->PlayFoley(FoleyType::FOLEY_JUICY);
         
-        mBoard->DoFwooshColumn(aPosX);
+        mBoard->DoFwoosh(mRow);
         mBoard->ShakeBoard(3, -4);
 
-        BurnColumn(aPosX);
+        BurnRow(mRow);
         //mBoard->mIceTimer[mRow] = 20;
 
         Die();

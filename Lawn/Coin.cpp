@@ -55,12 +55,12 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
         float aPosX = mWidth * 0.5f;
         float aPosY = mHeight * 0.5f;
         Reanimation* aSunReanim;
-        if (mApp->isSnowLevel()) {
-            aSunReanim  = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_SUNSNOW);
-        }
-        else {
+        //if (mApp->isSnowLevel()) {
+        //    aSunReanim  = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_SUNSNOW);
+        //}
+        //else {
             aSunReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_SUN);
-        }
+        //}
         aSunReanim->SetPosition(mPosX + aPosX, mPosY + aPosY);
         aSunReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
         aSunReanim->mAnimRate = 6.0f;
