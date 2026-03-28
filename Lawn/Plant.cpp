@@ -1061,6 +1061,17 @@ void Plant::UpdateShooter()
                 FindTargetAndFire(mRow, PlantWeapon::WEAPON_SECONDARY);
             }
         }
+        else if (mSeedType == SeedType::SEED_REPEATER) //TODOFIX - neue pflanze
+        {
+            FindTargetAndFire(mRow, PlantWeapon::WEAPON_PRIMARY);
+            Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
+            if (aZombie != nullptr)
+            {
+                if (aZombie->mPosX - mX < 200) {
+                    mLaunchCounter = mLaunchCounter / 3;
+                }
+            }
+        }
         else
         {
             FindTargetAndFire(mRow, PlantWeapon::WEAPON_PRIMARY);
