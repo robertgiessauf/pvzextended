@@ -395,6 +395,7 @@
 <Image id="CORNPULT_BUTTER_SPLAT" path="Cornpult_butter_splat" />
 <Image id="MELONPULT_MELON" path="Melonpult_melon" />
 <Image id="WINTERMELON_PROJECTILE" path="WinterMelon_projectile" />
+<Image id="SOLARMELON_PROJECTILE" path="SolarMelon_projectile" />
 <Image id="ZOMBIE_DIGGER_PICKAXE" path="Zombie_digger_pickaxe" />
 <Image id="ZOMBIE_HEAD_GROSSOUT" path="Zombie_head_grossout" />
 <Image id="ZOMBIE_HEAD_SUNGLASSES1" path="Zombie_head_sunglasses1" />

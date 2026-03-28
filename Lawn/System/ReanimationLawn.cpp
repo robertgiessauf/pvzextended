@@ -120,7 +120,7 @@ void ReanimatorCache::GetPlantImageSize(SeedType theSeedType, int& theOffsetX, i
 		theOffsetY = -40;
 		theHeight += 40;
 	}
-	else if (theSeedType == SeedType::SEED_MELONPULT || theSeedType == SeedType::SEED_WINTERMELON)
+	else if (theSeedType == SeedType::SEED_MELONPULT || theSeedType == SeedType::SEED_WINTERMELON || theSeedType == SeedType::SEED_SOLARMELONPULT)
 	{
 		theOffsetX = -40;
 		theWidth += 40;

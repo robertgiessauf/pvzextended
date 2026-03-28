@@ -108,6 +108,7 @@ void QuickPlayScreen::Draw(Graphics* g)
         break;
     case BackgroundType::BACKGROUND_5_ROOF:				g->DrawImage(Sexy::IMAGE_BACKGROUND5, -130, 0);						break;
     case BackgroundType::BACKGROUND_6_BOSS:				g->DrawImage(Sexy::IMAGE_BACKGROUND6BOSS, -130, 0);					break;
+    case BackgroundType::BACKGROUND_11_RIVER:				g->DrawImage(Sexy::IMAGE_BACKGROUND11, -130, 0);					break;
     default:											TOD_ASSERT();											break;
     }
     if (mDisplayZombie)

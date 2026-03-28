@@ -23,11 +23,12 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_SPIKE,         0,  40  },
 	{ ProjectileType::PROJECTILE_BASKETBALL,    0,  75  },
 	{ ProjectileType::PROJECTILE_KERNEL,        0,  20  },
-	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
+	{ ProjectileType::PROJECTILE_COBBIG,        0,  1800 },
 	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
 	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  },
 	{ ProjectileType::PROJECTILE_PUFFPULT,      0,  20  },
 	{ ProjectileType::PROJECTILE_PLASMAPEA,     0,  40  },
+	{ ProjectileType::PROJECTILE_SOLARMELON,    0,  80  },
 };
 
 Projectile::Projectile()
@@ -82,7 +83,7 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 		mRotation = -7 * PI / 25;  // DEG_TO_RAD(-50.4f);
 		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SOLARMELON)
 	{
 		mRotation = -2 * PI / 5;  // DEG_TO_RAD(-72.0f);
 		mRotationSpeed = RandRangeFloat(-0.08f, -0.02f);
@@ -435,7 +436,8 @@ bool Projectile::IsSplashDamage(Zombie* theZombie)
 	return 
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
-		mProjectileType == ProjectileType::PROJECTILE_FIREBALL;
+		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
+		mProjectileType == ProjectileType::PROJECTILE_SOLARMELON;
 }
 
 unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
@@ -587,7 +589,7 @@ void Projectile::UpdateLobMotion()
 		{
 			aMinCollisionZ = 60.0f;
 		}
-		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+		else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SOLARMELON)
 		{
 			aMinCollisionZ = -35.0f;
 		}
@@ -838,7 +840,7 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 		aPlayHelmSound = false;
 		aPlaySplatSound = false;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SOLARMELON)
 	{
 		mApp->PlayFoley(FoleyType::FOLEY_MELONIMPACT);
 		aPlaySplatSound = false;
@@ -927,6 +929,12 @@ void Projectile::DoImpact(Zombie* theZombie)
 	if (mProjectileType == ProjectileType::PROJECTILE_MELON)
 	{
 		mApp->AddTodParticle(aLastPosX + 30.0f, aLastPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_MELONSPLASH);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_SOLARMELON) {
+		mApp->AddTodParticle(aLastPosX + 30.0f, aLastPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_MELONSPLASH);
+		if (rand() % 2 == 0) {
+			mBoard->AddCoin(mX, mY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_FROM_PLANT);
+		}
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
 	{
@@ -1043,7 +1051,8 @@ void Projectile::Update()
 		mProjectileType == ProjectileType::PROJECTILE_PUFFPULT ||
 		mProjectileType == ProjectileType::PROJECTILE_CABBAGE || 
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
-		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
+		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON ||
+		mProjectileType == ProjectileType::PROJECTILE_SOLARMELON ||
 		mProjectileType == ProjectileType::PROJECTILE_KERNEL || 
 		mProjectileType == ProjectileType::PROJECTILE_BUTTER || 
 		mProjectileType == ProjectileType::PROJECTILE_COBBIG || 
@@ -1135,6 +1144,11 @@ void Projectile::Draw(Graphics* g)
 	else if (mProjectileType == ProjectileType::PROJECTILE_MELON)
 	{
 		aImage = IMAGE_REANIM_MELONPULT_MELON;
+		aScale = 1.0f;
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_SOLARMELON)
+	{
+		aImage = IMAGE_REANIM_SOLARMELON_PROJECTILE;
 		aScale = 1.0f;
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
@@ -1233,6 +1247,7 @@ void Projectile::DrawShadow(Graphics* g)
 	case ProjectileType::PROJECTILE_KERNEL:
 	case ProjectileType::PROJECTILE_BUTTER:
 	case ProjectileType::PROJECTILE_MELON:
+	case ProjectileType::PROJECTILE_SOLARMELON:
 	case ProjectileType::PROJECTILE_WINTERMELON:
 		aOffsetX += 3.0f;
 		aOffsetY += 10.0f;
@@ -1289,7 +1304,7 @@ Rect Projectile::GetProjectileRect()
 	{
 		return Rect(mX + mWidth / 2 - 115, mY + mHeight / 2 - 115, 230, 230);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	else if (mProjectileType == ProjectileType::PROJECTILE_MELON || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_SOLARMELON)
 	{
 		return Rect(mX + 20, mY, 60, mHeight);
 	}

@@ -245,6 +245,10 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 10, 0, g->mScaleX, g->mScaleY);
 	}
+	else if (aSeedType == SeedType::SEED_SOLARMELONPULT && g->mScaleX <= 1.0f)
+	{
+		TodDrawImageCelScaledF(g, aImage, x, y, 10, 0, g->mScaleX, g->mScaleY);
+	}
 	else if (aSeedType == SeedType::SEED_WINTERMELON && g->mScaleX <= 1.0f)
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 11, 0, g->mScaleX, g->mScaleY);
@@ -398,6 +402,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 
 	case SeedType::SEED_MELONPULT:
 	case SeedType::SEED_WINTERMELON:
+	case SeedType::SEED_SOLARMELONPULT:
 		aScale = 0.35f;
 		aOffsetX = 18.0f;
 		aOffsetY = 19.0f;

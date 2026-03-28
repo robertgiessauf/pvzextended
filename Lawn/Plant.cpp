@@ -84,6 +84,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_PUMPKINSHELL,      nullptr, ReanimationType::REANIM_PUMPKIN,       25, 125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("PUMPKIN") },
     { SeedType::SEED_MAGNETSHROOM,      nullptr, ReanimationType::REANIM_MAGNETSHROOM,  35, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("MAGNET_SHROOM") },
     { SeedType::SEED_QUATROSUNFLOWER,     nullptr, ReanimationType::REANIM_QUATRO_SUNFLOWER, 1,  275,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("QUATRO_SUNFLOWER") },
+      { SeedType::SEED_MELONPULT,         nullptr, ReanimationType::REANIM_MELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("MELON_PULT") },
+    { SeedType::SEED_SOLARMELONPULT,         nullptr, ReanimationType::REANIM_SOLARMELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("SOLARMELON_PULT") },
 
     { SeedType::SEED_FLOWERPOT,         nullptr, ReanimationType::REANIM_FLOWER_POT,    33, 25,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("FLOWER_POT") },
     { SeedType::SEED_KERNELPULT,        nullptr, ReanimationType::REANIM_KERNELPULT,    13, 100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("KERNEL_PULT") },
@@ -91,8 +93,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
 { SeedType::SEED_GARLIC,            nullptr, ReanimationType::REANIM_GARLIC,        8,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GARLIC") },
     { SeedType::SEED_UMBRELLA,          nullptr, ReanimationType::REANIM_UMBRELLALEAF,  23, 100,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("UMBRELLA_LEAF") },
 
-    { SeedType::SEED_MELONPULT,         nullptr, ReanimationType::REANIM_MELONPULT,     14, 300,    750,    PlantSubClass::SUBCLASS_SHOOTER,    300,    _S("MELON_PULT") },
-
+  
 
     { SeedType::SEED_QUATROTHREEPEATER,         nullptr, ReanimationType::REANIM_QUATROTHREEPEATER,     36, 650,     750,   PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("QUATROTHREEPEATER") },
 
@@ -652,6 +653,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     case SeedType::SEED_WALLNUT:
         return 127;
     case SeedType::SEED_MELONPULT:
+    case SeedType::SEED_SOLARMELONPULT:
     case SeedType::SEED_CABBAGEPULT:
     case SeedType::SEED_PUFFSHROOMPULT:
     case SeedType::SEED_KERNELPULT:
@@ -840,6 +842,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
         case SeedType::SEED_SCAREDYSHROOM:  mShootingCounter = 25;  break;
         case SeedType::SEED_CABBAGEPULT:    mShootingCounter = 32;  break;
         case SeedType::SEED_MELONPULT:
+        case SeedType::SEED_SOLARMELONPULT:
         case SeedType::SEED_WINTERMELON:    mShootingCounter = 36;  break;
         case SeedType::SEED_KERNELPULT:
         {
@@ -3508,7 +3511,7 @@ void Plant::UpdateShooting()
         {
             Fire(nullptr, mRow, PlantWeapon::WEAPON_SECONDARY);
         }
-        else if (mSeedType == SeedType::SEED_PUFFSHROOMPULT || mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON)
+        else if (mSeedType == SeedType::SEED_PUFFSHROOMPULT || mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || mSeedType == SeedType::SEED_SOLARMELONPULT)
         {
             PlantWeapon aPlantWeapon = PlantWeapon::WEAPON_PRIMARY;
             if (mState == PlantState::STATE_KERNELPULT_BUTTER)
@@ -3737,6 +3740,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
     case SeedType::SEED_QUATROTHREEPEATER:
     case SeedType::SEED_SUNFLOWER:
     case SeedType::SEED_MARIGOLD:
+    case SeedType::SEED_SOLARMELONPULT:
     case SeedType::SEED_CABBAGEPULT:
     case SeedType::SEED_MELONPULT:
     case SeedType::SEED_TANGLEKELP:
@@ -4091,7 +4095,7 @@ void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
         aScale = 1.3f;
         aShadowOffsetY = 47.0f;
     }
-    else if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON)
+    else if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || mSeedType == SeedType::SEED_SOLARMELONPULT)
     {
         aShadowOffsetY = 47.0f;
     }
@@ -4897,6 +4901,9 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     case SeedType::SEED_MELONPULT:
         aProjectileType = ProjectileType::PROJECTILE_MELON;
         break;
+    case SeedType::SEED_SOLARMELONPULT:
+        aProjectileType = ProjectileType::PROJECTILE_SOLARMELON;
+        break;
     case SeedType::SEED_WINTERMELON:
         aProjectileType = ProjectileType::PROJECTILE_WINTERMELON;
         break;
@@ -4938,7 +4945,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + 5;
         aOriginY = mY - 12;
     }
-    else if (mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON)
+    else if (mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || mSeedType == SeedType::SEED_SOLARMELONPULT)
     {
         aOriginX = mX + 25;
         aOriginY = mY - 46;
@@ -5055,7 +5062,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     aProjectile->mDamageRangeFlags = GetDamageRangeFlags(thePlantWeapon);
 
     if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT ||
-        mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || mSeedType == SeedType::SEED_PUFFSHROOMPULT)
+        mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || mSeedType == SeedType::SEED_PUFFSHROOMPULT || mSeedType == SeedType::SEED_SOLARMELONPULT)
     {
         float aRangeX, aRangeY;
         if (theTargetZombie)
