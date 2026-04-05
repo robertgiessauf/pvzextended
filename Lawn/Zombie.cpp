@@ -112,6 +112,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     mShieldJustGotShotCounter = 0;
     mShieldRecoilCounter = 0;
     mChilledCounter = 0;
+    mBurnCounter = 0;
     mIceTrapCounter = 0;
     mButteredCounter = 0;
     mMindControlled = false;
@@ -3465,6 +3466,11 @@ void Zombie::OverrideParticleColor(TodParticleSystem* aParticle)
             aParticle->OverrideColor(nullptr, Color(75, 75, 255, 255));
             aParticle->OverrideExtraAdditiveDraw(nullptr, true);
         }
+        else if (mBurnCounter > 0)
+        {
+            aParticle->OverrideColor(nullptr, Color(255, 75, 75, 255));
+            aParticle->OverrideExtraAdditiveDraw(nullptr, true);
+        }
         else if (mMoosCounter > 0)
         {
             aParticle->OverrideColor(nullptr, Color(75, 255, 75, 255));
@@ -4702,6 +4708,14 @@ void Zombie::UpdatePlaying()
         if (mMoosCounter == 0)
         {
             UpdateAnimSpeed();
+        }
+    }
+    if (mBurnCounter > 0)
+    {
+        mBurnCounter--;
+        if (mBurnCounter == 0)
+        {
+            //UpdateAnimSpeed();
         }
     }
     if (mButteredCounter > 0)
@@ -8000,6 +8014,11 @@ int Zombie::TakeFlyingDamage(int theDamage, unsigned int theDamageFlags)
 
 void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
 {
+    if (TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_BURN))
+    {
+        mBurnCounter = 500;
+    }
+
     if (!TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_DOESNT_CAUSE_FLASH))
     {
         mJustGotShotCounter = 25;
@@ -8194,8 +8213,9 @@ void Zombie::TakeDamage(int theDamage, unsigned int theDamageFlags)
     {
         aDamageRemaining = TakeHelmDamage(aDamageRemaining, theDamageFlags);
     }
-    if (aDamageRemaining > 0)
+    if (aDamageRemaining > 0 || TestBit(theDamageFlags, (int)DamageFlags::DAMAGE_BURN))
     {
+        aDamageRemaining = max(aDamageRemaining, theDamage * 0.25);
         TakeBodyDamage(aDamageRemaining, theDamageFlags);
     }
 }

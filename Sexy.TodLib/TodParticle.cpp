@@ -53,6 +53,7 @@ ParticleParams gLawnParticleArray[(int)ParticleEffect::NUM_PARTICLES] = {
 	{ ParticleEffect::PARTICLE_BUTTER_SPLAT, "particles\\ButterSplat.xml" },
 	{ ParticleEffect::PARTICLE_CABBAGE_SPLAT, "particles\\CabbageSplat.xml" },
 	{ ParticleEffect::PARTICLE_PUFF_SPLAT, "particles\\PuffSplat.xml" },
+	{ ParticleEffect::PARTICLE_PUFF_SPLAT4, "particles\\PuffSplat4.xml" },
 	{ ParticleEffect::PARTICLE_STAR_SPLAT, "particles\\StarSplat.xml" },
 	{ ParticleEffect::PARTICLE_ICE_TRAP, "particles\\IceTrap.xml" },
 	{ ParticleEffect::PARTICLE_SNOWPEA_SPLAT, "particles\\SnowPeaSplat.xml" },

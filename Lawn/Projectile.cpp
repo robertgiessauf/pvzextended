@@ -29,6 +29,7 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_PUFFPULT,      0,  20  },
 	{ ProjectileType::PROJECTILE_PLASMAPEA,     0,  40  },
 	{ ProjectileType::PROJECTILE_SOLARMELON,    0,  80  },
+	{ ProjectileType::PROJECTILE_PUFF4,         0,  40  },
 };
 
 Projectile::Projectile()
@@ -385,6 +386,7 @@ bool Projectile::CantHitHighGround()
 		mProjectileType == ProjectileType::PROJECTILE_SNOWPEA ||
 		mProjectileType == ProjectileType::PROJECTILE_STAR ||
 		mProjectileType == ProjectileType::PROJECTILE_PUFF ||
+		mProjectileType == ProjectileType::PROJECTILE_PUFF4 ||
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL
 		) && !mOnHighGround;
 }
@@ -406,7 +408,7 @@ void Projectile::CheckForHighGround()
 		}
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_PUFF && aShadowDelta < 0.0f)
+	if ((mProjectileType == ProjectileType::PROJECTILE_PUFF || mProjectileType == ProjectileType::PROJECTILE_PUFF4) && aShadowDelta < 0.0f)
 	{
 		DoImpact(nullptr);
 		return;
@@ -437,7 +439,8 @@ bool Projectile::IsSplashDamage(Zombie* theZombie)
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
-		mProjectileType == ProjectileType::PROJECTILE_SOLARMELON;
+		mProjectileType == ProjectileType::PROJECTILE_SOLARMELON ||
+		mProjectileType == ProjectileType::PROJECTILE_PUFF4;
 }
 
 unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
@@ -447,6 +450,9 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 	if (IsSplashDamage(theZombie))
 	{
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_HITS_SHIELD_AND_BODY, true);
+		if (mProjectileType == ProjectileType::PROJECTILE_PUFF4) {
+			SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_BURN, true);
+		}
 	}
 	else if (mMotionType == ProjectileMotion::MOTION_LOBBED || mMotionType == ProjectileMotion::MOTION_BACKWARDS)
 	{
@@ -475,7 +481,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 
 	int aRowDeviation = theZombie->mRow - mRow;
 	Rect aZombieRect = theZombie->GetZombieRect();
-	if (theZombie->IsFireResistant() && mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (theZombie->IsFireResistant() && (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PUFF4))
 	{
 		return false;
 	}
@@ -484,7 +490,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 	{
 		aRowDeviation = 0;
 	}
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA)
+	if (mProjectileType == ProjectileType::PROJECTILE_PUFF4 || mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMAPEA)
 	{
 		if (aRowDeviation != 0)
 		{
@@ -988,6 +994,11 @@ void Projectile::DoImpact(Zombie* theZombie)
 		aSplatPosX -= 20.0f;
 		aEffect = ParticleEffect::PARTICLE_PUFF_SPLAT;
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF4)
+	{
+		aSplatPosX -= 20.0f;
+		aEffect = ParticleEffect::PARTICLE_PUFF_SPLAT4;
+	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE)
 	{
 		aSplatPosX = aLastPosX - 38.0f;
@@ -1114,6 +1125,11 @@ void Projectile::Draw(Graphics* g)
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
 	{	
 		aImage = IMAGE_PUFFSHROOM_PUFF1; //mApp->mResourceManager->GetImage("PuffShroom_puff_normal");
+		aScale = TodAnimateCurveFloat(0, 30, mProjectileAge, 0.3f, 1.0f, TodCurves::CURVE_LINEAR);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF4)
+	{
+		aImage = IMAGE_PUFFSHROOM_PUFF4; //mApp->mResourceManager->GetImage("PuffShroom_puff_normal");
 		aScale = TodAnimateCurveFloat(0, 30, mProjectileAge, 0.3f, 1.0f, TodCurves::CURVE_LINEAR);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_BASKETBALL)
@@ -1255,6 +1271,7 @@ void Projectile::DrawShadow(Graphics* g)
 		break;
 
 	case ProjectileType::PROJECTILE_PUFF:
+	case ProjectileType::PROJECTILE_PUFF4:
 		return;
 		
 	case ProjectileType::PROJECTILE_COBBIG:
@@ -1281,7 +1298,7 @@ void Projectile::Die()
 {
 	mDead = true;
 
-	if (mProjectileType == ProjectileType::PROJECTILE_PUFF || mProjectileType == ProjectileType::PROJECTILE_SNOWPEA)
+	if (mProjectileType == ProjectileType::PROJECTILE_PUFF4 || mProjectileType == ProjectileType::PROJECTILE_PUFF || mProjectileType == ProjectileType::PROJECTILE_SNOWPEA)
 	{
 		AttachmentCrossFade(mAttachmentID, "FadeOut");
 		AttachmentDetach(mAttachmentID);

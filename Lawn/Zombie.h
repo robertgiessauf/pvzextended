@@ -125,6 +125,7 @@ public:
     Rect                            mZombieRect;                                
     Rect                            mZombieAttackRect;                          
     int                             mChilledCounter;       
+    int                             mBurnCounter;
     int                             mMoosCounter;
     int                             mButteredCounter;                           
     int                             mIceTrapCounter;                            

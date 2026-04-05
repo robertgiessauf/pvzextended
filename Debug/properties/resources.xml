@@ -260,6 +260,7 @@
 <Image id="SNOWFLAKES" path="snowflakes" cols="3" />
 <Image id="POTATOMINE_PARTICLES" path="potatomine_particles" cols="6" />
 <Image id="PUFFSHROOM_PUFF1" path="PuffShroom_puff1"  />
+<Image id="PUFFSHROOM_PUFF4" path="PuffShroom_puff4"  />
 <Image id="ZAMBONISMOKE" path="ZamboniSmoke" cols="3" />
 <Image id="ZOMBIEDANCERHEAD" path="ZombieDancerHead" />
 <Image id="ZOMBIEBALLOONHEAD" path="ZombieBalloonHead" />
