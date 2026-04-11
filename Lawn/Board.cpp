@@ -2618,7 +2618,7 @@ ZombieType Board::PickZombieType(int theZombiePoints, int theWaveIndex, ZombiePi
 
 bool Board::IsZombieTypePoolOnly(ZombieType theZombieType)
 {
-	return (theZombieType == ZombieType::ZOMBIE_SNORKEL || theZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER);
+	return (theZombieType == ZombieType::ZOMBIE_SNORKEL || theZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || theZombieType == ZombieType::ZOMBIE_SUBMARINE);
 }
 
 bool Board::RowCanHaveZombieType(int theRow, ZombieType theZombieType)

@@ -31,6 +31,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_BACKUP_DANCER,     REANIM_BACKUP_DANCER,       1,      1,     1,      0,      _S("BACKUP_DANCER")},
     { ZOMBIE_DUCKY_TUBE,        REANIM_ZOMBIE,              1,      3,     5,      0,      _S("DUCKY_TUBE_ZOMBIE")},
     { ZOMBIE_SNORKEL,           REANIM_SNORKEL,             3,      5,     10,     2000,   _S("SNORKEL_ZOMBIE")},
+    { ZOMBIE_SUBMARINE,         REANIM_SUBMARINE,           3,      5,     10,     2000,   _S("SNORKEL_SUBMARINE")},
     { ZOMBIE_ZAMBONI,           REANIM_ZOMBIE_ZAMBONI,      7,      2,     10,     2000,   _S("ZOMBONI")},
     { ZOMBIE_BOBSLED,           REANIM_BOBSLED,             3,      2,     10,     2000,   _S("ZOMBIE_BOBSLED_TEAM")},
     { ZOMBIE_DOLPHIN_RIDER,     REANIM_ZOMBIE_DOLPHINRIDER, 3,      2,     10,     1500,   _S("DOLPHIN_RIDER_ZOMBIE")},
@@ -409,8 +410,8 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     }
 
     case ZombieType::ZOMBIE_ZAMBONI:  
-        //mBodyHealth = 1350;
-        mBodyHealth = 3000;
+        mBodyHealth = 1350;
+        //mBodyHealth = 3000;
         mAnimFrames = 2;
         mAnimTicksPerFrame = 8;
         mPosX = WIDE_BOARD_WIDTH + Rand(10);
@@ -445,6 +446,16 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         SetupWaterTrack("Zombie_snorkle_whitewater2");
         mVariant = false;
         mZombiePhase = ZombiePhase::PHASE_SNORKEL_WALKING;
+        break;
+
+    case ZombieType::ZOMBIE_SUBMARINE:  
+        mBodyHealth = 1350;
+        mZombieRect = Rect(12, 0, 62, 115);
+        mZombieAttackRect = Rect(-5, 0, 55, 115);
+        SetupWaterTrack("Zombie_snorkle_whitewater");
+        SetupWaterTrack("Zombie_snorkle_whitewater2");
+        mVariant = false;
+        mZombiePhase = ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL;
         break;
 
     case ZombieType::ZOMBIE_JACK_IN_THE_BOX:  
@@ -2104,6 +2115,106 @@ void Zombie::UpdateZombieSnorkel()
     }
 }
 
+void Zombie::UpdateZombieSubmarine()
+{
+    bool aBackwards = IsWalkingBackwards();
+    if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING && !aBackwards)
+    {
+        if (mX > 700 && mX <= 720)
+        {
+            mVelX = 0.2f;
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_INTO_POOL;
+            PlayZombieReanim("anim_jumpinpool", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 16.0f);
+        }
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_INTO_POOL)
+    {
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        mAltitude = TodAnimateCurveFloat(0, 1000, aBodyReanim->mAnimTime * 1000, 0.0f, 10.0f, TodCurves::CURVE_LINEAR);
+
+        if (aBodyReanim->ShouldTriggerTimedEvent(0.83f))
+        {
+            Reanimation* aSplashReanim = mApp->AddReanimation(mX - 47, mY + 73, mRenderOrder + 1, ReanimationType::REANIM_SPLASH);
+            aSplashReanim->OverrideScale(1.2f, 0.8f);
+            mApp->AddTodParticle(mX - 10, mY + 115, mRenderOrder + 1, ParticleEffect::PARTICLE_PLANTING_POOL);
+            mApp->PlayFoley(FoleyType::FOLEY_ZOMBIE_ENTERING_WATER);
+        }
+
+
+        if (aBodyReanim->mLoopCount > 0)
+        {
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL;
+            mInPool = true;
+            PlayZombieReanim("anim_swim", ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME, 0, 12.0f);
+            PickRandomSpeed();
+        }
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL)
+    {
+        if (!mHasHead)
+        {
+            TakeDamage(1800, 9U);
+        }
+        else if (mX <= 25 && !aBackwards)
+        {
+            mAltitude = -90.0f;
+            mPosX -= 15.0f;
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_WALKING;
+            mZombieHeight = ZombieHeight::HEIGHT_OUT_OF_POOL;
+
+            PoolSplash(false);
+            StartWalkAnim(0);
+        }
+        else if (mX > 640 && aBackwards)
+        {
+            mAltitude = -90.0f;
+            mPosX += 15.0f;
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_WALKING;
+            mZombieHeight = ZombieHeight::HEIGHT_OUT_OF_POOL;
+
+            PoolSplash(false);
+            StartWalkAnim(0);
+        }
+        else if (mIsEating)
+        {
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_UP_TO_EAT;
+            PlayZombieReanim("anim_uptoeat", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 24.0f);
+        }
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_UP_TO_EAT)
+    {
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        if (!mIsEating)
+        {
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_DOWN_FROM_EAT;
+            PlayZombieReanim("anim_uptoeat", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, -24.0f);
+        }
+        else if (aBodyReanim->mLoopCount > 0)
+        {
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_EATING_IN_POOL;
+            PlayZombieReanim("anim_eat", ReanimLoopType::REANIM_LOOP, 0, 0.0f);
+        }
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_EATING_IN_POOL)
+    {
+        if (!mIsEating)
+        {
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_DOWN_FROM_EAT;
+            PlayZombieReanim("anim_uptoeat", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, -24.0f);
+        }
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_SNORKEL_DOWN_FROM_EAT)
+    {
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        if (aBodyReanim->mLoopCount > 0)
+        {
+            mZombiePhase = ZombiePhase::PHASE_SNORKEL_WALKING_IN_POOL;
+            PlayZombieReanim("anim_swim", ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME, 0, 0.0f);
+            PickRandomSpeed();
+        }
+    }
+}
+
 void Zombie::UpdateZombieJackInTheBox()
 {
     if (mZombiePhase == ZombiePhase::PHASE_JACK_IN_THE_BOX_RUNNING)
@@ -3361,6 +3472,7 @@ void Zombie::UpdateZombiquarium()
 
 void Zombie::UpdateZombiePool()
 {
+    // TODOFIX?
     if (mZombieHeight == ZombieHeight::HEIGHT_OUT_OF_POOL)
     {
         mAltitude++;
@@ -4227,6 +4339,10 @@ void Zombie::UpdateZombieWalking()
         {
             doWalk = true;
         }
+        else if (mZombieType == ZombieType::ZOMBIE_SUBMARINE && mInPool)
+        {
+            doWalk = true;
+        }
         else if (mFrame >= 0 && mFrame <= 2)
         {
             doWalk = true;
@@ -4535,6 +4651,10 @@ void Zombie::UpdateActions()
     if (mZombieType == ZombieType::ZOMBIE_SNORKEL)
     {
         UpdateZombieSnorkel();
+    }
+    if (mZombieType == ZombieType::ZOMBIE_SUBMARINE)
+    {
+        UpdateZombieSubmarine();
     }
     if (mZombieType == ZombieType::ZOMBIE_BALLOON)
     {
@@ -6788,7 +6908,7 @@ void Zombie::UpdateAnimSpeed()
     if (mIsEating)
     {
         if (mZombieType == ZombieType::ZOMBIE_POLEVAULTER || mZombieType == ZombieType::ZOMBIE_BALLOON || mZombieType == ZombieType::ZOMBIE_IMP || 
-            mZombieType == ZombieType::ZOMBIE_DIGGER || mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX || mZombieType == ZombieType::ZOMBIE_SNORKEL || 
+            mZombieType == ZombieType::ZOMBIE_DIGGER || mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX || mZombieType == ZombieType::ZOMBIE_SNORKEL || mZombieType == ZombieType::ZOMBIE_SUBMARINE ||
             mZombieType == ZombieType::ZOMBIE_YETI)
         {
             ApplyAnimRate(20.0f);
@@ -6857,7 +6977,7 @@ void Zombie::StartEating()
     }
     else
     {
-        if (mZombieType != ZombieType::ZOMBIE_SNORKEL)
+        if (mZombieType != ZombieType::ZOMBIE_SNORKEL && mZombieType != ZombieType::ZOMBIE_SUBMARINE)
         {
             PlayZombieReanim("anim_eat", ReanimLoopType::REANIM_LOOP, 20, 0.0f);
         }
@@ -6938,7 +7058,7 @@ void Zombie::StopEating()
     if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING)
         return;
 
-    if (aBodyReanim && mZombieType != ZombieType::ZOMBIE_SNORKEL)
+    if (aBodyReanim && (mZombieType != ZombieType::ZOMBIE_SNORKEL && mZombieType != ZombieType::ZOMBIE_SUBMARINE))
     {
         StartWalkAnim(20);
     }
@@ -7064,7 +7184,7 @@ void Zombie::CheckForPool()
     {
         return;
     }
-    if (mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || mZombieType == ZombieType::ZOMBIE_SNORKEL)
+    if (mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || mZombieType == ZombieType::ZOMBIE_SNORKEL || mZombieType == ZombieType::ZOMBIE_SUBMARINE)
     {
         return;
     }
@@ -8377,7 +8497,7 @@ bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
         return false;  
     }
 
-    bool submerged = mZombieType == ZombieType::ZOMBIE_SNORKEL && mInPool && !mIsEating;
+    bool submerged = (mZombieType == ZombieType::ZOMBIE_SNORKEL || mZombieType == ZombieType::ZOMBIE_SUBMARINE) && mInPool && !mIsEating;
     if (TestBit(theDamageRangeFlags, (int)DamageRangeFlags::DAMAGES_SUBMERGED) && submerged)
     {
         return true;
@@ -8505,7 +8625,8 @@ bool Zombie::ZombieTypeCanGoInPool(ZombieType theZombieType)
         theZombieType == ZombieType::ZOMBIE_TRAFFIC_CONE || 
         theZombieType == ZombieType::ZOMBIE_PAIL || 
         theZombieType == ZombieType::ZOMBIE_FLAG || 
-        theZombieType == ZombieType::ZOMBIE_SNORKEL || 
+        theZombieType == ZombieType::ZOMBIE_SNORKEL ||
+        theZombieType == ZombieType::ZOMBIE_SUBMARINE ||
         theZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || 
         theZombieType == ZombieType::ZOMBIE_PEA_HEAD || 
         theZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD || 
@@ -9210,6 +9331,10 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
     {
         aDeathAnimRate = 14.0f;
     }
+    else if (mZombieType == ZombieType::ZOMBIE_SUBMARINE)
+    {
+        aDeathAnimRate = 14.0f;
+    }
     else if (mZombieType == ZombieType::ZOMBIE_DIGGER)
     {
         aDeathAnimRate = 18.0f;
@@ -9322,6 +9447,7 @@ void Zombie::UpdateDeath()
         switch (mZombieType)
         {
         case ZombieType::ZOMBIE_SNORKEL:
+        case ZombieType::ZOMBIE_SUBMARINE:
         case ZombieType::ZOMBIE_ZAMBONI:
         case ZombieType::ZOMBIE_DOLPHIN_RIDER:
         case ZombieType::ZOMBIE_BUNGEE:
@@ -9678,6 +9804,18 @@ void Zombie::DrawShadow(Graphics* g)
         }
     }
     else if (mZombieType == ZombieType::ZOMBIE_SNORKEL)
+    {
+        aShadowOffsetY += 5.0f;
+        if (IsWalkingBackwards())
+        {
+            aShadowOffsetX -= 2.0f;
+        }
+        else
+        {
+            aShadowOffsetX += 35.0f;
+        }
+    }
+    else if (mZombieType == ZombieType::ZOMBIE_SUBMARINE)
     {
         aShadowOffsetY += 5.0f;
         if (IsWalkingBackwards())
