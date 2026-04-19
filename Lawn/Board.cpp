@@ -2917,7 +2917,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		return PlantingReason::PLANTING_NOT_HERE;
 	}
 	Plant* aNormalPlant = aPlantOnLawn.mNormalPlant;
-	if (theSeedType == SeedType::SEED_LILYPAD || theSeedType == SeedType::SEED_TANGLEKELP || theSeedType == SeedType::SEED_SEASHROOM)
+	if (theSeedType == SeedType::SEED_LILYPAD || theSeedType == SeedType::SEED_TANGLEKELP || theSeedType == SeedType::SEED_SEASHROOM || theSeedType == SeedType::SEED_SEEFUMESHROOM)
 	{
 		if (!IsPoolSquare(theGridX, theGridY))
 		{
@@ -3737,7 +3737,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 				DisplayAdvice(_S("[ADVICE_TANGLEKELP_ON_WATER]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_TANGLEKELP_ON_WATER);
 			}
 		}
-		else if (aPlantingSeedType == SeedType::SEED_SEASHROOM)
+		else if (aPlantingSeedType == SeedType::SEED_SEASHROOM || aPlantingSeedType == SeedType::SEED_SEEFUMESHROOM)
 		{
 			if (aReason == PlantingReason::PLANTING_ONLY_IN_POOL)
 			{

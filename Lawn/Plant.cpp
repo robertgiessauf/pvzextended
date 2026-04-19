@@ -74,6 +74,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
      { SeedType::SEED_TWINSUNFLOWER,     nullptr, ReanimationType::REANIM_TWIN_SUNFLOWER,1,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("TWIN_SUNFLOWER") },
     { SeedType::SEED_TALLNUT,           nullptr, ReanimationType::REANIM_TALLNUT,       28, 125,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TALL_NUT") },
 
+            { SeedType::SEED_SEEFUMESHROOM,       nullptr, ReanimationType::REANIM_SEEFUMESHROOM,   13, 75,    5000,    PlantSubClass::SUBCLASS_SHOOTER,    900,    _S("FUME_SHROOM") },
 
 
 
@@ -432,6 +433,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     }
     case SeedType::SEED_PUFFSHROOM:
+    case SeedType::SEED_SEEFUMESHROOM:
     case SeedType::SEED_SEASHROOM:
         if (IsInPlay())
         {
@@ -670,6 +672,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     case SeedType::SEED_PUFFSHROOM:
     case SeedType::SEED_SEASHROOM:
     case SeedType::SEED_FUMESHROOM:
+    case SeedType::SEED_SEEFUMESHROOM:
     case SeedType::SEED_GLOOMSHROOM:
     case SeedType::SEED_CHOMPER:
         return 9;
@@ -841,7 +844,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
 
         switch (mSeedType)
         {
-        case SeedType::SEED_FUMESHROOM:     mShootingCounter = 50;  break;
+        case SeedType::SEED_FUMESHROOM: case SeedType::SEED_SEEFUMESHROOM:     mShootingCounter = 50;  break;
         case SeedType::SEED_PUFFSHROOM:     mShootingCounter = 29;  break;
         case SeedType::SEED_SCAREDYSHROOM:  mShootingCounter = 25;  break;
         case SeedType::SEED_CABBAGEPULT:    mShootingCounter = 32;  break;
@@ -3403,7 +3406,7 @@ void Plant::UpdateShooting()
 
     mShootingCounter--;
 
-    if (mSeedType == SeedType::SEED_FUMESHROOM && mShootingCounter == 15)
+    if ((mSeedType == SeedType::SEED_FUMESHROOM || mSeedType == SeedType::SEED_SEEFUMESHROOM) && mShootingCounter == 15)
     {
         int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
         AddAttachedParticle(mX + 85, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FUMECLOUD);
@@ -3753,6 +3756,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
         aScaleOffsetFix -= 8.0f;
         break;
     case SeedType::SEED_SEASHROOM:
+    case SeedType::SEED_SEEFUMESHROOM:
     case SeedType::SEED_POTATOMINE:
         aScaleOffsetFix -= 4.0f;
         break;
@@ -3831,7 +3835,7 @@ float PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedTy
     {
         aHeightOffset += 24.0f;
     }
-    else if (theSeedType == SeedType::SEED_SEASHROOM)
+    else if (theSeedType == SeedType::SEED_SEASHROOM || theSeedType == SeedType::SEED_SEEFUMESHROOM)
     {
         aHeightOffset += 28.0f;
     }
@@ -4045,7 +4049,7 @@ Image* Plant::GetImage(SeedType theSeedType)
 void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
 {
     if (mSeedType == SeedType::SEED_LILYPAD || mSeedType == SeedType::SEED_STARFRUIT || mSeedType == SeedType::SEED_TANGLEKELP || 
-        mSeedType == SeedType::SEED_SEASHROOM || mSeedType == SeedType::SEED_COBCANNON || mSeedType == SeedType::SEED_SPIKEWEED || 
+        mSeedType == SeedType::SEED_SEASHROOM || mSeedType == SeedType::SEED_SEEFUMESHROOM || mSeedType == SeedType::SEED_COBCANNON || mSeedType == SeedType::SEED_SPIKEWEED ||
         mSeedType == SeedType::SEED_SPIKEROCK || mSeedType == SeedType::SEED_GRAVEBUSTER || mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_BUTTERCAT ||
         mOnBungeeState == PlantOnBungeeState::RISING_WITH_BUNGEE)
         return;
@@ -4830,7 +4834,7 @@ void Plant::CobCannonFire(int theTargetX, int theTargetY)
 
 void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon)
 {
-    if (mSeedType == SeedType::SEED_FUMESHROOM)
+    if (mSeedType == SeedType::SEED_FUMESHROOM || mSeedType == SeedType::SEED_SEEFUMESHROOM)
     {
         uint fumeDamageFlags = 2U;
         SetBit(fumeDamageFlags, (int)DamageFlags::DAMAGE_FREEZE, true);
@@ -5489,6 +5493,7 @@ bool Plant::IsNocturnal(SeedType theSeedtype)
         theSeedtype == SeedType::SEED_PUFFSHROOM ||
         //theSeedtype == SeedType::SEED_PUFFSHROOMPULT ||
         theSeedtype == SeedType::SEED_SEASHROOM ||
+        theSeedtype == SeedType::SEED_SEEFUMESHROOM ||
         theSeedtype == SeedType::SEED_SUNSHROOM ||
         theSeedtype == SeedType::SEED_FUMESHROOM ||
         theSeedtype == SeedType::SEED_HYPNOSHROOM ||
@@ -5506,8 +5511,8 @@ bool Plant::IsAquatic(SeedType theSeedType)
     return
         theSeedType == SeedType::SEED_LILYPAD ||
         theSeedType == SeedType::SEED_TANGLEKELP ||
-        theSeedType == SeedType::SEED_SEASHROOM; // ||
-        //theSeedType == SeedType::SEED_CATTAIL;
+        theSeedType == SeedType::SEED_SEASHROOM ||
+        theSeedType == SeedType::SEED_SEEFUMESHROOM;
 }
 
 bool Plant::IsFlying(SeedType theSeedtype)
