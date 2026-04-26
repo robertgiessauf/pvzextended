@@ -3336,7 +3336,7 @@ int LawnApp::GetNumPreloadingTasks()
 					i != ZombieType::ZOMBIE_CATAPULT &&
 					i != ZombieType::ZOMBIE_GARGANTUAR &&
 					i != ZombieType::ZOMBIE_DIGGER &&
-					i != ZombieType::ZOMBIE_ZAMBONI)
+					i != ZombieType::ZOMBIE_ZAMBONI && i != ZombieType::ZOMBIE_SUBMARINE)
 				{
 					aTaskCount++;
 				}
@@ -3407,7 +3407,7 @@ void LawnApp::PreloadForUser()
 				continue;
 			}
 			if (i == ZombieType::ZOMBIE_BOSS || i == ZombieType::ZOMBIE_CATAPULT || i == ZombieType::ZOMBIE_GARGANTUAR ||
-				i == ZombieType::ZOMBIE_DIGGER || i == ZombieType::ZOMBIE_ZAMBONI)
+				i == ZombieType::ZOMBIE_DIGGER || i == ZombieType::ZOMBIE_ZAMBONI || i == ZombieType::ZOMBIE_SUBMARINE)
 			{
 				continue;
 			}

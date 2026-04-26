@@ -131,7 +131,7 @@ void QuickPlayScreen::Draw(Graphics* g)
             if (mDisplayZombie->BeginDraw(&aZombieGraphics))
             {
                 if (mZombieType != ZombieType::ZOMBIE_BUNGEE && mZombieType != ZombieType::ZOMBIE_BOSS &&
-                    mZombieType != ZombieType::ZOMBIE_ZAMBONI && mZombieType != ZombieType::ZOMBIE_CATAPULT)
+                    mZombieType != ZombieType::ZOMBIE_ZAMBONI && mZombieType != ZombieType::ZOMBIE_SUBMARINE && mZombieType != ZombieType::ZOMBIE_CATAPULT)
                     mDisplayZombie->DrawShadow(&aZombieGraphics);
                 mDisplayZombie->Draw(&aZombieGraphics);
                 mDisplayZombie->EndDraw(&aZombieGraphics);

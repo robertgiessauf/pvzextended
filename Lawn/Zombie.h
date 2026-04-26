@@ -319,7 +319,8 @@ public:
     bool                            CanBeFrozen();
     bool                            CanBeChilled();
     void                            UpdateZombieSnorkel();
-    void                            UpdateZombieSubmarine();
+    //void                            UpdateZombieSubmarine();
+    void                            UpdateSubmarine();
     void                            ReanimIgnoreClipRect(const char* theTrackName, bool theIgnoreClipRect);
     void                            SetAnimRate(float theAnimRate);
     void                            ApplyAnimRate(float theAnimRate);
