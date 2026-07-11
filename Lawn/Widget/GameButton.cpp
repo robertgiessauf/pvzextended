@@ -214,47 +214,62 @@ bool GameButton::IsMouseOver()
 
 void GameButton::Update()
 {
-	WidgetManager* aManager = mApp->mWidgetManager;
-	int aMouseX = aManager->mLastMouseX, aMouseY = aManager->mLastMouseY;
-	if (mParentWidget)
-	{
-		Point anAbsPos = mParentWidget->GetAbsPos();
-		aMouseX -= anAbsPos.mX;
-		aMouseY -= anAbsPos.mY;
-	}
 
-	if ((aManager->mFocusWidget && aManager->mFocusWidget == mParentWidget) || mApp->GetDialogCount() <= 0)
-	{
-		mIsOver = Rect(mX, mY, mWidth, mHeight).Contains(aMouseX, aMouseY);
-		mIsDown = aManager->mDownButtons & 5;
-	}
-	else
-	{
-		mIsOver = false;
-		mIsDown = false;
-	}
-
-	if (!mIsDown && !mIsOver && mOverAlpha > 0)
-	{
-		if (mOverAlphaSpeed < 0)
-		{ 
-			mOverAlpha = 0;
+	__try {
+		if (mApp == nullptr) {
 			return;
 		}
-		mOverAlpha -= mOverAlphaSpeed;
-		if (mOverAlpha < 0)
-			mOverAlpha = 0;
-	}
-	else if (mIsOver && mOverAlphaFadeInSpeed > 0 && mOverAlpha < 1)
-	{
-		if (mOverAlphaFadeInSpeed > 0)
+		WidgetManager* aManager;
+
+
+
+
+		aManager = mApp->mWidgetManager;
+
+		int aMouseX = aManager->mLastMouseX, aMouseY = aManager->mLastMouseY;
+		if (mParentWidget)
 		{
-			mOverAlpha += mOverAlphaFadeInSpeed;
-			if (mOverAlpha > 1)
-				mOverAlpha = 1;
+			Point anAbsPos = mParentWidget->GetAbsPos();
+			aMouseX -= anAbsPos.mX;
+			aMouseY -= anAbsPos.mY;
+		}
+
+		if ((aManager->mFocusWidget && aManager->mFocusWidget == mParentWidget) || mApp->GetDialogCount() <= 0)
+		{
+			mIsOver = Rect(mX, mY, mWidth, mHeight).Contains(aMouseX, aMouseY);
+			mIsDown = aManager->mDownButtons & 5;
 		}
 		else
-			mOverAlpha = 1;
+		{
+			mIsOver = false;
+			mIsDown = false;
+		}
+
+		if (!mIsDown && !mIsOver && mOverAlpha > 0)
+		{
+			if (mOverAlphaSpeed < 0)
+			{
+				mOverAlpha = 0;
+				return;
+			}
+			mOverAlpha -= mOverAlphaSpeed;
+			if (mOverAlpha < 0)
+				mOverAlpha = 0;
+		}
+		else if (mIsOver && mOverAlphaFadeInSpeed > 0 && mOverAlpha < 1)
+		{
+			if (mOverAlphaFadeInSpeed > 0)
+			{
+				mOverAlpha += mOverAlphaFadeInSpeed;
+				if (mOverAlpha > 1)
+					mOverAlpha = 1;
+			}
+			else
+				mOverAlpha = 1;
+		}
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {
+		return;
 	}
 }
 

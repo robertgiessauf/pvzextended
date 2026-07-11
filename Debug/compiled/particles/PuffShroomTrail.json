@@ -13,13 +13,14 @@
             ],
             "SpawnRate":[{
                     "Time":0,
-                    "LowValue":20,
-                    "HighValue":20
+                    "LowValue":2,
+                    "HighValue":5
                 }
             ],
             "EmitterRadius":[{
                     "Time":0,
-                    "HighValue":10
+                    "LowValue":0,
+                    "HighValue":0
                 }
             ],
             "ParticleDuration":[{
@@ -35,15 +36,7 @@
                     "Distribution":"Constant"
                 }
             ],
-            "Field":[{
-                    "FieldType":"Acceleration",
-                    "Y":[{
-                            "Time":0,
-                            "LowValue":5,
-                            "HighValue":5
-                        }
-                    ]
-                },
+            "Field":[
                 {
                     "FieldType":"Position",
                     "X":[{

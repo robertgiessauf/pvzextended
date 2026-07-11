@@ -41,7 +41,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
       { SeedType::SEED_THREEPEATER,       nullptr, ReanimationType::REANIM_THREEPEATER,   12,250 ,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("THREEPEATER") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FIREPEASHOOTER") },
     { SeedType::SEED_CACTUS,            nullptr, ReanimationType::REANIM_CACTUS,        15, 200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("CACTUS") },
-     
+         { SeedType::SEED_LASERREED,        nullptr, ReanimationType::REANIM_PEASHOOTER,    0,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    10,    _S("PEASHOOTER") },
+
     
     { SeedType::SEED_TORCHWOOD,         nullptr, ReanimationType::REANIM_TORCHWOOD,     29, 175,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("TORCHWOOD") },
      { SeedType::SEED_MARIGOLD,          nullptr, ReanimationType::REANIM_MARIGOLD,      24, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("MARIGOLD") },
@@ -232,7 +233,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     }
     case SeedType::SEED_PEASHOOTER:
-    //case SeedType::SEED_PEADRONE:
+    case SeedType::SEED_LASERREED:
     case SeedType::SEED_SNOWPEA:
     case SeedType::SEED_FIREPEA:
     case SeedType::SEED_REPEATER:
@@ -675,6 +676,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     case SeedType::SEED_SEEFUMESHROOM:
     case SeedType::SEED_GLOOMSHROOM:
     case SeedType::SEED_CHOMPER:
+    case SeedType::SEED_PEASHOOTER:
         return 9;
     case SeedType::SEED_CATTAIL:
     case SeedType::SEED_BUTTERCAT:
@@ -802,6 +804,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
     }
     else if (aHeadReanim && aHeadReanim->TrackExists("anim_shooting"))
     {
+
         aHeadReanim->StartBlend(20);
         aHeadReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
         aHeadReanim->mAnimRate = 35.0f;
@@ -817,7 +820,10 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
         {
             aHeadReanim->mAnimRate = 38.0f;
             mShootingCounter = 100;
-        }
+        } else if (mSeedType == SeedType::SEED_LASERREED)
+            {
+                mShootingCounter = 5;
+            }
         //else if (mSeedType == SeedType::SEED_QUATROTHREEPEATER) {
         //    aHeadReanim->mAnimRate = 38.0f;
         //    mShootingCounter = 100;
@@ -845,6 +851,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
         switch (mSeedType)
         {
         case SeedType::SEED_FUMESHROOM: case SeedType::SEED_SEEFUMESHROOM:     mShootingCounter = 50;  break;
+        //case SeedType::SEED_LASERREED: mShootingCounter = 5; break;
         case SeedType::SEED_PUFFSHROOM:     mShootingCounter = 29;  break;
         case SeedType::SEED_SCAREDYSHROOM:  mShootingCounter = 25;  break;
         case SeedType::SEED_CABBAGEPULT:    mShootingCounter = 32;  break;
@@ -3159,7 +3166,7 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
             aTrackToAttach = "anim_face2";
         }
     }
-    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_REPEATER || mSeedType == SeedType::SEED_GATLINSNOWGPEA || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_LEFTPEATER || mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_PEADRONE)
+    else if (mSeedType == SeedType::SEED_LASERREED || mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_REPEATER || mSeedType == SeedType::SEED_GATLINSNOWGPEA || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_LEFTPEATER || mSeedType == SeedType::SEED_GATLINGPEA || mSeedType == SeedType::SEED_PEADRONE)
     {
         if (theReanimBody->TrackExists("anim_stem"))
         {
@@ -3410,6 +3417,11 @@ void Plant::UpdateShooting()
     {
         int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
         AddAttachedParticle(mX + 85, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FUMECLOUD);
+    }
+    if (mSeedType == SeedType::SEED_LASERREED && mShootingCounter == 4)
+    {
+        int aRenderPosition = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PARTICLE, mRow, 0);
+        AddAttachedParticle(mX + 165, mY + 31, aRenderPosition, ParticleEffect::PARTICLE_FUMECLOUD);
     }
 
     if (mSeedType == SeedType::SEED_GLOOMSHROOM)
@@ -3738,6 +3750,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
     case SeedType::SEED_HYPNOSHROOM:
     case SeedType::SEED_MAGNETSHROOM:
     case SeedType::SEED_PEASHOOTER:
+    case SeedType::SEED_LASERREED:
     case SeedType::SEED_PEADRONE:
     case SeedType::SEED_REPEATER:
     case SeedType::SEED_FIREPEA:
@@ -4842,6 +4855,13 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         mApp->PlayFoley(FoleyType::FOLEY_FUME);
         return;
     }
+    if (mSeedType == SeedType::SEED_LASERREED)
+    {
+        DoRowAreaDamage(5, 2U);
+        //mApp->PlayFoley(FoleyType::FOLEY_BUGSPRAY);
+        mApp->PlayFoley(FoleyType::FOLEY_PORTAL);
+        return;
+    }
     if (mSeedType == SeedType::SEED_GLOOMSHROOM)
     {
         DoRowAreaDamage(20, 2U);
@@ -4859,6 +4879,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     case SeedType::SEED_FIREPEA:
         aProjectileType = ProjectileType::PROJECTILE_FIREBALL;
         break;
+        //TODO;
     case SeedType::SEED_PEASHOOTER:
     case SeedType::SEED_REPEATER:
     case SeedType::SEED_QUATROTHREEPEATER:
@@ -4975,7 +4996,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + 12;
         aOriginY = mY - 56;
     }
-    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_REPEATER || mSeedType == SeedType::SEED_PEADRONE)
+    else if (mSeedType == SeedType::SEED_LASERREED || mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_REPEATER || mSeedType == SeedType::SEED_PEADRONE)
     {
         int aOffsetX, aOffsetY;
         GetPeaHeadOffset(aOffsetX, aOffsetY);
