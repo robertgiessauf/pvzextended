@@ -3556,6 +3556,10 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_MELONPULT]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_MELONPULT);
 				break;
 
+			case SeedType::SEED_FIREPEA: // TODO TODOFIX replace with real message
+				DisplayAdvice(_S("[ADVICE_ONLY_ON_MELONPULT]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_MELONPULT);
+				break;
+
 			case SeedType::SEED_GOLD_MAGNET:
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_MAGNETSHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_MAGNETSHROOM);
 				break;
@@ -3678,6 +3682,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 			aIsAwake = !aNormalPlant->mIsAsleep;
 			aWakeUpCounter = aNormalPlant->mWakeUpCounter;
 		}
+		if (aNormalPlant->mSeedType == SEED_MELONPULT && aPlantingSeedType == SeedType::SEED_SNOWPEA) {
+			aPlantingSeedType = SEED_WINTERMELON;
+		}
 		aNormalPlant->Die();
 	}
 	if ((aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_TALLNUT) && aNormalPlant)
@@ -3731,7 +3738,11 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 	}
 	else if (mCursorObject->mCursorType == CursorType::CURSOR_TYPE_PLANT_FROM_BANK)
 	{
-		Plant* aPlant = AddPlant(aGridX, aGridY, mCursorObject->mType, mCursorObject->mImitaterType);
+		SeedType toPlant = mCursorObject->mType;
+		if (mCursorObject->mType == SEED_SNOWPEA && aPlantingSeedType == SEED_WINTERMELON) {
+			toPlant = SEED_WINTERMELON;
+		}
+		Plant* aPlant = AddPlant(aGridX, aGridY, toPlant, mCursorObject->mImitaterType);
 		if (aIsAwake)
 		{
 			aPlant->SetSleeping(false);

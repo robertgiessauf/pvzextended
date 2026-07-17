@@ -29,7 +29,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
     { SeedType::SEED_SNOWPEA,           nullptr, ReanimationType::REANIM_SNOWPEA,       4,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SNOW_PEA") },
     { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
-    { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
+    { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_PUFFSHROOM,        nullptr, ReanimationType::REANIM_PUFFSHROOM,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PUFF_SHROOM") },
     { SeedType::SEED_SUNSHROOM,         nullptr, ReanimationType::REANIM_SUNSHROOM,     7,  25,     750,    PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("SUN_SHROOM") },
     { SeedType::SEED_FUMESHROOM,        nullptr, ReanimationType::REANIM_FUMESHROOM,    9,  75,     750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FUME_SHROOM") },
@@ -2570,11 +2570,23 @@ bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 
 bool Plant::IsUpgradableTo(SeedType theUpgradedType)
 {
-    if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_FIREPEA)
+    //if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_FIREPEA)
+    //{
+    //    return true;
+    //}
+    if (theUpgradedType == SeedType::SEED_FIREPEA && mSeedType == SeedType::SEED_PEASHOOTER)
     {
         return true;
     }
     if (theUpgradedType == SeedType::SEED_WINTERMELON && mSeedType == SeedType::SEED_MELONPULT)
+    {
+        return true;
+    }
+    if (theUpgradedType == SeedType::SEED_SNOWPEA && mSeedType == SeedType::SEED_MELONPULT)
+    {
+        return true;
+    }
+    if (theUpgradedType == SeedType::SEED_SNOWPEA && mSeedType == SeedType::SEED_PEASHOOTER)
     {
         return true;
     }
@@ -5081,13 +5093,15 @@ bool Plant::IsUpgrade(SeedType theSeedtype)
 {
     return 
         theSeedtype == SeedType::SEED_GATLINGPEA || 
-        theSeedtype == SeedType::SEED_WINTERMELON || 
+        theSeedtype == SeedType::SEED_WINTERMELON ||
+        theSeedtype == SeedType::SEED_SNOWPEA ||
         theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
         theSeedtype == SeedType::SEED_SPIKEROCK || 
         theSeedtype == SeedType::SEED_COBCANNON || 
         theSeedtype == SeedType::SEED_GOLD_MAGNET || 
         theSeedtype == SeedType::SEED_GLOOMSHROOM || 
-        theSeedtype == SeedType::SEED_CATTAIL;
+        theSeedtype == SeedType::SEED_CATTAIL ||
+        theSeedtype == SeedType::SEED_FIREPEA;
 }
 
 Rect Plant::GetPlantRect()

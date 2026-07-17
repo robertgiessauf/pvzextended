@@ -35,10 +35,10 @@ Potato Mine
 Explodes on contact, but takes time to arm itself
 
 [SNOW_PEA]
-Snow Pea
+Ice Upgrade
 
 [SNOW_PEA_TOOLTIP]
-Shoots frozen peas that damage and slow the enemy
+Upgrades plants to their ice and snow version
 
 [CHOMPER]
 Chomper
@@ -472,7 +472,7 @@ Repeaters fire two peas at a time.
 plant or zombie, and he shoots peas to keep people at a distance. Secretly, though, Repeater yearns for love.
 
 [SNOW_PEA_DESCRIPTION_HEADER]
-Snow Peas shoot frozen peas that damage and slow the enemy.
+Turns plants into their snow and ice version.
 
 [SNOW_PEA_DESCRIPTION]
 {SHORTLINE}

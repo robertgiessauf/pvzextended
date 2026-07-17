@@ -186,6 +186,9 @@ void SeedPacket::Update()
 void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, SeedType theImitaterType, float theOffsetX, float theOffsetY, float theScale)
 {
 	Image* aImage = IMAGE_PACKET_PLANTS;
+	aImage->mNumCols = 14;
+	aImage->mNumTotal = 14;
+
 	SeedType aSeedType = theSeedType;
 	if (theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE)
 	{
@@ -248,6 +251,10 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 	else if (aSeedType == SeedType::SEED_SPIKEROCK && g->mScaleX <= 1.0f)
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 12, 0, g->mScaleX, g->mScaleY);
+	}
+	else if (aSeedType == SeedType::SEED_SNOWPEA && g->mScaleX <= 1.0f)
+	{
+		TodDrawImageCelScaledF(g, aImage, x, y, 13, 0, g->mScaleX, g->mScaleY);
 	}
 	else
 	{
