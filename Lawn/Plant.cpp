@@ -27,7 +27,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_CHERRYBOMB,        nullptr, ReanimationType::REANIM_CHERRYBOMB,    3,  150,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHERRY_BOMB") },
     { SeedType::SEED_WALLNUT,           nullptr, ReanimationType::REANIM_WALLNUT,       2,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WALL_NUT") },
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
-    { SeedType::SEED_SNOWPEA,           nullptr, ReanimationType::REANIM_SNOWPEA,       4,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SNOW_PEA") },
+    { SeedType::SEED_SNOWPEA,           nullptr, ReanimationType::REANIM_SNOWPEA,       4,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SNOW_PEA") },
     { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_PUFFSHROOM,        nullptr, ReanimationType::REANIM_PUFFSHROOM,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PUFF_SHROOM") },
@@ -4137,6 +4137,16 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
             aSeedG.mScaleX *= 1.4f;
             aSeedG.mScaleY *= 1.4f;
             TodDrawImageScaledF(&aSeedG, IMAGE_REANIM_WALLNUT_BODY, thePosX - 53.0f, thePosY - 56.0f, aSeedG.mScaleX, aSeedG.mScaleY);
+        }
+        else if (aSeedType == SeedType::SEED_SNOWPEA) {
+            Image* aImage = IMAGE_PACKET_PLANTS;
+            aImage->mNumCols = 14;
+            aImage->mNumTotal = 14;
+
+            TodDrawImageCelScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, 13, 0, aSeedG.mScaleX, aSeedG.mScaleY);
+
+            //TodDrawImageScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, aSeedG.mScaleX, aSeedG.mScaleY);
+            //gLawnApp->mReanimatorCache->DrawCachedPlant(&aSeedG, thePosX + aOffsetX, thePosY + aOffsetY, aSeedType, aDrawVariation);
         }
         else if (aPlantDef.mReanimationType != ReanimationType::REANIM_NONE)
         {
