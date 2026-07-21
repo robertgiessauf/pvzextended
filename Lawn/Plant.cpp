@@ -74,7 +74,10 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_EXPLODE_O_NUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("EXPLODE_O_NUT") },
     { SeedType::SEED_GIANT_WALLNUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GIANT_WALLNUT") },
     { SeedType::SEED_SPROUT,            nullptr, ReanimationType::REANIM_ZENGARDEN_SPROUT,          33, 0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPROUT") },
-    { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") }
+    { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
+
+    { SeedType::SEED_FROSTSTARFRUIT,         nullptr, ReanimationType::REANIM_STARFRUIT,     30, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
+
 };
 
 Plant::Plant()
@@ -898,7 +901,11 @@ void Plant::StarFruitFire()
     float aShootAngleY = sin(DEG_TO_RAD(30.0f)) * 3.33f;
     for (int i = 0; i < 5; i++)
     {
-        Projectile* aProjectile = mBoard->AddProjectile(mX + 25, mY + 25, mRenderOrder - 1, mRow, ProjectileType::PROJECTILE_STAR);
+        ProjectileType projType = PROJECTILE_STAR;
+        if (mSeedType == SEED_FROSTSTARFRUIT) {
+            projType = PROJECTILE_FROSTSTAR;
+        }
+        Projectile* aProjectile = mBoard->AddProjectile(mX + 25, mY + 25, mRenderOrder - 1, mRow, projType);
         aProjectile->mDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
         aProjectile->mMotionType = ProjectileMotion::MOTION_STAR;
 
@@ -925,7 +932,7 @@ void Plant::UpdateShooter()
         {
             LaunchThreepeater();
         }
-        else if (mSeedType == SeedType::SEED_STARFRUIT)
+        else if (mSeedType == SeedType::SEED_STARFRUIT || mSeedType == SeedType::SEED_FROSTSTARFRUIT)
         {
             LaunchStarFruit();
         }
@@ -2574,6 +2581,10 @@ bool Plant::IsUpgradableTo(SeedType theUpgradedType)
     //{
     //    return true;
     //}
+    if (theUpgradedType == SeedType::SEED_SNOWPEA && mSeedType == SeedType::SEED_STARFRUIT)
+    {
+        return true;
+    }
     if (theUpgradedType == SeedType::SEED_FIREPEA && mSeedType == SeedType::SEED_PEASHOOTER)
     {
         return true;
@@ -3569,7 +3580,7 @@ float PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedTy
     {
         aHeightOffset += 25.0f;
     }
-    else if (theSeedType == SeedType::SEED_STARFRUIT)
+    else if (theSeedType == SeedType::SEED_STARFRUIT || theSeedType == SeedType::SEED_FROSTSTARFRUIT)
     {
         aHeightOffset += 10.0f;
     }
@@ -3790,7 +3801,7 @@ Image* Plant::GetImage(SeedType theSeedType)
 
 void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
 {
-    if (mSeedType == SeedType::SEED_LILYPAD || mSeedType == SeedType::SEED_STARFRUIT || mSeedType == SeedType::SEED_TANGLEKELP || 
+    if (mSeedType == SeedType::SEED_LILYPAD || mSeedType == SeedType::SEED_STARFRUIT || mSeedType == SeedType::SEED_FROSTSTARFRUIT || mSeedType == SeedType::SEED_TANGLEKELP ||
         mSeedType == SeedType::SEED_SEASHROOM || mSeedType == SeedType::SEED_COBCANNON || mSeedType == SeedType::SEED_SPIKEWEED || 
         mSeedType == SeedType::SEED_SPIKEROCK || mSeedType == SeedType::SEED_GRAVEBUSTER || mSeedType == SeedType::SEED_CATTAIL || 
         mOnBungeeState == PlantOnBungeeState::RISING_WITH_BUNGEE)
@@ -4078,6 +4089,15 @@ void Plant::Draw(Graphics* g)
                 g->SetColorizeImages(false);
             }
         }
+
+        //if (mSeedType == SEED_FROSTSTARFRUIT) {
+        //    g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+        //    g->SetColorizeImages(true);
+        //    g->SetColor(Color(100, 100, 255, 196));
+        //    TodDrawImageCelF(g, aPlantImage, aOffsetX, aOffsetY, aImageIndex, 0);
+        //    g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+        //    g->SetColorizeImages(false);
+        //}
 
         if (mSeedType == SeedType::SEED_MAGNETSHROOM && !DrawMagnetItemsOnTop())
         {
@@ -4477,7 +4497,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         DoRowAreaDamage(20, 2U);
         return;
     }
-    if (mSeedType == SeedType::SEED_STARFRUIT)
+    if (mSeedType == SeedType::SEED_STARFRUIT || mSeedType == SeedType::SEED_FROSTSTARFRUIT)
     {
         StarFruitFire();
         return;

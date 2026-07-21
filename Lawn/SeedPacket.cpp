@@ -422,6 +422,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_STARFRUIT:
+	case SeedType::SEED_FROSTSTARFRUIT:
 		aScale = 0.5f;
 		aOffsetX = 6.0f;
 		aOffsetY = 8.0f;

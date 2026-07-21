@@ -1181,7 +1181,7 @@ float ZenGarden::PlantPottedDrawHeightOffset(SeedType theSeedType, float theScal
     {
         aScaleOffsetFix += 10.0f;
     }
-    else if (theSeedType == SeedType::SEED_STARFRUIT)
+    else if (theSeedType == SeedType::SEED_STARFRUIT || theSeedType == SeedType::SEED_FROSTSTARFRUIT)
     {
         aHeightOffset += 10.0f;
         aScaleOffsetFix += 24.0f;

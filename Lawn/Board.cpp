@@ -3685,6 +3685,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		if (aNormalPlant->mSeedType == SEED_MELONPULT && aPlantingSeedType == SeedType::SEED_SNOWPEA) {
 			aPlantingSeedType = SEED_WINTERMELON;
 		}
+		if (aNormalPlant->mSeedType == SEED_STARFRUIT && aPlantingSeedType == SeedType::SEED_SNOWPEA) {
+			aPlantingSeedType = SEED_FROSTSTARFRUIT;
+		}
 		aNormalPlant->Die();
 	}
 	if ((aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_TALLNUT) && aNormalPlant)
@@ -3741,6 +3744,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		SeedType toPlant = mCursorObject->mType;
 		if (mCursorObject->mType == SEED_SNOWPEA && aPlantingSeedType == SEED_WINTERMELON) {
 			toPlant = SEED_WINTERMELON;
+		}
+		if (mCursorObject->mType == SEED_SNOWPEA && aPlantingSeedType == SEED_FROSTSTARFRUIT) {
+			toPlant = SEED_FROSTSTARFRUIT;
 		}
 		Plant* aPlant = AddPlant(aGridX, aGridY, toPlant, mCursorObject->mImitaterType);
 		if (aIsAwake)

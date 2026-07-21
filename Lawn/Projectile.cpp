@@ -25,7 +25,8 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_KERNEL,        0,  20  },
 	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
 	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
-	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  }
+	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  },
+	{ ProjectileType::PROJECTILE_FROSTSTAR,     0,  20 }
 };
 
 Projectile::Projectile()
@@ -115,7 +116,7 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 		mRotation = RandRangeFloat(0.0f, 2 * PI);
 		mRotationSpeed = RandRangeFloat(0.05f, 0.1f);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_STAR)
+	else if (mProjectileType == ProjectileType::PROJECTILE_STAR || mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR)
 	{
 		mShadowY += 15.0f;
 		mRotationSpeed = RandRangeFloat(0.05f, 0.1f);
@@ -218,6 +219,10 @@ Zombie* Projectile::FindCollisionTarget()
 			{
 				continue;
 			}
+			if (mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR && mProjectileAge < 25 && mVelX >= 0.0f && aZombie->mZombieType == ZombieType::ZOMBIE_DIGGER)
+			{
+				continue;
+			}
 
 			Rect aZombieRect = aZombie->GetZombieRect();
 			if (GetRectOverlap(aProjectileRect, aZombieRect) > 0)
@@ -263,13 +268,13 @@ void Projectile::CheckForCollision()
 		return;
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_STAR && (mPosY > 600.0f || mPosY < 0.0f))
+	if ((mProjectileType == ProjectileType::PROJECTILE_STAR || mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR) && (mPosY > 600.0f || mPosY < 0.0f))
 	{
 		Die();
 		return;
 	}
 
-	if ((mProjectileType == ProjectileType::PROJECTILE_PEA || mProjectileType == ProjectileType::PROJECTILE_STAR) && mShadowY - mPosY > 90.0f)
+	if ((mProjectileType == ProjectileType::PROJECTILE_PEA || mProjectileType == ProjectileType::PROJECTILE_STAR || mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR) && mShadowY - mPosY > 90.0f)
 	{
 		return;
 	}
@@ -315,6 +320,7 @@ bool Projectile::CantHitHighGround()
 	return (
 		mProjectileType == ProjectileType::PROJECTILE_PEA ||
 		mProjectileType == ProjectileType::PROJECTILE_SNOWPEA ||
+		mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR ||
 		mProjectileType == ProjectileType::PROJECTILE_STAR ||
 		mProjectileType == ProjectileType::PROJECTILE_PUFF ||
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL
@@ -344,7 +350,7 @@ void Projectile::CheckForHighGround()
 		return;
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_STAR && aShadowDelta < 23.0f)
+	if ((mProjectileType == ProjectileType::PROJECTILE_STAR || mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR) && aShadowDelta < 23.0f)
 	{
 		DoImpact(nullptr);
 		return;
@@ -388,7 +394,7 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_BYPASSES_SHIELD, true);
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
+	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR)
 	{
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_FREEZE, true);
 	}
@@ -854,6 +860,10 @@ void Projectile::DoImpact(Zombie* theZombie)
 	{
 		aEffect = ParticleEffect::PARTICLE_STAR_SPLAT;
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR)
+	{
+		aEffect = ParticleEffect::PARTICLE_STAR_SPLAT;
+	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
 	{
 		aSplatPosX -= 20.0f;
@@ -974,6 +984,10 @@ void Projectile::Draw(Graphics* g)
 	{
 		aImage = IMAGE_PROJECTILE_STAR;
 	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR)
+	{
+		aImage = IMAGE_PROJECTILE_FROSTSTAR;
+	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
 	{
 		aImage = IMAGE_PUFFSHROOM_PUFF1;
@@ -1091,6 +1105,7 @@ void Projectile::DrawShadow(Graphics* g)
 		aScale = 1.3f;
 		break;
 
+	case ProjectileType::PROJECTILE_FROSTSTAR:
 	case ProjectileType::PROJECTILE_STAR:
 		aOffsetX += 7.0f;
 		break;
