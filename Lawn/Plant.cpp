@@ -76,7 +76,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_SPROUT,            nullptr, ReanimationType::REANIM_ZENGARDEN_SPROUT,          33, 0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPROUT") },
     { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
 
-    { SeedType::SEED_FROSTSTARFRUIT,         nullptr, ReanimationType::REANIM_STARFRUIT,     30, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
+    { SeedType::SEED_FROSTSTARFRUIT,         nullptr, ReanimationType::REANIM_FROSTSTARFRUIT,     30, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
 
 };
 
@@ -2581,6 +2581,10 @@ bool Plant::IsUpgradableTo(SeedType theUpgradedType)
     //{
     //    return true;
     //}
+    if (theUpgradedType == SeedType::SEED_FIREPEA && mSeedType == SeedType::SEED_PEASHOOTER)
+    {
+        return true;
+    }
     if (theUpgradedType == SeedType::SEED_SNOWPEA && mSeedType == SeedType::SEED_STARFRUIT)
     {
         return true;
@@ -4160,10 +4164,20 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
         }
         else if (aSeedType == SeedType::SEED_SNOWPEA) {
             Image* aImage = IMAGE_PACKET_PLANTS;
-            aImage->mNumCols = 14;
-            aImage->mNumTotal = 14;
+            aImage->mNumCols = 15;
+            aImage->mNumTotal = 15;
 
             TodDrawImageCelScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, 13, 0, aSeedG.mScaleX, aSeedG.mScaleY);
+
+            //TodDrawImageScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, aSeedG.mScaleX, aSeedG.mScaleY);
+            //gLawnApp->mReanimatorCache->DrawCachedPlant(&aSeedG, thePosX + aOffsetX, thePosY + aOffsetY, aSeedType, aDrawVariation);
+        }
+        else if (aSeedType == SeedType::SEED_FIREPEA) {
+            Image* aImage = IMAGE_PACKET_PLANTS;
+            aImage->mNumCols = 15;
+            aImage->mNumTotal = 15;
+
+            TodDrawImageCelScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, 14, 0, aSeedG.mScaleX, aSeedG.mScaleY);
 
             //TodDrawImageScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, aSeedG.mScaleX, aSeedG.mScaleY);
             //gLawnApp->mReanimatorCache->DrawCachedPlant(&aSeedG, thePosX + aOffsetX, thePosY + aOffsetY, aSeedType, aDrawVariation);
@@ -5125,6 +5139,7 @@ bool Plant::IsUpgrade(SeedType theSeedtype)
         theSeedtype == SeedType::SEED_GATLINGPEA || 
         theSeedtype == SeedType::SEED_WINTERMELON ||
         theSeedtype == SeedType::SEED_SNOWPEA ||
+        theSeedtype == SeedType::SEED_FIREPEA ||
         theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
         theSeedtype == SeedType::SEED_SPIKEROCK || 
         theSeedtype == SeedType::SEED_COBCANNON || 
