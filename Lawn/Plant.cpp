@@ -72,6 +72,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_COBCANNON,         nullptr, ReanimationType::REANIM_COBCANNON,     16, 500,    5000,   PlantSubClass::SUBCLASS_NORMAL,     600,    _S("COB_CANNON") },
     { SeedType::SEED_IMITATER,          nullptr, ReanimationType::REANIM_IMITATER,      33, 0,      750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("IMITATER") },
     { SeedType::SEED_EXPLODE_O_NUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("EXPLODE_O_NUT") },
+    { SeedType::SEED_EXPLODE_NUT,       nullptr, ReanimationType::REANIM_WALLNUT,       2,  100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("EXPLODE_NUT") },
     { SeedType::SEED_GIANT_WALLNUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GIANT_WALLNUT") },
     { SeedType::SEED_SPROUT,            nullptr, ReanimationType::REANIM_ZENGARDEN_SPROUT,          33, 0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPROUT") },
     { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
@@ -267,6 +268,11 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     case SeedType::SEED_WALLNUT:
         mPlantHealth = 4000;
         mBlinkCountdown = 1000 + Sexy::Rand(1000);
+        break;
+    case SeedType::SEED_EXPLODE_NUT:
+        mPlantHealth = 2000;
+        mBlinkCountdown = 1000 + Sexy::Rand(1000);
+        aBodyReanim->mColorOverride = Color(255, 64, 64);
         break;
     case SeedType::SEED_EXPLODE_O_NUT:
         mPlantHealth = 4000;
@@ -2585,6 +2591,10 @@ bool Plant::IsUpgradableTo(SeedType theUpgradedType)
     {
         return true;
     }
+    if (theUpgradedType == SeedType::SEED_FIREPEA && mSeedType == SeedType::SEED_WALLNUT)
+    {
+        return true;
+    }
     if (theUpgradedType == SeedType::SEED_SNOWPEA && mSeedType == SeedType::SEED_STARFRUIT)
     {
         return true;
@@ -2667,7 +2677,7 @@ void Plant::UpdateReanimColor()
     {
         aColorOverride = GetFlashingColor(mBoard->mMainCounter, 90);
     }
-    else if (mSeedType == SeedType::SEED_EXPLODE_O_NUT)
+    else if (mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_EXPLODE_NUT)
     {
         aColorOverride = Color(255, 64, 64);
     }
@@ -2891,7 +2901,7 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
     const char* aTrackToPlay = "anim_blink";
     const char* aTrackToAttach = nullptr;
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || 
+    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT ||
         mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_GIANT_WALLNUT)
     {
         int aHit = Rand(10);
@@ -3030,7 +3040,7 @@ void Plant::DoBlink()
         (mSeedType == SeedType::SEED_GARLIC && aBodyReanim->GetImageOverride("anim_face") == IMAGE_REANIM_GARLIC_BODY3))
         return;
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || 
+    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT ||
         mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_GIANT_WALLNUT)
     {
         mBlinkCountdown = 1000 + Rand(1000);
@@ -3092,7 +3102,7 @@ void Plant::AnimateNuts()
     Image* aCracked1;
     Image* aCracked2;
     const char* aTrackToOverride;
-    if (mSeedType == SeedType::SEED_WALLNUT)
+    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT)
     {
         aCracked1 = IMAGE_REANIM_WALLNUT_CRACKED1;
         aCracked2 = IMAGE_REANIM_WALLNUT_CRACKED2;
@@ -3104,6 +3114,12 @@ void Plant::AnimateNuts()
         aCracked2 = IMAGE_REANIM_TALLNUT_CRACKED2;
         aTrackToOverride = "anim_idle";
     }
+    //else if (mSeedType == SeedType::SEED_WALLNUTO)
+    //{
+    //    aCracked1 = IMAGE_REANIM_WALLNUTO_CRACKED1;
+    //    aCracked2 = IMAGE_REANIM_WALLNUTO_CRACKED2;
+    //    aTrackToOverride = "anim_idle";
+    //}
     else return;
 
     int aPosX = mX + 40;
@@ -3439,7 +3455,7 @@ void Plant::Animate()
         return;
     }
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT)
+    if (mSeedType == SeedType::SEED_EXPLODE_NUT || mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT)
     {
         AnimateNuts();
     }
@@ -4988,6 +5004,21 @@ void Plant::Die()
             aPotReanim->mAnimRate = RandRangeFloat(10.0f, 15.0f);
         }
     }
+
+
+    if (IsOnBoard() && mSeedType == SeedType::SEED_EXPLODE_NUT)
+    {
+        int aPosX = mX + mWidth / 2;
+        int aPosY = mY + mHeight / 2;
+        int aDamageRangeFlags = GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
+        mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, 115, 1, true, aDamageRangeFlags);
+        mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
+        mBoard->ShakeBoard(3, -4);
+
+        mApp->PlayFoley(FoleyType::FOLEY_EXPLOSION);
+    }
+
+
 }
 
 PlantDefinition& GetPlantDefinition(SeedType theSeedType)
