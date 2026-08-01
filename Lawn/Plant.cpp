@@ -271,8 +271,8 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     case SeedType::SEED_EXPLODE_NUT:
         mPlantHealth = 2000;
-        mBlinkCountdown = 1000 + Sexy::Rand(1000);
-        aBodyReanim->mColorOverride = Color(255, 64, 64);
+        mBlinkCountdown = INT32_MAX; // 1000 + Sexy::Rand(1000);
+        //aBodyReanim->mColorOverride = Color(255, 64, 64);
         break;
     case SeedType::SEED_EXPLODE_O_NUT:
         mPlantHealth = 4000;
@@ -2677,7 +2677,7 @@ void Plant::UpdateReanimColor()
     {
         aColorOverride = GetFlashingColor(mBoard->mMainCounter, 90);
     }
-    else if (mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_EXPLODE_NUT)
+    else if (mSeedType == SeedType::SEED_EXPLODE_O_NUT) // || mSeedType == SeedType::SEED_EXPLODE_NUT)
     {
         aColorOverride = Color(255, 64, 64);
     }
@@ -3040,10 +3040,13 @@ void Plant::DoBlink()
         (mSeedType == SeedType::SEED_GARLIC && aBodyReanim->GetImageOverride("anim_face") == IMAGE_REANIM_GARLIC_BODY3))
         return;
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT ||
+    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT ||
         mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_GIANT_WALLNUT)
     {
         mBlinkCountdown = 1000 + Rand(1000);
+    }
+    if (mSeedType == SeedType::SEED_EXPLODE_NUT) {
+        mBlinkCountdown = INT32_MAX;
     }
 
     Reanimation* aBlinkReanim = AttachBlinkAnim(aBodyReanim);
@@ -3102,7 +3105,7 @@ void Plant::AnimateNuts()
     Image* aCracked1;
     Image* aCracked2;
     const char* aTrackToOverride;
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT)
+    if (mSeedType == SeedType::SEED_WALLNUT)
     {
         aCracked1 = IMAGE_REANIM_WALLNUT_CRACKED1;
         aCracked2 = IMAGE_REANIM_WALLNUT_CRACKED2;
@@ -3113,6 +3116,12 @@ void Plant::AnimateNuts()
         aCracked1 = IMAGE_REANIM_TALLNUT_CRACKED1;
         aCracked2 = IMAGE_REANIM_TALLNUT_CRACKED2;
         aTrackToOverride = "anim_idle";
+    }
+    else if (mSeedType == SeedType::SEED_EXPLODE_NUT)
+    {
+        aCracked1 = IMAGE_REANIM_WALLNUTO_CRACKED1;
+        aCracked2 = IMAGE_REANIM_WALLNUTO_CRACKED2;
+        aTrackToOverride = "anim_face";
     }
     //else if (mSeedType == SeedType::SEED_WALLNUTO)
     //{
@@ -3148,7 +3157,13 @@ void Plant::AnimateNuts()
     }
     else
     {
-        aBodyReanim->SetImageOverride(aTrackToOverride, nullptr);
+        if (mSeedType == SEED_EXPLODE_NUT) {
+
+            aBodyReanim->SetImageOverride(aTrackToOverride, IMAGE_REANIM_WALLNUT_BODYO);
+        }
+        else {
+            aBodyReanim->SetImageOverride(aTrackToOverride, nullptr);
+        }
     }
 
     if (IsInPlay() && !mApp->IsIZombieLevel())
