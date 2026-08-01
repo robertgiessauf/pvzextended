@@ -339,6 +339,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_CACTUS:
+	case SeedType::SEED_FIRECACTUS:
 		aOffsetX = 9.0f;
 		aOffsetY = 13.0f;
 		break;

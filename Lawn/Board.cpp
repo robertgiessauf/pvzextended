@@ -3691,6 +3691,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		if (aNormalPlant->mSeedType == SEED_WALLNUT && aPlantingSeedType == SeedType::SEED_FIREPEA) {
 			aPlantingSeedType = SEED_EXPLODE_NUT;
 		}
+		if (aNormalPlant->mSeedType == SEED_CACTUS && aPlantingSeedType == SeedType::SEED_FIREPEA) {
+			aPlantingSeedType = SEED_FIRECACTUS;
+		}
 		aNormalPlant->Die();
 	}
 	if ((aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_TALLNUT) && aNormalPlant)
@@ -3753,6 +3756,9 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		}
 		if (mCursorObject->mType == SEED_FIREPEA && aPlantingSeedType == SEED_EXPLODE_NUT) {
 			toPlant = SEED_EXPLODE_NUT;
+		}
+		if (mCursorObject->mType == SEED_FIREPEA && aPlantingSeedType == SEED_FIRECACTUS) {
+			toPlant = SEED_FIRECACTUS;
 		}
 		Plant* aPlant = AddPlant(aGridX, aGridY, toPlant, mCursorObject->mImitaterType);
 		if (aIsAwake)

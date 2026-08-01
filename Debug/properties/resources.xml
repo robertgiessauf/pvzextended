@@ -188,6 +188,7 @@
 <Image id="PROJECTILEPEA" path="projectilepea" />
 <Image id="PROJECTILESNOWPEA" path="projectilesnowpea" />
 <Image id="PROJECTILECACTUS" path="ProjectileCactus" />
+<Image id="PROJECTILEFIRECACTUS" path="ProjectileFireCactus" />
 <Image id="DIRTSMALL" path="dirtsmall" cols="8" rows="2" />
 <Image id="DIRTBIG" path="dirtbig" cols="4" rows="2" />
 <Image id="ROCKSMALL" path="RockSmall" cols="8" rows="2" />

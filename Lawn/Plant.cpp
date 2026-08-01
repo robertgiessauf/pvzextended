@@ -76,6 +76,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_GIANT_WALLNUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GIANT_WALLNUT") },
     { SeedType::SEED_SPROUT,            nullptr, ReanimationType::REANIM_ZENGARDEN_SPROUT,          33, 0,      3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPROUT") },
     { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
+    { SeedType::SEED_FIRECACTUS,        nullptr, ReanimationType::REANIM_FIRECACTUS,   15, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("FIRECACTUS") },
 
     { SeedType::SEED_FROSTSTARFRUIT,         nullptr, ReanimationType::REANIM_FROSTSTARFRUIT,     30, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
 
@@ -416,6 +417,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         aBodyReanim->mAnimRate = RandRangeFloat(15.0f, 20.0f);
         break;
     case SeedType::SEED_CACTUS:
+    case SeedType::SEED_FIRECACTUS:
         mState = PlantState::STATE_CACTUS_LOW;
         break;
     case SeedType::SEED_INSTANT_COFFEE:
@@ -589,6 +591,7 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
     switch (mSeedType)
     {
     case SeedType::SEED_CACTUS:
+    case SeedType::SEED_FIRECACTUS:
         return thePlantWeapon == PlantWeapon::WEAPON_SECONDARY ? 1 : 2;
     case SeedType::SEED_CHERRYBOMB:
     case SeedType::SEED_JALAPENO:
@@ -789,7 +792,8 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
             mShootingCounter = 30;
             break;
         }
-        case SeedType::SEED_CACTUS:         mShootingCounter = 35;  break;
+        case SeedType::SEED_CACTUS:
+        case SeedType::SEED_FIRECACTUS:         mShootingCounter = 35;  break;
         default:                            mShootingCounter = 29;  break;
         }
     }
@@ -946,7 +950,7 @@ void Plant::UpdateShooter()
         {
             FindTargetAndFire(mRow, PlantWeapon::WEAPON_SECONDARY);
         }
-        else if (mSeedType == SeedType::SEED_CACTUS)
+        else if (mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS)
         {
             if (mState == PlantState::STATE_CACTUS_HIGH)
             {
@@ -2545,7 +2549,7 @@ void Plant::UpdateAbilities()
     else if (mSeedType == SeedType::SEED_INSTANT_COFFEE)                                        UpdateCoffeeBean();
     else if (mSeedType == SeedType::SEED_UMBRELLA)                                              UpdateUmbrella();
     else if (mSeedType == SeedType::SEED_COBCANNON)                                             UpdateCobCannon();
-    else if (mSeedType == SeedType::SEED_CACTUS)                                                UpdateCactus();
+    else if (mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS)                                                UpdateCactus();
     else if (mSeedType == SeedType::SEED_MAGNETSHROOM)                                          UpdateMagnetShroom();
     else if (mSeedType == SeedType::SEED_GOLD_MAGNET)                                           UpdateGoldMagnetShroom();
     else if (mSeedType == SeedType::SEED_SUNSHROOM)                                             UpdateSunShroom();
@@ -2587,6 +2591,10 @@ bool Plant::IsUpgradableTo(SeedType theUpgradedType)
     //{
     //    return true;
     //}
+    if (theUpgradedType == SeedType::SEED_FIREPEA && mSeedType == SeedType::SEED_CACTUS)
+    {
+        return true;
+    }
     if (theUpgradedType == SeedType::SEED_FIREPEA && mSeedType == SeedType::SEED_PEASHOOTER)
     {
         return true;
@@ -3635,7 +3643,7 @@ float PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedTy
     //{
     //    aHeightOffset -= 30.0f;
     //}
-    else if (theSeedType == SeedType::SEED_CACTUS)
+    else if (theSeedType == SeedType::SEED_CACTUS || theSeedType == SeedType::SEED_FIRECACTUS)
     {
         return aHeightOffset;
     }
@@ -3925,7 +3933,7 @@ void Plant::DrawShadow(Sexy::Graphics* g, float theOffsetX, float theOffsetY)
         aShadowOffsetY = 46.0f;
         aScale = 1.4f;
     }
-    else if (mSeedType == SeedType::SEED_CACTUS)
+    else if (mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS)
     {
         aShadowOffsetX = -8.0f;
         aShadowOffsetY = 50.0f;
@@ -4573,6 +4581,9 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     case SeedType::SEED_CATTAIL:
         aProjectileType = ProjectileType::PROJECTILE_SPIKE;
         break;
+    case SeedType::SEED_FIRECACTUS:
+        aProjectileType = ProjectileType::PROJECTILE_FIRESPIKE;
+        break;
     case SeedType::SEED_CABBAGEPULT:
         aProjectileType = ProjectileType::PROJECTILE_CABBAGE;
         break;
@@ -4689,7 +4700,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + 29;
         aOriginY = mY + 21;
     }
-    else if (mSeedType == SeedType::SEED_CACTUS)
+    else if (mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS)
     {
         if (thePlantWeapon == PlantWeapon::WEAPON_PRIMARY)
         {
@@ -4852,7 +4863,7 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
         bool needPortalCheck = false;
         if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT)
         {
-            if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIREPEA)
+            if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS || mSeedType == SeedType::SEED_FIREPEA)
             {
                 needPortalCheck = true;
             }
@@ -5186,6 +5197,7 @@ bool Plant::IsUpgrade(SeedType theSeedtype)
         theSeedtype == SeedType::SEED_WINTERMELON ||
         theSeedtype == SeedType::SEED_SNOWPEA ||
         theSeedtype == SeedType::SEED_FIREPEA ||
+        theSeedtype == SeedType::SEED_FIRECACTUS ||
         theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
         theSeedtype == SeedType::SEED_SPIKEROCK || 
         theSeedtype == SeedType::SEED_COBCANNON || 

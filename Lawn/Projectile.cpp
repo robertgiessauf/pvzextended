@@ -26,7 +26,8 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
 	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
 	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  },
-	{ ProjectileType::PROJECTILE_FROSTSTAR,     0,  20 }
+	{ ProjectileType::PROJECTILE_FROSTSTAR,     0,  20  },
+	{ ProjectileType::PROJECTILE_FIRESPIKE,     0,  40  }
 };
 
 Projectile::Projectile()
@@ -335,6 +336,7 @@ void Projectile::CheckForHighGround()
 		mProjectileType == ProjectileType::PROJECTILE_SNOWPEA ||
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
 		mProjectileType == ProjectileType::PROJECTILE_SPIKE ||
+		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE ||
 		mProjectileType == ProjectileType::PROJECTILE_COBBIG)
 	{
 		if (aShadowDelta < 28.0f)
@@ -934,7 +936,8 @@ void Projectile::Update()
 		mProjectileType == ProjectileType::PROJECTILE_BUTTER || 
 		mProjectileType == ProjectileType::PROJECTILE_COBBIG || 
 		mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA || 
-		mProjectileType == ProjectileType::PROJECTILE_SPIKE)
+		mProjectileType == ProjectileType::PROJECTILE_SPIKE ||
+		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		aTime = 0;
 	}
@@ -979,6 +982,10 @@ void Projectile::Draw(Graphics* g)
 	else if (mProjectileType == ProjectileType::PROJECTILE_SPIKE)
 	{
 		aImage = IMAGE_PROJECTILECACTUS;
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
+	{
+		aImage = IMAGE_PROJECTILEFIRECACTUS;
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_STAR)
 	{
@@ -1178,7 +1185,7 @@ Rect Projectile::GetProjectileRect()
 	{
 		return Rect(mX, mY, mWidth - 10, mHeight);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_SPIKE)
+	else if (mProjectileType == ProjectileType::PROJECTILE_SPIKE || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		return Rect(mX - 25, mY, mWidth + 25, mHeight);
 	}
