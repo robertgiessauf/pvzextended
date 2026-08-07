@@ -376,7 +376,8 @@ bool Projectile::IsSplashDamage(Zombie* theZombie)
 	return 
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
-		mProjectileType == ProjectileType::PROJECTILE_FIREBALL;
+		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
+		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE;
 }
 
 unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
@@ -414,7 +415,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 
 	int aRowDeviation = theZombie->mRow - mRow;
 	Rect aZombieRect = theZombie->GetZombieRect();
-	if (theZombie->IsFireResistant() && mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (theZombie->IsFireResistant() && (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE))
 	{
 		return false;
 	}
@@ -423,7 +424,7 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 	{
 		aRowDeviation = 0;
 	}
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		if (aRowDeviation != 0)
 		{
@@ -455,7 +456,7 @@ void Projectile::DoSplashDamage(Zombie* theZombie)
 	int aOriginalDamage = aProjectileDef.mDamage;
 	int aSplashDamage = aProjectileDef.mDamage / 3;
 	int aMaxSplashDamageAmount = aSplashDamage * 7;
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		aMaxSplashDamageAmount = aOriginalDamage;
 	}
@@ -804,7 +805,7 @@ void Projectile::DoImpact(Zombie* theZombie)
 
 	if (IsSplashDamage(theZombie))
 	{
-		if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL && theZombie)
+		if ((mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE) && theZombie)
 		{
 			theZombie->RemoveColdEffects();
 		}
@@ -848,7 +849,7 @@ void Projectile::DoImpact(Zombie* theZombie)
 		aSplatPosX -= 15.0f;
 		aEffect = ParticleEffect::PARTICLE_SNOWPEA_SPLAT;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		if (IsSplashDamage(theZombie))
 		{
