@@ -784,6 +784,10 @@ void Board::LoadBackgroundImages()
 		}
 		break;
 
+	case BackgroundType::BACKGROUND_1_2_STONE:
+		TodLoadResources("DelayLoad_Background1_2");
+		break;
+
 	case BackgroundType::BACKGROUND_2_NIGHT:
 		TodLoadResources("DelayLoad_Background2");
 		break;
@@ -836,6 +840,9 @@ void Board::PickBackground()
 		if (mLevel <= 1 * LEVELS_PER_AREA)
 		{
 			mBackground = BackgroundType::BACKGROUND_1_DAY;
+			if (mLevel >= 6) {
+				mBackground = BackgroundType::BACKGROUND_1_2_STONE;
+			}
 		}
 		else if (mLevel <= 2 * LEVELS_PER_AREA)
 		{
@@ -972,7 +979,7 @@ void Board::PickBackground()
 	}
 	LoadBackgroundImages();
 
-	if (mBackground == BackgroundType::BACKGROUND_1_DAY || mBackground == BackgroundType::BACKGROUND_GREENHOUSE || mBackground == BackgroundType::BACKGROUND_TREEOFWISDOM)
+	if (mBackground == BackgroundType::BACKGROUND_1_2_STONE || mBackground == BackgroundType::BACKGROUND_1_DAY || mBackground == BackgroundType::BACKGROUND_GREENHOUSE || mBackground == BackgroundType::BACKGROUND_TREEOFWISDOM)
 	{
 		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
@@ -2688,6 +2695,21 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		}
 
 		return PlantingReason::PLANTING_OK;
+	}
+
+	if (mBackground == BackgroundType::BACKGROUND_1_2_STONE) {
+		if (theGridY == 0 && (theGridX == 0 || theGridX == 1)) {
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
+		if (theGridY == 2 && (theGridX == 3)) {
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
+		if (theGridY == 3 && (theGridX == 0)) {
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
+		if (theGridY == 4 && (theGridX == 2)) {
+			return PlantingReason::PLANTING_NOT_HERE;
+		}
 	}
 
 	bool aHasGrave = GetGraveStoneAt(theGridX, theGridY);
@@ -5805,6 +5827,7 @@ void Board::DrawBackdrop(Graphics* g)
 	switch (mBackground)
 	{
 	case BackgroundType::BACKGROUND_1_DAY:				aBgImage = Sexy::IMAGE_BACKGROUND1;						break;
+	case BackgroundType::BACKGROUND_1_2_STONE:	    	aBgImage = Sexy::IMAGE_BACKGROUND1_2;					break;
 	case BackgroundType::BACKGROUND_2_NIGHT:			aBgImage = Sexy::IMAGE_BACKGROUND2;						break;
 	case BackgroundType::BACKGROUND_3_POOL:				aBgImage = Sexy::IMAGE_BACKGROUND3;						break;
 	case BackgroundType::BACKGROUND_4_FOG:				aBgImage = Sexy::IMAGE_BACKGROUND4;						break;
@@ -6654,7 +6677,7 @@ void Board::DrawHouseDoorBottom(Graphics* g)
 {
 	switch (mBackground)
 	{
-	case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
+	case BackgroundType::BACKGROUND_1_2_STONE: case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY, -171, 241);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY, -172, 246);		break;
@@ -6666,7 +6689,7 @@ void Board::DrawHouseDoorTop(Graphics* g)
 {
 	switch (mBackground)
 	{
-	case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK, -130, 202);		break;
+	case BackgroundType::BACKGROUND_1_2_STONE: case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_MASK, -130, 202);		break;
 	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_MASK, -128, 207);		break;
 	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_MASK, -172, 234);		break;
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_MASK, -173, 133);		break;

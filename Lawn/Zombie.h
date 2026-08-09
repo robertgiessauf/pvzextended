@@ -224,6 +224,7 @@ public:
     void                            UpdateZombieFlyer();
     void                            UpdateZombiePogo();
     void                            UpdateZombieNewspaper();
+    void                            UpdateZombieWallnutNewspaper();
     void                            LandFlyer(unsigned int theDamageFlags);
     void                            UpdateZombieDigger();
     bool                            IsWalkingBackwards();

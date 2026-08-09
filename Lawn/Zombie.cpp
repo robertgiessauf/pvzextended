@@ -24,6 +24,8 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_POLEVAULTER,       REANIM_POLEVAULTER,         2,      6,      5,      2000,   _S("POLE_VAULTING_ZOMBIE")},
     { ZOMBIE_PAIL,              REANIM_ZOMBIE,              4,      8,      1,      3000,   _S("BUCKETHEAD_ZOMBIE")},
     { ZOMBIE_NEWSPAPER,         REANIM_ZOMBIE_NEWSPAPER,    2,      2/*11*/,     1,      1000,   _S("NEWSPAPER_ZOMBIE")},
+    { ZOMBIE_WALLNUTNEWSPAPER,  REANIM_ZOMBIE_NEWSPAPER,    2,      2/*11*/,     1,      1000,   _S("NEWSPAPER_ZOMBIE")},
+
     { ZOMBIE_DOOR,              REANIM_ZOMBIE,              4,      13,     5,      3500,   _S("SCREEN_DOOR_ZOMBIE")},
     { ZOMBIE_FOOTBALL,          REANIM_ZOMBIE_FOOTBALL,     7,      16,     5,      2000,   _S("FOOTBALL_ZOMBIE")},
     { ZOMBIE_DANCER,            REANIM_DANCER,              5,      18,     5,      1000,   _S("DANCING_ZOMBIE")},
@@ -543,6 +545,34 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         AttachShield();
         break;
 
+    case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
+    {
+        //LoadPlainZombieReanim();
+        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("anim_head", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("Zombie_tie", RENDER_GROUP_HIDDEN);
+
+        mZombieAttackRect = Rect(20, 0, 50, 115);
+        mZombiePhase = ZombiePhase::PHASE_NEWSPAPER_READING;
+        mShieldType = ShieldType::SHIELDTYPE_NEWSPAPER;
+        //mShieldHealth = 150;
+        AttachShield();
+
+
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_paper_body");
+        Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_WALLNUT);
+        aHeadReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
+        AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
+        aBodyReanim->mFrameBasePose = 0;
+        TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 50.0f, 0.0f, 0.2f, -0.8f, 0.8f);
+
+        mHelmType = HelmType::HELMTYPE_WALLNUT;
+        mHelmHealth = 1100;
+        mVariant = false;
+        break;
+    }
     case ZombieType::ZOMBIE_BALLOON:  
     {
         Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
@@ -654,7 +684,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mVariant = false;
         break;
     }
-    
+
     case ZombieType::ZOMBIE_WALLNUT_HEAD:  
     {
         LoadPlainZombieReanim();
@@ -870,6 +900,10 @@ void Zombie::SetupReanimLayers(Reanimation* aReanim, ZombieType theZombieType)
         SetupDoorArms(aReanim, true);
     }
     else if (theZombieType == ZombieType::ZOMBIE_NEWSPAPER)
+    {
+        aReanim->AssignRenderGroupToPrefix("Zombie_paper_paper", RENDER_GROUP_HIDDEN);
+    }
+    else if (theZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
     {
         aReanim->AssignRenderGroupToPrefix("Zombie_paper_paper", RENDER_GROUP_HIDDEN);
     }
@@ -1622,6 +1656,25 @@ void Zombie::UpdateZombieNewspaper()
 
             StartWalkAnim(20);
             aBodyReanim->SetImageOverride("anim_head1", IMAGE_REANIM_ZOMBIE_PAPER_MADHEAD);
+        }
+    }
+}
+
+void Zombie::UpdateZombieWallnutNewspaper()
+{
+    if (mZombiePhase == ZombiePhase::PHASE_NEWSPAPER_MADDENING)
+    {
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        if (aBodyReanim->mLoopCount > 0)
+        {
+            mZombiePhase = ZombiePhase::PHASE_NEWSPAPER_MAD;
+            if (mBoard->CountZombiesOnScreen() <= 10 && mHasHead)
+            {
+                mApp->PlayFoley(FoleyType::FOLEY_NEWSPAPER_RARRGH);
+            }
+
+            StartWalkAnim(20);
+            //aBodyReanim->SetImageOverride("anim_head1", IMAGE_REANIM_ZOMBIE_PAPER_MADHEAD);
         }
     }
 }
@@ -3330,6 +3383,10 @@ void Zombie::DropHead(unsigned int theDamageFlags)
     {
         aEffect = ParticleEffect::PARTICLE_ZOMBIE_NEWSPAPER_HEAD;
     }
+    else if (mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
+    {
+        //aEffect = ParticleEffect::PARTICLE_ZOMBIE_NEWSPAPER_HEAD;
+    }
     else if (mZombieType == ZombieType::ZOMBIE_POGO)
     {
         PogoBreak(theDamageFlags);
@@ -3472,6 +3529,10 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
         ReanimShowTrack("Zombie_paper_hands", RENDER_GROUP_HIDDEN);
         ReanimShowTrack("Zombie_paper_leftarm_lower", RENDER_GROUP_HIDDEN);
         break;
+    case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
+        ReanimShowTrack("Zombie_paper_hands", RENDER_GROUP_HIDDEN);
+        ReanimShowTrack("Zombie_paper_leftarm_lower", RENDER_GROUP_HIDDEN);
+        break;
     case ZombieType::ZOMBIE_POLEVAULTER:
         ReanimShowTrack("Zombie_polevaulter_outerarm_lower", RENDER_GROUP_HIDDEN);
         ReanimShowTrack("Zombie_outerarm_hand", RENDER_GROUP_HIDDEN);
@@ -3511,6 +3572,10 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
             GetTrackPosition("Zombie_paper_leftarm_lower", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_paper_leftarm_upper", IMAGE_REANIM_ZOMBIE_PAPER_LEFTARM_UPPER2);
             break;
+        case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
+                GetTrackPosition("Zombie_paper_leftarm_lower", aPosX, aPosY);
+                aBodyReanim->SetImageOverride("Zombie_paper_leftarm_upper", IMAGE_REANIM_ZOMBIE_PAPER_LEFTARM_UPPER2);
+                break;
         case ZombieType::ZOMBIE_POLEVAULTER:
             GetTrackPosition("Zombie_polevaulter_outerarm_lower", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_polevaulter_outerarm_upper", IMAGE_REANIM_ZOMBIE_POLEVAULTER_OUTERARM_UPPER2);
@@ -3605,6 +3670,9 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
                 aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_FOOTBALL_LEFTARM_HAND);
                 break;
             case ZombieType::ZOMBIE_NEWSPAPER:
+                aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_PAPER_LEFTARM_LOWER);
+                break;
+            case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
                 aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_PAPER_LEFTARM_LOWER);
                 break;
             case ZombieType::ZOMBIE_DANCER:
@@ -4245,6 +4313,10 @@ void Zombie::UpdateActions()
     {
         UpdateZombieNewspaper();
     }
+    if (mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
+    {
+        UpdateZombieWallnutNewspaper();
+    }
     if (mZombieType == ZombieType::ZOMBIE_DIGGER)
     {
         UpdateZombieDigger();
@@ -4743,7 +4815,7 @@ void Zombie::Animate()
                 aLeftHandTime = 0.38f;
                 aRightHandTime = 0.8f;
             }
-            else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_LADDER)
+            else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER || mZombieType == ZombieType::ZOMBIE_LADDER)
             {
                 aLeftHandTime = 0.42f;
                 aRightHandTime = 0.42f;
@@ -4802,6 +4874,7 @@ void Zombie::DrawZombie(Graphics* g, const ZombieDrawPosition& theDrawPos)
     case ZombieType::ZOMBIE_TRAFFIC_CONE:
     case ZombieType::ZOMBIE_PAIL:
     case ZombieType::ZOMBIE_NEWSPAPER:
+    case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
     case ZombieType::ZOMBIE_DOOR:
     case ZombieType::ZOMBIE_FOOTBALL:
     case ZombieType::ZOMBIE_DOLPHIN_RIDER:
@@ -8034,7 +8107,8 @@ bool Zombie::IsZombotany(ZombieType theZombieType)
 {
     return
         theZombieType == ZombieType::ZOMBIE_PEA_HEAD || 
-        theZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD || 
+        theZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD ||
+        //theZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER ||
         theZombieType == ZombieType::ZOMBIE_TALLNUT_HEAD || 
         theZombieType == ZombieType::ZOMBIE_JALAPENO_HEAD || 
         theZombieType == ZombieType::ZOMBIE_GATLING_HEAD ||
@@ -8051,7 +8125,8 @@ bool Zombie::ZombieTypeCanGoInPool(ZombieType theZombieType)
         theZombieType == ZombieType::ZOMBIE_SNORKEL || 
         theZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || 
         theZombieType == ZombieType::ZOMBIE_PEA_HEAD || 
-        theZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD || 
+        theZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD ||
+        theZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER ||
         theZombieType == ZombieType::ZOMBIE_JALAPENO_HEAD || 
         theZombieType == ZombieType::ZOMBIE_GATLING_HEAD || 
         theZombieType == ZombieType::ZOMBIE_TALLNUT_HEAD;
@@ -8877,6 +8952,7 @@ void Zombie::UpdateDeath()
         case ZombieType::ZOMBIE_DOOR:
         case ZombieType::ZOMBIE_PEA_HEAD:
         case ZombieType::ZOMBIE_WALLNUT_HEAD:
+        case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
         case ZombieType::ZOMBIE_TALLNUT_HEAD:
         case ZombieType::ZOMBIE_JALAPENO_HEAD:
         case ZombieType::ZOMBIE_GATLING_HEAD:
@@ -9108,6 +9184,7 @@ bool Zombie::SetupDrawZombieWon(Graphics* g)
     switch (mBoard->mBackground)
     {
     case BackgroundType::BACKGROUND_1_DAY:
+    case BackgroundType::BACKGROUND_1_2_STONE:
     case BackgroundType::BACKGROUND_2_NIGHT:
         g->ClipRect(-123 - mX, -mY, BOARD_WIDTH, BOARD_HEIGHT);
         break;
@@ -9153,7 +9230,7 @@ void Zombie::DrawShadow(Graphics* g)
         }
         aShadowOffsetY += 16.0f;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER)
+    else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
     {
         if (IsWalkingBackwards())
         {
@@ -9278,7 +9355,7 @@ void Zombie::DrawShadow(Graphics* g)
         }
     }
 
-    if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER)
+    if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
     {
         aShadowOffsetY += 4.0f;
     }
@@ -9400,7 +9477,7 @@ void Zombie::WalkIntoHouse()
         StartWalkAnim(0);
     }
 
-    if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT ||
+    if (mBoard->mBackground == BackgroundType::BACKGROUND_1_2_STONE || mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT ||
         mBoard->mBackground == BackgroundType::BACKGROUND_3_POOL || mBoard->mBackground == BackgroundType::BACKGROUND_4_FOG)
     {
         mPosY = 290.0f;

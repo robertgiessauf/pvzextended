@@ -612,6 +612,11 @@
 <Image id="BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY" path="background1_gameover_interior_overlay" />
 <Image id="BACKGROUND1_GAMEOVER_MASK" path="background1_gameover_mask" />
 </Resources>
+
+<Resources id="DelayLoad_Background1_2">
+<SetDefaults path="images" idprefix="IMAGE_" />
+<Image id="BACKGROUND1_2" path="background1_2" ddsurface="" a8r8g8b8="" />
+</Resources>
   
 <Resources id="DelayLoad_BackgroundUnsodded">
 <SetDefaults path="images" idprefix="IMAGE_" />

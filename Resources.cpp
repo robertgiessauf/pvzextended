@@ -14,6 +14,7 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theManager, const char *theNa
 	if (strcmp(theName,"DelayLoad_AwardScreen")==0) return ExtractDelayLoad_AwardScreenResources(theManager);
 	if (strcmp(theName,"DelayLoad_Background1")==0) return ExtractDelayLoad_Background1Resources(theManager);
 	if (strcmp(theName,"DelayLoad_Background2")==0) return ExtractDelayLoad_Background2Resources(theManager);
+	if (strcmp(theName,"DelayLoad_Background1_2")==0) return ExtractDelayLoad_Background1_2Resources(theManager);
 	if (strcmp(theName,"DelayLoad_Background3")==0) return ExtractDelayLoad_Background3Resources(theManager);
 	if (strcmp(theName,"DelayLoad_Background4")==0) return ExtractDelayLoad_Background4Resources(theManager);
 	if (strcmp(theName,"DelayLoad_Background5")==0) return ExtractDelayLoad_Background5Resources(theManager);
@@ -233,6 +234,25 @@ bool Sexy::ExtractDelayLoad_Background2Resources(ResourceManager *theManager)
 	return true;
 }
 
+
+// DelayLoad_Background2 Resources
+Image* Sexy::IMAGE_BACKGROUND1_2;
+
+bool Sexy::ExtractDelayLoad_Background1_2Resources(ResourceManager *theManager)
+{
+	gNeedRecalcVariableToIdMap = true;
+
+	ResourceManager &aMgr = *theManager;
+	try
+	{
+		IMAGE_BACKGROUND1_2 = aMgr.GetImageThrow("IMAGE_BACKGROUND1_2");
+	}
+	catch(ResourceManagerException&)
+	{
+		return false;
+	}
+	return true;
+}
 // DelayLoad_Background3 Resources
 Image* Sexy::IMAGE_BACKGROUND3;
 Image* Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY;
