@@ -269,7 +269,15 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 	{ ZOMBIE_JALAPENO_HEAD, {0} },
 	{ ZOMBIE_GATLING_HEAD, {0} },
 	{ ZOMBIE_SQUASH_HEAD, {0} },
-	{ ZOMBIE_TALLNUT_HEAD, {0} }
+	{ ZOMBIE_TALLNUT_HEAD, {0} },
+	{ ZOMBIE_STRONG_BITE, {
+			0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+			0, 1, 1, 0, 0, 1, 1, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
+			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+		}
+}
 };
 
 SeedType gArtChallengeWallnut[MAX_GRID_SIZE_Y][MAX_GRID_SIZE_X] = {  
