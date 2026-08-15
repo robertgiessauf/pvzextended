@@ -29,7 +29,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
     
     { SeedType::SEED_SNOWPEA,           nullptr, ReanimationType::REANIM_SNOWPEA,       4,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SNOW_PEA") },
-    { SeedType::SEED_ROCK,              nullptr, ReanimationType::REANIM_ROCK,     22, 0,    750,    PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("SPIKEWEED") },
+    { SeedType::SEED_ROCK,              nullptr, ReanimationType::REANIM_ROCK,         22,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("SPIKEWEED") },
 
     { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
@@ -426,6 +426,9 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     case SeedType::SEED_INSTANT_COFFEE:
         mDoSpecialCountdown = 100;
+        break;
+    case SeedType::SEED_ROCK:
+        mPlantHealth = 1000;
         break;
     case SeedType::SEED_SCAREDYSHROOM:
         mState = PlantState::STATE_READY;
