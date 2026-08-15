@@ -2697,18 +2697,40 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		return PlantingReason::PLANTING_OK;
 	}
 
-	if (mBackground == BackgroundType::BACKGROUND_1_2_STONE) {
-		if (theGridY == 0 && (theGridX == 0 || theGridX == 1)) {
-			return PlantingReason::PLANTING_NOT_HERE;
+	if (theSeedType == SEED_ROCK) {
+		if (mBackground == BackgroundType::BACKGROUND_1_2_STONE) {
+			bool isOkay = false;
+			if (theGridY == 0 && (theGridX == 0 || theGridX == 1)) {
+				isOkay = true;
+			}
+			if (theGridY == 2 && (theGridX == 3)) {
+				isOkay = true;
+			}
+			if (theGridY == 3 && (theGridX == 0)) {
+				isOkay = true;
+			}
+			if (theGridY == 4 && (theGridX == 2)) {
+				isOkay = true;
+			}
+			if (!isOkay) {
+				return PLANTING_NOT_HERE;
+			}
 		}
-		if (theGridY == 2 && (theGridX == 3)) {
-			return PlantingReason::PLANTING_NOT_HERE;
-		}
-		if (theGridY == 3 && (theGridX == 0)) {
-			return PlantingReason::PLANTING_NOT_HERE;
-		}
-		if (theGridY == 4 && (theGridX == 2)) {
-			return PlantingReason::PLANTING_NOT_HERE;
+	}
+	else {
+		if (mBackground == BackgroundType::BACKGROUND_1_2_STONE) {
+			if (theGridY == 0 && (theGridX == 0 || theGridX == 1)) {
+				return PlantingReason::PLANTING_NOT_HERE;
+			}
+			if (theGridY == 2 && (theGridX == 3)) {
+				return PlantingReason::PLANTING_NOT_HERE;
+			}
+			if (theGridY == 3 && (theGridX == 0)) {
+				return PlantingReason::PLANTING_NOT_HERE;
+			}
+			if (theGridY == 4 && (theGridX == 2)) {
+				return PlantingReason::PLANTING_NOT_HERE;
+			}
 		}
 	}
 

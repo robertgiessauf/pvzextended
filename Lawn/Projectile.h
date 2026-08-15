@@ -40,8 +40,7 @@ public:
     ProjectileMotion        mMotionType;            
     ProjectileType          mProjectileType;        
     int                     mProjectileAge;         
-    int                     mClickBackoffCounter;   
-    float                   mRotation;              
+    int                     mClickBackoffCounter;         
     float                   mRotationSpeed;         
     bool                    mOnHighGround;          
     int                     mDamageRangeFlags;      
@@ -50,7 +49,8 @@ public:
     float                   mCobTargetX;            
     int                     mCobTargetRow;          
     ZombieID                mTargetZombieID;        
-    int                     mLastPortalX;           
+    int                     mLastPortalX;
+    float                   mRotation;
 
 public:
     Projectile();

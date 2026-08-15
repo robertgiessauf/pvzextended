@@ -29,6 +29,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
     
     { SeedType::SEED_SNOWPEA,           nullptr, ReanimationType::REANIM_SNOWPEA,       4,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("SNOW_PEA") },
+    { SeedType::SEED_ROCK,              nullptr, ReanimationType::REANIM_ROCK,     22, 0,    750,    PlantSubClass::SUBCLASS_SHOOTER,     150,      _S("SPIKEWEED") },
+
     { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
     { SeedType::SEED_PUFFSHROOM,        nullptr, ReanimationType::REANIM_PUFFSHROOM,    6,  0,      750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PUFF_SHROOM") },
@@ -617,6 +619,8 @@ int Plant::GetDamageRangeFlags(PlantWeapon thePlantWeapon)
         return 9;
     case SeedType::SEED_CATTAIL:
         return 11;
+    case SeedType::SEED_ROCK:
+        return 11;
     case SeedType::SEED_TANGLEKELP:
         return 5;
     case SeedType::SEED_GIANT_WALLNUT:
@@ -767,6 +771,11 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
     else if (mSeedType == SeedType::SEED_CATTAIL)
     {
         PlayBodyReanim("anim_shooting", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 30.0f);
+        mShootingCounter = 50;
+    }
+    else if (mSeedType == SeedType::SEED_ROCK)
+    {
+        PlayBodyReanim("anim_attack", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 30.0f);
         mShootingCounter = 50;
     }
     else if (aBodyReanim && aBodyReanim->TrackExists("anim_shooting"))
@@ -972,6 +981,10 @@ void Plant::UpdateShooter()
     if (mLaunchCounter == 50 && mSeedType == SeedType::SEED_CATTAIL)
     {
         FindTargetAndFire(mRow, PlantWeapon::WEAPON_PRIMARY);
+    }
+    if (mLaunchCounter == 50 && mSeedType == SeedType::SEED_ROCK)
+    {
+        //FindTargetAndFire(mRow, PlantWeapon::WEAPON_PRIMARY);
     }
     if (mLaunchCounter == 25)
     {
@@ -3281,6 +3294,17 @@ void Plant::UpdateShooting()
             }
         }
     }
+    else if (mSeedType == SeedType::SEED_ROCK)
+    {
+        if (mShootingCounter == 49)
+        {
+            Zombie* aZombie = FindTargetZombie(mRow, PlantWeapon::WEAPON_PRIMARY);
+            if (aZombie)
+            {
+                Fire(aZombie, mRow, PlantWeapon::WEAPON_PRIMARY);
+            }
+        }
+    }
     else if (mShootingCounter == 1)
     {
         if (mSeedType == SeedType::SEED_THREEPEATER)
@@ -4581,6 +4605,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         break;
     case SeedType::SEED_CACTUS:
     case SeedType::SEED_CATTAIL:
+    case SeedType::SEED_ROCK:
         aProjectileType = ProjectileType::PROJECTILE_SPIKE;
         break;
     case SeedType::SEED_FIRECACTUS:
@@ -4645,6 +4670,11 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     {
         aOriginX = mX + 20;
         aOriginY = mY - 3;
+    }
+    else if (mSeedType == SeedType::SEED_ROCK) // TODO: position of spike here?
+    {
+        aOriginX = mX + 20;
+        aOriginY = mY - 10;
     }
     else if (mSeedType == SeedType::SEED_KERNELPULT && thePlantWeapon == PlantWeapon::WEAPON_PRIMARY)
     {
@@ -4825,6 +4855,13 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aProjectile->mMotionType = ProjectileMotion::MOTION_HOMING;
         aProjectile->mTargetZombieID = mBoard->ZombieGetID(theTargetZombie);
     }
+    else if (mSeedType == SeedType::SEED_ROCK)
+    {
+        aProjectile->mVelY = -2.0f;
+        aProjectile->mMotionType = ProjectileMotion::MOTION_HOMING;
+        aProjectile->mTargetZombieID = mBoard->ZombieGetID(theTargetZombie);
+        //aProjectile->mRotation = -PI / 2;
+    }
     else if (mSeedType == SeedType::SEED_COBCANNON)
     {
         aProjectile->mVelX = 0.001f;
@@ -4871,7 +4908,7 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
             }
         }
 
-        if (mSeedType != SeedType::SEED_CATTAIL)
+        if (mSeedType != SeedType::SEED_CATTAIL && mSeedType != SeedType::SEED_ROCK)
         {
             if (mSeedType == SeedType::SEED_GLOOMSHROOM)
             {
@@ -4956,7 +4993,7 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
             ////////////////////
 
             int aWeight = -aZombieRect.mX;
-            if (mSeedType == SeedType::SEED_CATTAIL)
+            if (mSeedType == SeedType::SEED_CATTAIL || mSeedType == SeedType::SEED_ROCK)
             {
                 aWeight = -Distance2D(mX + 40.0f, mY + 40.0f, aZombieRect.mX + aZombieRect.mWidth / 2, aZombieRect.mY + aZombieRect.mHeight / 2);
                 if (aZombie->IsFlying())
@@ -5258,6 +5295,7 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
     case SeedType::SEED_GLOOMSHROOM:    aRect = Rect(mX - 80,       mY - 80,        240,                240);                   break;
     case SeedType::SEED_TANGLEKELP:     aRect = Rect(mX,            mY,             mWidth,             mHeight);               break;
     case SeedType::SEED_CATTAIL:        aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
+    case SeedType::SEED_ROCK:           aRect = Rect(-BOARD_WIDTH,  -BOARD_HEIGHT,  BOARD_WIDTH * 2,    BOARD_HEIGHT * 2);      break;
     default:                            aRect = Rect(mX + 60,       mY,             BOARD_WIDTH,        mHeight);               break;
     }
 
