@@ -758,6 +758,7 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     case ZombieType::ZOMBIE_JALAPENO_HEAD:  
     {
         LoadPlainZombieReanim();
+        ReanimShowPrefix("anim_cone", RENDER_GROUP_NORMAL);
         ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
         ReanimShowPrefix("anim_head", RENDER_GROUP_HIDDEN);
         ReanimShowPrefix("Zombie_tie", RENDER_GROUP_HIDDEN);
@@ -775,6 +776,9 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mBodyHealth = 500;
         int aDistance = 275 + Rand(175);
         mPhaseCounter = (int)(aDistance / mVelX) * ZOMBIE_LIMP_SPEED_FACTOR;
+
+        mHelmType = HelmType::HELMTYPE_TRAFFIC_CONE;
+        mHelmHealth = 370;
         break;
     }
 
