@@ -265,6 +265,13 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 		} },
+	{ ZOMBIE_PEA_HEAD_PAIL, 		{
+			0, 0, 0, 1, 0, 1, 0, 1, 1, 0,
+			0, 1, 1, 0, 0, 1, 1, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			1, 0, 1, 0, 0, 0, 0, 0, 1, 0,
+			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+		} },
 	{ ZOMBIE_WALLNUT_HEAD, {0} },
 	{ ZOMBIE_JALAPENO_HEAD, 	{
 			0, 0, 0, 1, 0, 1, 0, 1, 1, 0,
