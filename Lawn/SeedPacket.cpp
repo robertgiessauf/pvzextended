@@ -10,6 +10,9 @@
 #include "../Sexy.TodLib/FilterEffect.h"
 #include "../SexyAppFramework/SexyMatrix.h"
 
+
+#define PACKETSEED_IMAGES 16
+
 SeedPacket::SeedPacket()
 {
 	mSlotMachiningPosition = 0.0f;
@@ -186,8 +189,8 @@ void SeedPacket::Update()
 void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, SeedType theImitaterType, float theOffsetX, float theOffsetY, float theScale)
 {
 	Image* aImage = IMAGE_PACKET_PLANTS;
-	aImage->mNumCols = 15;
-	aImage->mNumTotal = 15;
+	aImage->mNumCols = PACKETSEED_IMAGES;
+	aImage->mNumTotal = PACKETSEED_IMAGES;
 
 	SeedType aSeedType = theSeedType;
 	if (theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE)
@@ -259,6 +262,10 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 	else if (aSeedType == SeedType::SEED_FIREPEA && g->mScaleX <= 1.0f)
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 14, 0, g->mScaleX, g->mScaleY);
+	}
+	else if (aSeedType == SeedType::SEED_EXPLODE_NUT && g->mScaleX <= 1.0f)
+	{
+		TodDrawImageCelScaledF(g, aImage, x, y, 15, 0, g->mScaleX, g->mScaleY);
 	}
 	else
 	{

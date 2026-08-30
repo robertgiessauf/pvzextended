@@ -22,11 +22,23 @@ Wall-nut
 [WALL_NUT_TOOLTIP]
 Blocks off zombies and protects your other plants
 
+[EXPLODE_NUT]
+Explode-o-nut
+
+[EXPLODE_NUT_TOOLTIP]
+When defeated it will explode in a 3x3 radius
+
+[CACTUS_NUT]
+Cactus-nut
+
+[CACTUS_NUT_TOOLTIP]
+Can only be planted on rocks and shots homing spikes at the enemies
+
 [REPEATER]
-Firepea
+Fire Upgrade
 
 [REPEATER_TOOLTIP]
-Shoots fireballs at enemies burning them
+Turns plants into their fire version
 
 [POTATO_MINE]
 Potato Mine
@@ -435,6 +447,31 @@ Wall-nuts have hard shells which you can use to protect your other plants.
 {SHORTLINE}
 {FLAVOR}"People wonder how I feel about getting constantly chewed on by zombies," says Wall-nut. 
 "What they don't realize is that with my limited senses all I can feel is a kind of tingling, like a relaxing back rub."
+
+
+
+[EXPLODE_NUT_DESCRIPTION_HEADER]
+Proctects other plants just like wall-nut, but explodes when defeated
+
+[WALL_NUT_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Toughness:{STAT} high
+{SHORTLINE}
+{FLAVOR}Explode-o-nut has many famous relatives. His uncle is cherry bomb and his mother is wall-nut and potatemine his cousin.
+
+
+
+[CACTUS_NUT_DESCRIPTION_HEADER]
+Cactus-nuts can only be planted on stones
+
+[CACTUS_NUT_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Toughness:{STAT} high
+{SHORTLINE}
+{FLAVOR}Cactus nut is as tough as the stones he is planted on.
+"I don't get the other plants when then wallow around in the dirt", says cactus nut.
+"Stones are so much better, you never get dirty. That's why my spikes always hit their target"
+
 
 [CHERRY_BOMB_DESCRIPTION_HEADER]
 Cherry Bombs can blow up all zombies in an area. They have a short fuse so plant them near zombies.
