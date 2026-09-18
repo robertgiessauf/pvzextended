@@ -345,7 +345,11 @@ void CutScene::PreloadResources()
 		}
 	}
 
-	if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel <= 50)
+	if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+	{
+		Plant::PreloadPlantResources(SeedType::SEED_GATLINGPEA);
+	}
+	else if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel <= 50)
 	{
 		Plant::PreloadPlantResources(mApp->GetAwardSeedForLevel(mBoard->mLevel));
 	}

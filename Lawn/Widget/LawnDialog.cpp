@@ -461,7 +461,8 @@ void GameOverDialog::ButtonDepress(int theId)
         }
         else
         {
-            mApp->ShowChallengeScreen(ChallengePage::CHALLENGE_PAGE_CHALLENGE);
+            mApp->ShowChallengeScreen(mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ?
+                CHALLENGE_PAGE_BONUS : CHALLENGE_PAGE_CHALLENGE);
         }
     }
     else if (theId == Dialog::ID_FOOTER)

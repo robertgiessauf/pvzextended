@@ -7143,6 +7143,11 @@ bool Zombie::TrySpawnLevelAward()
             mBoard->AddCoin(aCenterX + i * 5, aCenterY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_COIN);
         }
     }
+    else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+    {
+        aCoinType = mApp->HasBeatenChallenge(mApp->mGameMode) ?
+            CoinType::COIN_AWARD_MONEY_BAG : CoinType::COIN_FINAL_SEED_PACKET;
+    }
     else if (!mApp->IsAdventureMode())
     {
         if (mApp->HasBeatenChallenge(mApp->mGameMode))

@@ -1538,6 +1538,12 @@ bool LawnApp::UpdatePlayerProfileForFinishingLevel()
 			GetAchievement(ACHIEVEMENT_GOOD_MORNING);
 		}
 	}
+	else if (mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+	{
+		aUnlockedNewChallenge = !HasBeatenChallenge(mGameMode);
+		mPlayerInfo->mChallengeRecords[GetCurrentChallengeIndex()]++;
+		mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_GATLINGPEA] = 1;
+	}
 	else if (IsSurvivalMode())
 	{
 		if (mBoard->IsFinalSurvivalStage())
@@ -1628,6 +1634,15 @@ void LawnApp::CheckForGameEnd()
 	}
 
 	bool aUnlockedNewChallenge = UpdatePlayerProfileForFinishingLevel();
+	if (mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+	{
+		KillBoard();
+		if (aUnlockedNewChallenge)
+			ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
+		else
+			ShowChallengeScreen(ChallengePage::CHALLENGE_PAGE_BONUS);
+		return;
+	}
 
 	bool forceAchievements = false;
 	for (int aAchivement = 0; aAchivement < NUM_ACHIEVEMENTS; aAchivement++)
@@ -2566,7 +2581,11 @@ int LawnApp::GetSeedsAvailable()
 	}
 
 	SeedType aSeedTypeMax = GetAwardSeedForLevel(aLevel);
-	return min(49, aSeedTypeMax);
+	int aSeedsAvailable = min(49, aSeedTypeMax);
+	// Loan the daytime starter plants without advancing the player's adventure.
+	if (mBoard && mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+		aSeedsAvailable = max(aSeedsAvailable, (int)SeedType::SEED_EXPLODE_NUT + 1);
+	return aSeedsAvailable;
 }
 
 bool LawnApp::HasSeedType(SeedType theSeedType)
@@ -2639,8 +2658,8 @@ bool LawnApp::SeedTypeAvailable(SeedType theSeedType)
 
 bool LawnApp::HasAllUpgrades()
 {
-	int availablePlants = 0;
-	for (int seed = SEED_GATLINGPEA; seed <= SEED_IMITATER; seed++) {
+	int availablePlants = SeedTypeAvailable(SEED_GATLINGPEA) ? 1 : 0;
+	for (int seed = SEED_TWINSUNFLOWER; seed <= SEED_IMITATER; seed++) {
 		if (SeedTypeAvailable(SeedType(seed))) {
 			availablePlants++;
 		}
@@ -3528,6 +3547,8 @@ int LawnApp::GetNumTrophies(ChallengePage thePage)
 
 int LawnApp::GetTotalTrophies(ChallengePage thePage)
 {
+	if (thePage == CHALLENGE_PAGE_BONUS)
+		return 1;
 	return thePage == CHALLENGE_PAGE_SURVIVAL ? 10 : thePage == CHALLENGE_PAGE_CHALLENGE ? 20 : thePage == CHALLENGE_PAGE_PUZZLE ? 18 : thePage == CHALLENGE_PAGE_LIMBO ? 0 : 0;
 }
 

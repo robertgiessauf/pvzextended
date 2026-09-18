@@ -136,7 +136,7 @@ AwardScreen::AwardScreen(LawnApp* theApp, AwardType theAwardType, bool hasAchiev
     }
     else if (!mApp->IsAdventureMode())
     {
-        mStartButton->SetLabel("[MAIN_MENU_BUTTON]");
+        mStartButton->SetLabel(mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
         mMenuButton->mBtnNoDraw = true;
         mMenuButton->mDisabled = true;
     }
@@ -240,7 +240,8 @@ void AwardScreen::DrawBottom(Graphics* g, SexyString theTitle, SexyString theAwa
 
 void AwardScreen::DrawAwardSeed(Graphics* g)
 {
-    SeedType aSeedType = mApp->GetAwardSeedForLevel(mApp->mPlayerInfo->mLevel - 1);
+    SeedType aSeedType = mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? SEED_GATLINGPEA :
+        mApp->GetAwardSeedForLevel(mApp->mPlayerInfo->mLevel - 1);
     SexyString aAward = Plant::GetNameString(aSeedType, SEED_NONE);
     SexyString aMessage;
     if (mApp->IsTrialStageLocked() && aSeedType >= SEED_SQUASH && aSeedType != SEED_TANGLEKELP)
@@ -280,7 +281,11 @@ void AwardScreen::Draw(Graphics* g)
     }
     else
     {
-        if (!mApp->IsAdventureMode())
+        if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA)
+        {
+            DrawAwardSeed(g);
+        }
+        else if (!mApp->IsAdventureMode())
         {
             if (mApp->EarnedGoldTrophy())
             {
@@ -427,7 +432,7 @@ void AwardScreen::Draw(Graphics* g)
         }
         else if (!mApp->IsAdventureMode())
         {
-            mStartButton->SetLabel("[MAIN_MENU_BUTTON]");
+            mStartButton->SetLabel(mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
         }
         else if (aLevel == 1)
         {
@@ -521,6 +526,11 @@ void AwardScreen::ExitScreen()
     {
         mApp->KillAwardScreen();
         mApp->ShowChallengeScreen(CHALLENGE_PAGE_PUZZLE);
+    }
+    else if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA)
+    {
+        mApp->KillAwardScreen();
+        mApp->ShowChallengeScreen(CHALLENGE_PAGE_BONUS);
     }
     else if (mApp->IsChallengeMode())
     {

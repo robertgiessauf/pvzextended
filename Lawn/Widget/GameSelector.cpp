@@ -262,6 +262,15 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mQuickPlayButton->mVisible = true;
 
 
+	mBonusButton = MakeNewButton(GameSelector::GameSelector_Bonus, this, _S("Bonus Levels"), Sexy::FONT_BRIANNETOD12,
+		Sexy::IMAGE_SEEDCHOOSER_BUTTON2, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+	mBonusButton->Resize(80, 300, 111, 26);
+	mBonusButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+	mBonusButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+	mBonusButton->mBtnNoDraw = true;
+	mBonusButton->mMouseVisible = false;
+	mBonusButton->mClip = false;
+
 	mCreditsButton = MakeNewButton(
 		GameSelector::GameSelector_Credits,
 		this,
@@ -372,6 +381,7 @@ GameSelector::~GameSelector()
 		delete mCreditsButton;
 	if (mQuickPlayButton)
 		delete mQuickPlayButton;
+	delete mBonusButton;
 
 	delete mToolTip;
 
@@ -825,10 +835,12 @@ void GameSelector::Update()
 		mCreditsButton->SetButtonOffset(aPosX, aPosY);
 		mAchievementButton->SetButtonOffset(aPosX, aPosY);
 		mQuickPlayButton->SetButtonOffset(aPosX, aPosY);
+		mBonusButton->SetButtonOffset(aPosX, aPosY);
 
 
 		mAchievementButton->MarkDirty();
 		mQuickPlayButton->MarkDirty();
+		mBonusButton->MarkDirty();
 		mOptionsButton->MarkDirty();
 		mHelpButton->MarkDirty();
 		mQuitButton->MarkDirty();
@@ -857,6 +869,7 @@ void GameSelector::Update()
 			mZenGardenButton->SetDisabled(false);
 			mAchievementButton->SetDisabled(false);
 			mQuickPlayButton->SetDisabled(false);
+			mBonusButton->SetDisabled(false);
 			mEnableButtonsTransition = false;
 		}
 	}
@@ -926,6 +939,7 @@ void GameSelector::Update()
 			mOptionsButton->mBtnNoDraw = false;
 			mQuitButton->mBtnNoDraw = false;
 			mQuickPlayButton->mBtnNoDraw = false;
+			mBonusButton->mBtnNoDraw = false;
 			mAdventureButton->mMouseVisible = true;
 			mMinigameButton->mMouseVisible = true;
 			mPuzzleButton->mMouseVisible = true;
@@ -940,6 +954,7 @@ void GameSelector::Update()
 			mCreditsButton->mMouseVisible = true;
 			mAchievementButton->mMouseVisible = true;
 			mQuickPlayButton->mMouseVisible = true;
+			mBonusButton->mMouseVisible = true;
 
 			if (mApp->mPlayerInfo == nullptr)
 			{
@@ -1041,6 +1056,7 @@ void GameSelector::Update()
 		TrackButton(mCreditsButton, "woodsign3", 0.0f, 0.0f);
 		TrackButton(mAchievementButton, "SelectorScreen_BG_Left", 20.f, 480.f);
 		TrackButton(mQuickPlayButton, "SelectorScreen_BG_Right", 80.f, 230.f);
+		TrackButton(mBonusButton, "SelectorScreen_BG_Right", 80.f, 300.f);
 		aSelectorReanim->SetImageOverride("woodsign2", (mChangeUserButton->mIsOver || mChangeUserButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN2_PRESS : nullptr);
 		aSelectorReanim->SetImageOverride("woodsign3", (mCreditsButton->mIsOver || mCreditsButton->mIsDown) ? Sexy::IMAGE_REANIM_SELECTORSCREEN_WOODSIGN3_PRESS : nullptr);
 	}
@@ -1074,6 +1090,7 @@ void GameSelector::AddedToManager(WidgetManager* theWidgetManager)
 	theWidgetManager->AddWidget(mZenGardenButton);
 	theWidgetManager->AddWidget(mChangeUserButton);
 	theWidgetManager->AddWidget(mCreditsButton);
+	theWidgetManager->AddWidget(mBonusButton);
 	theWidgetManager->AddWidget(mOverlayWidget);
 	if (HAS_ACHIEVEMENTS)
 		theWidgetManager->AddWidget(mAchievementButton);
@@ -1097,6 +1114,7 @@ void GameSelector::RemovedFromManager(WidgetManager* theWidgetManager)
 	theWidgetManager->RemoveWidget(mZenGardenButton);
 	theWidgetManager->RemoveWidget(mChangeUserButton);
 	theWidgetManager->RemoveWidget(mCreditsButton);
+	theWidgetManager->RemoveWidget(mBonusButton);
 	theWidgetManager->RemoveWidget(mOverlayWidget);
 	if (HAS_ACHIEVEMENTS)
 		theWidgetManager->RemoveWidget(mAchievementButton);
@@ -1119,6 +1137,7 @@ void GameSelector::OrderInManagerChanged()
 	mWidgetManager->PutInfront(mSurvivalButton, this);
 	mWidgetManager->PutInfront(mChangeUserButton, this);
 	mWidgetManager->PutInfront(mCreditsButton, this);
+	mWidgetManager->PutInfront(mBonusButton, this);
 	if (HAS_ACHIEVEMENTS)
 		mWidgetManager->PutInfront(mAchievementButton, this);
 	if (HAS_QUICKPLAY)
@@ -1317,6 +1336,7 @@ void GameSelector::ClickedAdventure()
 	mZenGardenButton->SetDisabled(true);
 	mAchievementButton->SetDisabled(true);
 	mQuickPlayButton->SetDisabled(true);
+	mBonusButton->SetDisabled(true);
 
 	Reanimation* aHandReanim = mApp->AddReanimation(-70.0f, 10.0f, 0, ReanimationType::REANIM_ZOMBIE_HAND);
 	aHandReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
@@ -1358,6 +1378,10 @@ void GameSelector::ButtonDepress(int theId)
 	case GameSelector::GameSelector_Minigame:
 		mApp->KillGameSelector();
 		mApp->ShowChallengeScreen(ChallengePage::CHALLENGE_PAGE_CHALLENGE);
+		break;
+	case GameSelector::GameSelector_Bonus:
+		mApp->KillGameSelector();
+		mApp->ShowChallengeScreen(ChallengePage::CHALLENGE_PAGE_BONUS);
 		break;
 	case GameSelector::GameSelector_Puzzle:
 		mApp->KillGameSelector();
@@ -1417,6 +1441,7 @@ void GameSelector::ButtonDepress(int theId)
 		mZenGardenButton->SetDisabled(true);
 		mAchievementButton->SetDisabled(true);
 		mQuickPlayButton->SetDisabled(true);
+		mBonusButton->SetDisabled(true);
 		break;
 	case GameSelector::GameSelector_QuickPlay:
 		mMovementTimer = 75;
@@ -1437,6 +1462,7 @@ void GameSelector::ButtonDepress(int theId)
 		mZenGardenButton->SetDisabled(true);
 		mAchievementButton->SetDisabled(true);
 		mQuickPlayButton->SetDisabled(true);
+		mBonusButton->SetDisabled(true);
 		break;
 	case GameSelector::GameSelector_ZenGarden:
 		mApp->KillGameSelector();

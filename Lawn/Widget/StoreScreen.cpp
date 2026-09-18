@@ -370,7 +370,8 @@ void StoreScreen::DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theIt
     }
     else
     {
-        DrawSeedPacket(g, aPosX, aPosY, (SeedType)(theItemType + 40), SEED_NONE, 0, 255, false, false);
+        SeedType aSeedType = theItemType == STORE_ITEM_PLANT_GATLINGPEA ? SEED_GATLINGPEA : (SeedType)(theItemType + 40);
+        DrawSeedPacket(g, aPosX, aPosY, aSeedType, SEED_NONE, 0, 255, false, false);
     }
 
     g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
@@ -591,6 +592,7 @@ void StoreScreen::StorePreload()
     mApp->CrazyDaveEnter();
 
     Plant::PreloadPlantResources(SeedType::SEED_GARLIC);
+    Plant::PreloadPlantResources(SeedType::SEED_GATLINGPEA);
     Plant::PreloadPlantResources(SeedType::SEED_TWINSUNFLOWER);
 
     if (mApp->HasFinishedAdventure())

@@ -162,7 +162,8 @@ void ContinueDialog::ButtonDepress(int theId)
         else
         {
             mApp->KillBoard();
-            mApp->ShowChallengeScreen(ChallengePage::CHALLENGE_PAGE_CHALLENGE);
+            mApp->ShowChallengeScreen(mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ?
+                CHALLENGE_PAGE_BONUS : CHALLENGE_PAGE_CHALLENGE);
         }
     }
 }

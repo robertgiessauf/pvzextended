@@ -2515,7 +2515,14 @@ void Challenge::InitZombieWaves()
 {
 	GameMode aGameMode = mApp->mGameMode;
 	bool* aList = mBoard->mZombieAllowed;
-	if (mApp->IsSurvivalMode())
+	if (aGameMode == GAMEMODE_BONUS_GATLING_PEA)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_POLEVAULTER] = true;
+	}
+	else if (mApp->IsSurvivalMode())
 	{
 		if (mSurvivalStage == 0)
 		{

@@ -89,7 +89,8 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9,                    11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      3,  3,  _S("[I_ZOMBIE_9]") },
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_ENDLESS,              11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      3,  4,  _S("[I_ZOMBIE_ENDLESS]") },
 	{ GameMode::GAMEMODE_UPSELL,                               10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       3,  4,  _S("Upsell") },
-	{ GameMode::GAMEMODE_INTRO,                                10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       2,  3,  _S("Intro") }
+	{ GameMode::GAMEMODE_INTRO,                                10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       2,  3,  _S("Intro") },
+	{ GameMode::GAMEMODE_BONUS_GATLING_PEA,                     0,   ChallengePage::CHALLENGE_PAGE_BONUS,       0,  0,  _S("Gatling Pea") }
 };
 
 ChallengeScreen::ChallengeScreen(LawnApp* theApp, ChallengePage thePage)
@@ -251,6 +252,8 @@ void ChallengeScreen::SetUnlockChallengeIndex(ChallengePage thePage, bool theIsI
 int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 {
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
+	if (aDef.mPage == CHALLENGE_PAGE_BONUS)
+		return 0;
 	if (mApp->mGameMode == GAMEMODE_UPSELL && mApp->mGameScene == SCENE_LEVEL_INTRO)
 	{
 		return aDef.mChallengeMode == GAMEMODE_CHALLENGE_FINAL_BOSS ? 1 : 0;
@@ -482,6 +485,11 @@ void ChallengeScreen::Draw(Graphics* g)
 	g->DrawImage(Sexy::IMAGE_CHALLENGE_BACKGROUND, 0, 0);
 
 	TodDrawString(g, GetPageTitle(mPageIndex), 400, 58, Sexy::FONT_HOUSEOFTERROR28, Color(220, 220, 220), DS_ALIGN_CENTER);
+	if (mPageIndex == CHALLENGE_PAGE_BONUS)
+	{
+		TodDrawStringWrapped(g, _S("Beat Gatling Pea to unlock the plant!\nBasic plants are provided for this level."),
+			Rect(200, 110, 520, 80), Sexy::FONT_BRIANNETOD16, Color(42, 42, 90), DS_ALIGN_CENTER_VERTICAL_MIDDLE);
+	}
 
 	int aTrophiesGot = mApp->GetNumTrophies(mPageIndex);
 	int aTrophiesTotal = mApp->GetTotalTrophies(mPageIndex);
@@ -564,6 +572,9 @@ SexyString ChallengeScreen::GetPageTitle(ChallengePage thePage)
 	case ChallengePage::CHALLENGE_PAGE_LIMBO:
 		aTitle = _S("Limbo Page");
 		break;
+	case ChallengePage::CHALLENGE_PAGE_BONUS:
+		aTitle = _S("Bonus Levels");
+		break;
 	}
 	return aTitle;
 }
@@ -572,6 +583,8 @@ bool ChallengeScreen::IsPageUnlocked(ChallengePage thePage)
 {
 	switch (thePage)
 	{
+	case ChallengePage::CHALLENGE_PAGE_BONUS:
+		return true;
 	case ChallengePage::CHALLENGE_PAGE_CHALLENGE:
 		return mApp->HasFinishedAdventure() || mApp->mPlayerInfo->mHasUnlockedMinigames;
 	case ChallengePage::CHALLENGE_PAGE_PUZZLE:
