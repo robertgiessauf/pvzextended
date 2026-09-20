@@ -2387,16 +2387,16 @@ void Zombie::UpdateZombieRepeater()
     if (!mHasHead)
         return;
 
-    if (mPhaseCounter == 50)
+    if (mPhaseCounter == 75)
     {
         Reanimation* aHeadReanim = mApp->ReanimationGet(mSpecialHeadReanimID);
         aHeadReanim->PlayReanim("anim_shooting", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 35.0f);
     }
-    //if (mPhaseCounter == 20)
-    //{
-    //    Reanimation* aHeadReanim = mApp->ReanimationGet(mSpecialHeadReanimID);
-    //    aHeadReanim->PlayReanim("anim_shooting", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 35.0f);
-    //}
+    if (mPhaseCounter == 25)
+    {
+        Reanimation* aHeadReanim = mApp->ReanimationGet(mSpecialHeadReanimID);
+        aHeadReanim->PlayReanim("anim_shooting", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 35.0f);
+    }
     else if (mPhaseCounter == 0 || mPhaseCounter == 50)
     {
         Reanimation* aHeadReanim = mApp->ReanimationGet(mSpecialHeadReanimID);
@@ -2422,7 +2422,9 @@ void Zombie::UpdateZombieRepeater()
             aProjectile->mMotionType = ProjectileMotion::MOTION_BACKWARDS;
         }
 
-        mPhaseCounter = 150;
+        if (mPhaseCounter <= 0) {
+            mPhaseCounter = 150;
+        }
     }
 }
 
