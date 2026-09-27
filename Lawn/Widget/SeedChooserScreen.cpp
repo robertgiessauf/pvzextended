@@ -271,8 +271,14 @@ void SeedChooserScreen::GetSeedPositionInChooser(int theIndex, int& x, int& y)
 	}
 	else
 	{
-		x = theIndex % seedPacketRows * 53 + 22;
-		y = theIndex / seedPacketRows * SEED_PACKET_HEIGHT + (SEED_PACKET_HEIGHT + 53) - mScrollPosition;
+		int aChooserIndex = theIndex;
+		if (theIndex == SEED_PLASMAPEA)
+			aChooserIndex = SEED_GATLINGPEA;
+		else if (theIndex > SEED_PLASMAPEA && theIndex <= SEED_GATLINGPEA)
+			aChooserIndex--;
+
+		x = aChooserIndex % seedPacketRows * 53 + 22;
+		y = aChooserIndex / seedPacketRows * SEED_PACKET_HEIGHT + (SEED_PACKET_HEIGHT + 53) - mScrollPosition;
 	}
 }
 

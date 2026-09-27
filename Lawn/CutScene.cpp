@@ -345,7 +345,11 @@ void CutScene::PreloadResources()
 		}
 	}
 
-	if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+	if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+	{
+		Plant::PreloadPlantResources(SeedType::SEED_PLASMAPEA);
+	}
+	else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
 	{
 		Plant::PreloadPlantResources(SeedType::SEED_GATLINGPEA);
 	}

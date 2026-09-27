@@ -27,7 +27,8 @@ ProjectileDefinition gProjectileDefinition[] = {
 	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
 	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  },
 	{ ProjectileType::PROJECTILE_FROSTSTAR,     0,  20  },
-	{ ProjectileType::PROJECTILE_FIRESPIKE,     0,  40  }
+	{ ProjectileType::PROJECTILE_FIRESPIKE,     0,  40  },
+	{ ProjectileType::PROJECTILE_PLASMA_PEA,    0,  40  }
 };
 
 Projectile::Projectile()
@@ -98,8 +99,11 @@ void Projectile::ProjectileInitialize(int theX, int theY, int theRenderOrder, in
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
 	{
-		//TOD_ASSERT();
 		ConvertToFireball(-100);
+	}
+	else if (mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA)
+	{
+		ConvertToPlasmaPea(-100);
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_COBBIG)
 	{
@@ -324,7 +328,8 @@ bool Projectile::CantHitHighGround()
 		mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR ||
 		mProjectileType == ProjectileType::PROJECTILE_STAR ||
 		mProjectileType == ProjectileType::PROJECTILE_PUFF ||
-		mProjectileType == ProjectileType::PROJECTILE_FIREBALL
+		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
+		mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA
 		) && !mOnHighGround;
 }
 
@@ -335,6 +340,7 @@ void Projectile::CheckForHighGround()
 	if (mProjectileType == ProjectileType::PROJECTILE_PEA ||
 		mProjectileType == ProjectileType::PROJECTILE_SNOWPEA ||
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
+		mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA ||
 		mProjectileType == ProjectileType::PROJECTILE_SPIKE ||
 		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE ||
 		mProjectileType == ProjectileType::PROJECTILE_COBBIG)
@@ -377,6 +383,7 @@ bool Projectile::IsSplashDamage(Zombie* theZombie)
 		mProjectileType == ProjectileType::PROJECTILE_MELON || 
 		mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || 
 		mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
+		mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA ||
 		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE;
 }
 
@@ -397,7 +404,8 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_BYPASSES_SHIELD, true);
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON || mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR)
+	if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA || mProjectileType == ProjectileType::PROJECTILE_WINTERMELON ||
+		mProjectileType == ProjectileType::PROJECTILE_FROSTSTAR || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA)
 	{
 		SetBit(aDamageFlags, (int)DamageFlags::DAMAGE_FREEZE, true);
 	}
@@ -408,14 +416,15 @@ unsigned int Projectile::GetDamageFlags(Zombie* theZombie)
 bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 {
 	Rect aProjectileRect = GetProjectileRect();
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA)
 	{
 		aProjectileRect.mWidth = 100;
 	}
 
 	int aRowDeviation = theZombie->mRow - mRow;
 	Rect aZombieRect = theZombie->GetZombieRect();
-	if (theZombie->IsFireResistant() && (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE))
+	if (theZombie->IsFireResistant() && (mProjectileType == ProjectileType::PROJECTILE_FIREBALL ||
+		mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE))
 	{
 		return false;
 	}
@@ -424,7 +433,8 @@ bool Projectile::IsZombieHitBySplash(Zombie* theZombie)
 	{
 		aRowDeviation = 0;
 	}
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA ||
+		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		if (aRowDeviation != 0)
 		{
@@ -456,7 +466,8 @@ void Projectile::DoSplashDamage(Zombie* theZombie)
 	int aOriginalDamage = aProjectileDef.mDamage;
 	int aSplashDamage = aProjectileDef.mDamage / 3;
 	int aMaxSplashDamageAmount = aSplashDamage * 7;
-	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
+	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA ||
+		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		aMaxSplashDamageAmount = aOriginalDamage;
 	}
@@ -768,7 +779,7 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 		mApp->PlayFoley(FoleyType::FOLEY_BUTTER);
 		aPlaySplatSound = false;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL && IsSplashDamage(theZombie))
+	else if ((mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA) && IsSplashDamage(theZombie))
 	{
 		mApp->PlayFoley(FoleyType::FOLEY_IGNITE);
 		aPlayHelmSound = false;
@@ -849,7 +860,8 @@ void Projectile::DoImpact(Zombie* theZombie)
 		aSplatPosX -= 15.0f;
 		aEffect = ParticleEffect::PARTICLE_SNOWPEA_SPLAT;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
+	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA ||
+		mProjectileType == ProjectileType::PROJECTILE_FIRESPIKE)
 	{
 		if (IsSplashDamage(theZombie))
 		{
@@ -857,6 +869,11 @@ void Projectile::DoImpact(Zombie* theZombie)
 			aFireReanim->mAnimTime = 0.25f;
 			aFireReanim->mAnimRate = 24.0f;
 			aFireReanim->OverrideScale(0.7f, 0.4f);
+		}
+		if (mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA)
+		{
+			aSplatPosX -= 15.0f;
+			aEffect = ParticleEffect::PARTICLE_SNOWPEA_SPLAT;
 		}
 	}
 	else if (mProjectileType == ProjectileType::PROJECTILE_STAR)
@@ -976,7 +993,7 @@ void Projectile::Draw(Graphics* g)
 	{
 		aImage = IMAGE_PROJECTILESNOWPEA;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA)
 	{
 		aImage = nullptr;
 	}
@@ -1138,6 +1155,7 @@ void Projectile::DrawShadow(Graphics* g)
 		break;
 
 	case ProjectileType::PROJECTILE_FIREBALL:
+	case ProjectileType::PROJECTILE_PLASMA_PEA:
 		aScale = 1.4f;
 		break;
 	}
@@ -1182,7 +1200,7 @@ Rect Projectile::GetProjectileRect()
 	{
 		return Rect(mX + 20, mY, 60, mHeight);
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL || mProjectileType == ProjectileType::PROJECTILE_PLASMA_PEA)
 	{
 		return Rect(mX, mY, mWidth - 10, mHeight);
 	}
@@ -1217,6 +1235,36 @@ void Projectile::ConvertToFireball(int theGridX)
 	aFirePeaReanim->SetPosition(mPosX + aOffsetX, mPosY + aOffsetY);
 	aFirePeaReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
 	aFirePeaReanim->mAnimRate = RandRangeFloat(50.0f, 80.0f);
+	AttachReanim(mAttachmentID, aFirePeaReanim, aOffsetX, aOffsetY);
+}
+
+void Projectile::ConvertToPlasmaPea(int theGridX)
+{
+	if (mHitTorchwoodGridX == theGridX)
+		return;
+
+	mProjectileType = ProjectileType::PROJECTILE_PLASMA_PEA;
+	mHitTorchwoodGridX = theGridX;
+	mApp->PlayFoley(FoleyType::FOLEY_FIREPEA);
+
+	TodParticleSystem* aSnowTrail = mApp->AddTodParticle(mPosX + 8.0f, mPosY + 13.0f, 400000, ParticleEffect::PARTICLE_SNOWPEA_TRAIL);
+	AttachParticle(mAttachmentID, aSnowTrail, 8.0f, 13.0f);
+
+	float aOffsetX = -25.0f;
+	float aOffsetY = -25.0f;
+	Reanimation* aFirePeaReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_FIRE_PEA);
+	if (mMotionType == ProjectileMotion::MOTION_BACKWARDS)
+	{
+		aFirePeaReanim->OverrideScale(-1.0f, 1.0f);
+		aOffsetX += 80.0f;
+	}
+
+	aFirePeaReanim->SetPosition(mPosX + aOffsetX, mPosY + aOffsetY);
+	aFirePeaReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
+	aFirePeaReanim->mAnimRate = RandRangeFloat(50.0f, 80.0f);
+	// Preserve the firepea animation, then add the cool additive tint used by chilled zombies.
+	aFirePeaReanim->mEnableExtraAdditiveDraw = true;
+	aFirePeaReanim->mExtraAdditiveColor = Color(105, 150, 255, 128);
 	AttachReanim(mAttachmentID, aFirePeaReanim, aOffsetX, aOffsetY);
 }
 

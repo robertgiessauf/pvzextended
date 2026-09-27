@@ -136,7 +136,7 @@ AwardScreen::AwardScreen(LawnApp* theApp, AwardType theAwardType, bool hasAchiev
     }
     else if (!mApp->IsAdventureMode())
     {
-        mStartButton->SetLabel(mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
+        mStartButton->SetLabel((mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA) ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
         mMenuButton->mBtnNoDraw = true;
         mMenuButton->mDisabled = true;
     }
@@ -241,10 +241,11 @@ void AwardScreen::DrawBottom(Graphics* g, SexyString theTitle, SexyString theAwa
 void AwardScreen::DrawAwardSeed(Graphics* g)
 {
     SeedType aSeedType = mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? SEED_GATLINGPEA :
-        mApp->GetAwardSeedForLevel(mApp->mPlayerInfo->mLevel - 1);
+        mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA ? SEED_PLASMAPEA : mApp->GetAwardSeedForLevel(mApp->mPlayerInfo->mLevel - 1);
     SexyString aAward = Plant::GetNameString(aSeedType, SEED_NONE);
     SexyString aMessage;
-    if (mApp->IsTrialStageLocked() && aSeedType >= SEED_SQUASH && aSeedType != SEED_TANGLEKELP)
+    if (mApp->IsTrialStageLocked() && aSeedType >= SEED_SQUASH && aSeedType != SEED_TANGLEKELP &&
+        mApp->mGameMode != GAMEMODE_BONUS_GATLING_PEA && mApp->mGameMode != GAMEMODE_BONUS_PLASMA_PEA)
         aMessage = _S("[AVAILABLE_IN_FULL_VERSION]");
     else
         aMessage = Plant::GetToolTip(aSeedType);
@@ -281,7 +282,7 @@ void AwardScreen::Draw(Graphics* g)
     }
     else
     {
-        if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA)
+        if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA)
         {
             DrawAwardSeed(g);
         }
@@ -432,7 +433,7 @@ void AwardScreen::Draw(Graphics* g)
         }
         else if (!mApp->IsAdventureMode())
         {
-            mStartButton->SetLabel(mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
+            mStartButton->SetLabel((mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA) ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
         }
         else if (aLevel == 1)
         {
@@ -527,7 +528,7 @@ void AwardScreen::ExitScreen()
         mApp->KillAwardScreen();
         mApp->ShowChallengeScreen(CHALLENGE_PAGE_PUZZLE);
     }
-    else if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA)
+    else if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA)
     {
         mApp->KillAwardScreen();
         mApp->ShowChallengeScreen(CHALLENGE_PAGE_BONUS);

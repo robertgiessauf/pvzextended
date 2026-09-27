@@ -40,6 +40,12 @@ Fire Upgrade
 [REPEATER_TOOLTIP]
 Turns plants into their fire version
 
+[PLASMA_PEA]
+Plasma Pea
+
+[PLASMA_PEA_TOOLTIP]
+Shoots plasma peas that burn and chill zombies
+
 [POTATO_MINE]
 Potato Mine
 

@@ -2528,6 +2528,17 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_PAIL] = true;
 		aList[ZOMBIE_POLEVAULTER] = true;
 	}
+	else if (aGameMode == GAMEMODE_BONUS_PLASMA_PEA)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_NEWSPAPER] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_FOOTBALL] = true;
+		aList[ZOMBIE_LADDER] = true;
+		aList[ZOMBIE_BALLOON] = true;
+	}
 	else if (mApp->IsSurvivalMode())
 	{
 		if (mSurvivalStage == 0)

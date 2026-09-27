@@ -90,7 +90,8 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_ENDLESS,              11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      3,  4,  _S("[I_ZOMBIE_ENDLESS]") },
 	{ GameMode::GAMEMODE_UPSELL,                               10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       3,  4,  _S("Upsell") },
 	{ GameMode::GAMEMODE_INTRO,                                10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       2,  3,  _S("Intro") },
-	{ GameMode::GAMEMODE_BONUS_GATLING_PEA,                     0,   ChallengePage::CHALLENGE_PAGE_BONUS,       0,  0,  _S("Gatling Pea") }
+	{ GameMode::GAMEMODE_BONUS_GATLING_PEA,                     0,   ChallengePage::CHALLENGE_PAGE_BONUS,       0,  0,  _S("Gatling Pea") },
+	{ GameMode::GAMEMODE_BONUS_PLASMA_PEA,                      1,   ChallengePage::CHALLENGE_PAGE_BONUS,       1,  0,  _S("Plasma Pea") }
 };
 
 ChallengeScreen::ChallengeScreen(LawnApp* theApp, ChallengePage thePage)
@@ -134,7 +135,8 @@ ChallengeScreen::ChallengeScreen(LawnApp* theApp, ChallengePage thePage)
 		mChallengeButtons[aChallengeMode] = aChallengeButton;
 		aChallengeButton->mDoFinger = true;
 		aChallengeButton->mFrameNoDraw = true;
-		if (aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE || aChlDef.mPage == CHALLENGE_PAGE_LIMBO || aChlDef.mPage == CHALLENGE_PAGE_PUZZLE)
+		if (aChlDef.mPage == CHALLENGE_PAGE_CHALLENGE || aChlDef.mPage == CHALLENGE_PAGE_LIMBO ||
+			aChlDef.mPage == CHALLENGE_PAGE_PUZZLE || aChlDef.mPage == CHALLENGE_PAGE_BONUS)
 			aChallengeButton->Resize(38 + aChlDef.mCol * 155, 93 + aChlDef.mRow * 119, 104, 115);
 		else
 			aChallengeButton->Resize(38 + aChlDef.mCol * 155, 125 + aChlDef.mRow * 145, 104, 115);
@@ -378,7 +380,7 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 		aChallengeButton->mMouseVisible = cChallengeRect.Contains(mWidgetManager->mLastMouseX, mWidgetManager->mLastMouseY);
 		ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
 		aChallengeButton->mX = 38 + aDef.mCol * 155;
-		mButtonStartYOffset = cChallengeRect.mY + (aDef.mPage == CHALLENGE_PAGE_SURVIVAL ? 34 : 2);
+		mButtonStartYOffset = cChallengeRect.mY + (aDef.mPage == CHALLENGE_PAGE_SURVIVAL ? 34 : aDef.mPage == CHALLENGE_PAGE_BONUS ? 90 : 2);
 		mButtonYOffset = cButtonHeight + (aDef.mPage == CHALLENGE_PAGE_SURVIVAL ? 30 : 2);
 		aChallengeButton->mY = mButtonStartYOffset + aDef.mRow * mButtonYOffset - mScrollPosition;
 		int aPosX = aChallengeButton->mX;
@@ -487,8 +489,8 @@ void ChallengeScreen::Draw(Graphics* g)
 	TodDrawString(g, GetPageTitle(mPageIndex), 400, 58, Sexy::FONT_HOUSEOFTERROR28, Color(220, 220, 220), DS_ALIGN_CENTER);
 	if (mPageIndex == CHALLENGE_PAGE_BONUS)
 	{
-		TodDrawStringWrapped(g, _S("Beat Gatling Pea to unlock the plant!\nBasic plants are provided for this level."),
-			Rect(200, 110, 520, 80), Sexy::FONT_BRIANNETOD16, Color(42, 42, 90), DS_ALIGN_CENTER_VERTICAL_MIDDLE);
+		TodDrawStringWrapped(g, _S("Beat each level to unlock its plant! Basic plants are provided."),
+			Rect(200, 110, 520, 65), Sexy::FONT_BRIANNETOD16, Color(42, 42, 90), DS_ALIGN_CENTER_VERTICAL_MIDDLE);
 	}
 
 	int aTrophiesGot = mApp->GetNumTrophies(mPageIndex);

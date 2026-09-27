@@ -31,6 +31,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_WALLNUT,           nullptr, ReanimationType::REANIM_WALLNUT,       2,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WALL_NUT") },
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
+    { SeedType::SEED_PLASMAPEA,         nullptr, ReanimationType::REANIM_FIREPEA,       5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PLASMA_PEA") },
     { SeedType::SEED_ROCK,              nullptr, ReanimationType::REANIM_ROCK,         22,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,     150,   _S("CACTUS_NUT") },
     { SeedType::SEED_EXPLODE_NUT,       nullptr, ReanimationType::REANIM_WALLNUT,       2,  75,    3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("EXPLODE_NUT") },
 
@@ -208,6 +209,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     case SeedType::SEED_PEASHOOTER:
     case SeedType::SEED_SNOWPEA:
     case SeedType::SEED_FIREPEA:
+    case SeedType::SEED_PLASMAPEA:
     case SeedType::SEED_LEFTPEATER:
     case SeedType::SEED_GATLINGPEA:
         if (aBodyReanim)
@@ -754,7 +756,8 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
         aHeadReanim->SetFramesForLayer("anim_shooting");
 
         mShootingCounter = 33;
-        if (mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_SPLITPEA || mSeedType == SeedType::SEED_LEFTPEATER)
+        if (mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_PLASMAPEA ||
+            mSeedType == SeedType::SEED_SPLITPEA || mSeedType == SeedType::SEED_LEFTPEATER)
         {
             aHeadReanim->mAnimRate = 45.0f;
             mShootingCounter = 26;
@@ -2708,6 +2711,10 @@ void Plant::UpdateReanimColor()
     {
         aColorOverride = GetFlashingColor(mBoard->mMainCounter, 90);
     }
+    else if (mSeedType == SeedType::SEED_PLASMAPEA)
+    {
+        aColorOverride = Color(175, 225, 255);
+    }
     else if (mSeedType == SeedType::SEED_EXPLODE_O_NUT) // || mSeedType == SeedType::SEED_EXPLODE_NUT)
     {
         aColorOverride = Color(255, 64, 64);
@@ -2998,7 +3005,8 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
             aTrackToAttach = "anim_face2";
         }
     }
-    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_LEFTPEATER || mSeedType == SeedType::SEED_GATLINGPEA)
+    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA ||
+        mSeedType == SeedType::SEED_PLASMAPEA || mSeedType == SeedType::SEED_LEFTPEATER || mSeedType == SeedType::SEED_GATLINGPEA)
     {
         if (theReanimBody->TrackExists("anim_stem"))
         {
@@ -3574,6 +3582,7 @@ float PlantFlowerPotHeightOffset(SeedType theSeedType, float theFlowerPotScale)
     case SeedType::SEED_MAGNETSHROOM:
     case SeedType::SEED_PEASHOOTER:
     case SeedType::SEED_FIREPEA:
+    case SeedType::SEED_PLASMAPEA:
     case SeedType::SEED_LEFTPEATER:
     case SeedType::SEED_SNOWPEA:
     case SeedType::SEED_THREEPEATER:
@@ -4255,6 +4264,15 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
             //TodDrawImageScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, aSeedG.mScaleX, aSeedG.mScaleY);
             //gLawnApp->mReanimatorCache->DrawCachedPlant(&aSeedG, thePosX + aOffsetX, thePosY + aOffsetY, aSeedType, aDrawVariation);
         }
+        else if (aSeedType == SeedType::SEED_PLASMAPEA) {
+            Image* aImage = IMAGE_PACKET_PLANTS;
+            aImage->mNumCols = PACKETSEED_IMAGES;
+            aImage->mNumTotal = PACKETSEED_IMAGES;
+
+            aSeedG.SetColorizeImages(true);
+            aSeedG.SetColor(Color(175, 225, 255));
+            TodDrawImageCelScaledF(&aSeedG, aImage, thePosX + aOffsetX, thePosY + aOffsetY, 14, 0, aSeedG.mScaleX, aSeedG.mScaleY);
+        }
         else if (aSeedType == SeedType::SEED_EXPLODE_NUT) {
             Image* aImage = IMAGE_PACKET_PLANTS;
             aImage->mNumCols = PACKETSEED_IMAGES;
@@ -4603,6 +4621,9 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
     case SeedType::SEED_FIREPEA:
         aProjectileType = ProjectileType::PROJECTILE_FIREBALL;
         break;
+    case SeedType::SEED_PLASMAPEA:
+        aProjectileType = ProjectileType::PROJECTILE_PLASMA_PEA;
+        break;
     case SeedType::SEED_PEASHOOTER:
     case SeedType::SEED_THREEPEATER:
     case SeedType::SEED_SPLITPEA:
@@ -4701,7 +4722,7 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
         aOriginX = mX + 12;
         aOriginY = mY - 56;
     }
-    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA)
+    else if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_PLASMAPEA)
     {
         int aOffsetX, aOffsetY;
         GetPeaHeadOffset(aOffsetX, aOffsetY);
@@ -4917,7 +4938,8 @@ Zombie* Plant::FindTargetZombie(int theRow, PlantWeapon thePlantWeapon)
         bool needPortalCheck = false;
         if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT)
         {
-            if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS || mSeedType == SeedType::SEED_FIREPEA)
+            if (mSeedType == SeedType::SEED_PEASHOOTER || mSeedType == SeedType::SEED_CACTUS || mSeedType == SeedType::SEED_FIRECACTUS ||
+                mSeedType == SeedType::SEED_FIREPEA || mSeedType == SeedType::SEED_PLASMAPEA)
             {
                 needPortalCheck = true;
             }

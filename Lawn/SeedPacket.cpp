@@ -263,6 +263,13 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 14, 0, g->mScaleX, g->mScaleY);
 	}
+	else if (aSeedType == SeedType::SEED_PLASMAPEA && g->mScaleX <= 1.0f)
+	{
+		Graphics aSeedG(*g);
+		aSeedG.SetColorizeImages(true);
+		aSeedG.SetColor(Color(175, 225, 255));
+		TodDrawImageCelScaledF(&aSeedG, aImage, x, y, 14, 0, g->mScaleX, g->mScaleY);
+	}
 	else if (aSeedType == SeedType::SEED_EXPLODE_NUT && g->mScaleX <= 1.0f)
 	{
 		TodDrawImageCelScaledF(g, aImage, x, y, 15, 0, g->mScaleX, g->mScaleY);
