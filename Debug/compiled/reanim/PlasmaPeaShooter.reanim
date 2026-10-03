@@ -2063,7 +2063,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>19.200</x><y>17.800</y><sx>0.555</sx><sy>0.500</sy><f>0.000</f><i>IMAGE_REANIM_FIREPEASHOOTER_HEAD</i></t>
+<t><x>19.200</x><y>17.800</y><sx>0.555</sx><sy>0.500</sy><f>0.000</f><i>IMAGE_REANIM_PLASMAPEASHOOTER_HEAD</i></t>
 <t><x>19.300</x><y>16.200</y><sy>0.522</sy></t>
 <t><y>14.600</y><sy>0.545</sy></t>
 <t><x>19.400</x><y>13.100</y><sy>0.567</sy></t>
@@ -2170,7 +2170,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>52.400</x><y>17.800</y><sx>0.555</sx><sy>0.500</sy><f>0.000</f><i>IMAGE_REANIM_FIREPEASHOOTER_MOUTH</i></t>
+<t><x>52.400</x><y>17.800</y><sx>0.555</sx><sy>0.500</sy><f>0.000</f><i>IMAGE_REANIM_PLASMAPEASHOOTER_MOUTH</i></t>
 <t><x>53.000</x><y>16.300</y><kx>9.900</kx><sx>0.564</sx><sy>0.517</sy></t>
 <t><x>52.800</x><y>14.700</y><kx>5.000</kx><sx>0.560</sx><sy>0.542</sy></t>
 <t><x>52.600</x><y>13.100</y><kx>0.000</kx><sx>0.555</sx><sy>0.567</sy></t>

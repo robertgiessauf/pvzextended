@@ -1252,7 +1252,7 @@ void Projectile::ConvertToPlasmaPea(int theGridX)
 
 	float aOffsetX = -25.0f;
 	float aOffsetY = -25.0f;
-	Reanimation* aFirePeaReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_FIRE_PEA);
+	Reanimation* aFirePeaReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_PLASMA_PEA);
 	if (mMotionType == ProjectileMotion::MOTION_BACKWARDS)
 	{
 		aFirePeaReanim->OverrideScale(-1.0f, 1.0f);
@@ -1262,9 +1262,9 @@ void Projectile::ConvertToPlasmaPea(int theGridX)
 	aFirePeaReanim->SetPosition(mPosX + aOffsetX, mPosY + aOffsetY);
 	aFirePeaReanim->mLoopType = ReanimLoopType::REANIM_LOOP;
 	aFirePeaReanim->mAnimRate = RandRangeFloat(50.0f, 80.0f);
-	// Preserve the firepea animation, then add the cool additive tint used by chilled zombies.
-	aFirePeaReanim->mEnableExtraAdditiveDraw = true;
-	aFirePeaReanim->mExtraAdditiveColor = Color(105, 150, 255, 128);
+	//// Preserve the firepea animation, then add the cool additive tint used by chilled zombies.
+	//aFirePeaReanim->mEnableExtraAdditiveDraw = true;
+	//aFirePeaReanim->mExtraAdditiveColor = Color(105, 150, 255, 128);
 	AttachReanim(mAttachmentID, aFirePeaReanim, aOffsetX, aOffsetY);
 }
 

@@ -31,7 +31,7 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_WALLNUT,           nullptr, ReanimationType::REANIM_WALLNUT,       2,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("WALL_NUT") },
     { SeedType::SEED_POTATOMINE,        nullptr, ReanimationType::REANIM_POTATOMINE,    37, 25,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("POTATO_MINE") },
     { SeedType::SEED_FIREPEA,           nullptr, ReanimationType::REANIM_FIREPEA,       5,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
-    { SeedType::SEED_PLASMAPEA,         nullptr, ReanimationType::REANIM_FIREPEA,       5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PLASMA_PEA") },
+    { SeedType::SEED_PLASMAPEA,         nullptr, ReanimationType::REANIM_PLASMAPEA,       5,  125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PLASMA_PEA") },
     { SeedType::SEED_ROCK,              nullptr, ReanimationType::REANIM_ROCK,         22,  175,    750,    PlantSubClass::SUBCLASS_SHOOTER,     150,   _S("CACTUS_NUT") },
     { SeedType::SEED_EXPLODE_NUT,       nullptr, ReanimationType::REANIM_WALLNUT,       2,  75,    3000,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("EXPLODE_NUT") },
 
@@ -5363,6 +5363,9 @@ void Plant::PreloadPlantResources(SeedType theSeedType)
     else if (Plant::IsNocturnal(theSeedType))
     {
         ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SLEEPING, true);
+    }
+    else if (theSeedType == SeedType::SEED_PLASMAPEA) {
+        ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_PLASMA_PEA, true);
     }
 }
 
