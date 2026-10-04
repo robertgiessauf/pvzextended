@@ -1421,7 +1421,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>12.900</x><y>38.100</y><kx>-19.400</kx><ky>-24.200</ky><sx>0.547</sx><sy>0.501</sy><f>0.000</f><i>IMAGE_REANIM_FPeaShooter_headleaf_farthest</i></t>
+<t><x>12.900</x><y>38.100</y><kx>-19.400</kx><ky>-24.200</ky><sx>0.547</sx><sy>0.501</sy><f>0.000</f><i>IMAGE_REANIM_PPeaShooter_headleaf_farthest</i></t>
 <t><x>13.200</x><y>36.000</y><kx>-12.100</kx><ky>-15.200</ky><sx>0.549</sx><sy>0.519</sy></t>
 <t><x>13.600</x><y>34.000</y><kx>-4.700</kx><ky>-6.300</ky><sx>0.552</sx><sy>0.537</sy></t>
 <t><x>14.100</x><y>32.100</y><kx>2.500</kx><ky>2.500</ky><sx>0.555</sx><sy>0.555</sy></t>
@@ -1528,7 +1528,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>22.600</x><y>17.700</y><sx>0.555</sx><sy>0.493</sy><f>0.000</f><i>IMAGE_REANIM_FPeaShooter_headleaf_3rdfarthest</i></t>
+<t><x>22.600</x><y>17.700</y><sx>0.555</sx><sy>0.493</sy><f>0.000</f><i>IMAGE_REANIM_PPeaShooter_headleaf_3rdfarthest</i></t>
 <t><x>22.400</x><y>16.500</y><kx>-3.400</kx><ky>-3.400</ky><sy>0.513</sy></t>
 <t><x>22.200</x><y>15.300</y><kx>-6.900</kx><ky>-6.900</ky><sy>0.534</sy></t>
 <t><x>22.000</x><y>14.300</y><kx>-10.400</kx><ky>-10.400</ky><sy>0.555</sy></t>
@@ -1635,7 +1635,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>11.100</x><y>29.100</y><sx>0.555</sx><sy>0.493</sy><f>0.000</f><i>IMAGE_REANIM_FPeaShooter_headleaf_nearest</i></t>
+<t><x>11.100</x><y>29.100</y><sx>0.555</sx><sy>0.493</sy><f>0.000</f><i>IMAGE_REANIM_PPeaShooter_headleaf_nearest</i></t>
 <t><x>11.600</x><y>27.900</y><kx>2.600</kx><ky>2.600</ky><sy>0.513</sy></t>
 <t><x>11.900</x><y>26.700</y><kx>5.200</kx><ky>5.200</ky><sy>0.534</sy></t>
 <t><x>12.300</x><y>25.500</y><kx>7.800</kx><ky>7.800</ky><sy>0.555</sy></t>
@@ -1742,7 +1742,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>6.200</x><y>33.100</y><sx>0.555</sx><sy>0.493</sy><f>0.000</f><i>IMAGE_REANIM_FPeaShooter_headleaf_tip_bottom</i></t>
+<t><x>6.200</x><y>33.100</y><sx>0.555</sx><sy>0.493</sy><f>0.000</f><i>IMAGE_REANIM_PPeaShooter_headleaf_tip_bottom</i></t>
 <t><x>6.300</x><y>31.900</y><kx>2.600</kx><ky>2.600</ky><sy>0.513</sy></t>
 <t><x>6.600</x><y>30.600</y><kx>5.200</kx><ky>5.200</ky><sy>0.534</sy></t>
 <t><x>6.800</x><y>29.300</y><kx>7.800</kx><ky>7.800</ky><sy>0.555</sy></t>
@@ -1849,7 +1849,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>17.000</x><y>18.400</y><sx>0.527</sx><sy>0.513</sy><f>0.000</f><i>IMAGE_REANIM_FPeaShooter_headleaf_2rdfarthesT</i></t>
+<t><x>17.000</x><y>18.400</y><sx>0.527</sx><sy>0.513</sy><f>0.000</f><i>IMAGE_REANIM_PPeaShooter_headleaf_2rdfarthesT</i></t>
 <t><x>16.200</x><y>17.800</y><kx>-4.900</kx><ky>-4.900</ky><sx>0.536</sx><sy>0.527</sy></t>
 <t><x>15.500</x><y>17.200</y><kx>-9.900</kx><ky>-9.900</ky><sx>0.546</sx><sy>0.541</sy></t>
 <t><x>14.800</x><y>16.700</y><kx>-14.900</kx><ky>-14.900</ky><sx>0.555</sx><sy>0.555</sy></t>
@@ -1956,7 +1956,7 @@
 <t></t>
 <t></t>
 <t></t>
-<t><x>13.000</x><y>18.400</y><sx>0.527</sx><sy>0.513</sy><f>0.000</f><i>IMAGE_REANIM_FPeaShooter_headleaf_tip_top</i></t>
+<t><x>13.000</x><y>18.400</y><sx>0.527</sx><sy>0.513</sy><f>0.000</f><i>IMAGE_REANIM_PPeaShooter_headleaf_tip_top</i></t>
 <t><x>12.200</x><y>18.200</y><kx>-4.900</kx><ky>-4.900</ky><sx>0.536</sx><sy>0.527</sy></t>
 <t><x>11.400</x><y>17.900</y><kx>-9.900</kx><ky>-9.900</ky><sx>0.546</sx><sy>0.541</sy></t>
 <t><x>10.700</x><y>17.800</y><kx>-14.900</kx><ky>-14.900</ky><sx>0.555</sx><sy>0.555</sy></t>
