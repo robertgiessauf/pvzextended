@@ -292,6 +292,12 @@
 <Image id="WALLNUT_BODY" path="Wallnut_body" />
 <Image id="WALLNUT_CRACKED1" path="Wallnut_cracked1" />
 <Image id="WALLNUT_CRACKED2" path="Wallnut_cracked2" />
+<Image id="PLANTERNNUT_BODY" path="PlanternNut_body" />
+<Image id="PLANTERNNUT_CRACKED1" path="PlanternNut_cracked1" />
+<Image id="PLANTERNNUT_CRACKED2" path="PlanternNut_cracked2" />
+<Image id="PLANTERNNUT_BLINK" path="PlanternNut_blink" />
+<Image id="PLANTERNNUT_BLINK_CRACKED1" path="PlanternNut_blink_cracked1" />
+<Image id="PLANTERNNUT_BLINK_CRACKED2" path="PlanternNut_blink_cracked2" />
 <Image id="TALLNUT_CRACKED1" path="Tallnut_cracked1" />
 <Image id="TALLNUT_CRACKED2" path="Tallnut_cracked2" />
 <Image id="WALLNUTO_CRACKED1" path="WallnutO_Cracked1" />
@@ -628,6 +634,7 @@
 <Resources id="DelayLoad_Background2">
 <SetDefaults path="images" idprefix="IMAGE_" />
 <Image id="BACKGROUND2" path="background2" ddsurface="" a8r8g8b8="" />
+<Image id="BACKGROUND2_2" path="background2_2" ddsurface="" a8r8g8b8="" />
 <Image id="BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY" path="background2_gameover_interior_overlay" />
 <Image id="BACKGROUND2_GAMEOVER_MASK" path="background2_gameover_mask" />
 </Resources>

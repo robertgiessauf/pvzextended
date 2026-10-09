@@ -272,7 +272,9 @@ void SeedChooserScreen::GetSeedPositionInChooser(int theIndex, int& x, int& y)
 	else
 	{
 		int aChooserIndex = theIndex;
-		if (theIndex == SEED_PLASMAPEA)
+		if (theIndex == SEED_PLANTERNNUT)
+			aChooserIndex = SEED_GATLINGPEA + 1;
+		else if (theIndex == SEED_PLASMAPEA)
 			aChooserIndex = SEED_GATLINGPEA;
 		else if (theIndex > SEED_PLASMAPEA && theIndex <= SEED_GATLINGPEA)
 			aChooserIndex--;
@@ -355,6 +357,8 @@ void SeedChooserScreen::Draw(Graphics* g)
 	mSlider->SliderDraw(g);
 	for (SeedType aSeedType = SEED_PEASHOOTER; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
 	{
+		if (aSeedType == SEED_FROSTSTARFRUIT || aSeedType == SEED_CHOMPER)
+			continue;
 		if (aSeedType != SEED_IMITATER)
 			g->SetClipRect(cSeedClipRect);
 		// Shadowed seeds in chooser

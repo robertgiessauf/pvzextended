@@ -1,0 +1,33 @@
+Tool: built-in imagegen. All outputs requested a transparent background.
+
+Design prompt:
+A new Plants vs. Zombies-inspired PlanternNut in the original game's chunky,
+hand-painted cartoon style: a sturdy walnut whose protective shell has grown
+into a living lantern. A honey-amber frosted chamber in its belly is protected
+by thick, curved walnut-shell ribs. Small glowing fissures are part of the
+shell. Friendly eyes and a smile occupy the upper shell, with a green sprout
+and small base leaves. Keep the silhouette readable at approximately 70 pixels.
+Use dark brown outlines. No separate pasted lamp, metal accessories, arms,
+background, text, or cast shadow. Crisp silhouette and genuine transparency.
+
+Sprite-sheet prompt (concept.png used as reference):
+Create a three-column, two-row sheet of this same character. Top row: healthy,
+moderately damaged, heavily damaged, all with open eyes. Bottom row: the same
+three damage states with fully closed blinking eyes. Preserve identity, colors,
+proportions, pose, placement, and scale across every cell. Transparent background,
+no labels, backgrounds, or shadows.
+
+Transparency refinement prompt (sprite sheet used as reference):
+Remove only the colored background and outer halo. Preserve the exact six
+sprites, layout, colors, proportions, pose, and damage states. Empty background
+must be genuinely transparent with alpha zero. Do not redesign the artwork.
+
+Files:
+concept.png: original generated character design.
+sprite-source.png: full-resolution generated sprite sheet after transparency refinement.
+preview.png: six game sprites shown on a lawn-colored background.
+Debug/reanim/PlanternNut_*.png: mechanically cropped and resized 100x100 RGBA sprites.
+build-animation.ps1: rebuilds the editable and compiled reanimation from the
+Wall-nut idle motion and the new sprite resource names. Run using PowerShell.
+prepare-sprites.ps1: crops and resizes sprite-source.png using the same alignment
+for all six sprites and produces the game sprites and preview. Run using PowerShell.

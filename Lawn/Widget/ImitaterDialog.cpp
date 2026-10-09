@@ -28,9 +28,9 @@ ImitaterDialog::~ImitaterDialog()
 
 SeedType ImitaterDialog::SeedHitTest(int x, int y)
 {
-	for (SeedType aSeedType = (SeedType)0; aSeedType < SeedType::SEED_GATLINGPEA; aSeedType = (SeedType)(aSeedType + 1))
+	for (SeedType aSeedType = (SeedType)0; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
 	{
-		if (mApp->SeedTypeAvailable(aSeedType))
+		if ((aSeedType < SeedType::SEED_GATLINGPEA || aSeedType == SeedType::SEED_PLANTERNNUT) && mApp->SeedTypeAvailable(aSeedType))
 		{
 			int aSeedX, aSeedY;
 			GetSeedPosition(aSeedType, aSeedX, aSeedY);
@@ -65,6 +65,10 @@ void ImitaterDialog::Update()
 
 void ImitaterDialog::GetSeedPosition(int theIndex, int& x, int& y)
 {
+	if (theIndex == SeedType::SEED_PLANTERNNUT)
+		theIndex = SeedType::SEED_PLANTERN + 1;
+	else if (theIndex > SeedType::SEED_PLANTERN)
+		theIndex++;
 	x = (theIndex % 8) * (SEED_PACKET_WIDTH + 1) + mWidth / 2 - 210;
 	y = (theIndex / 8) * (SEED_PACKET_HEIGHT + 1) + 112;
 }
@@ -73,9 +77,9 @@ void ImitaterDialog::Draw(Graphics* g)
 {
 	LawnDialog::Draw(g);
 	g->SetLinearBlend(true);
-	for (SeedType aSeedType = (SeedType)0; aSeedType < SeedType::SEED_GATLINGPEA; aSeedType = (SeedType)(aSeedType + 1))
+	for (SeedType aSeedType = (SeedType)0; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
 	{
-		if (mApp->SeedTypeAvailable(aSeedType))
+		if ((aSeedType < SeedType::SEED_GATLINGPEA || aSeedType == SeedType::SEED_PLANTERNNUT) && mApp->SeedTypeAvailable(aSeedType))
 		{
 			int aSeedX, aSeedY;
 			GetSeedPosition(aSeedType, aSeedX, aSeedY);

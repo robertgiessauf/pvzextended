@@ -518,7 +518,7 @@ void GridItem::UpdateScaryPot()
     Plant* aPlant = nullptr;
     while (mBoard->IteratePlants(aPlant))
     {
-        if (aPlant->mSeedType == SeedType::SEED_PLANTERN && !aPlant->NotOnGround())
+        if ((aPlant->mSeedType == SeedType::SEED_PLANTERN || aPlant->mSeedType == SeedType::SEED_PLANTERNNUT) && !aPlant->NotOnGround())
         {
             int aDiffX = abs(aPlant->mPlantCol - mGridX);
             int aDiffY = abs(aPlant->mRow - mGridY);

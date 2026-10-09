@@ -2593,6 +2593,9 @@ int LawnApp::GetSeedsAvailable()
 
 bool LawnApp::HasSeedType(SeedType theSeedType)
 {
+	if (theSeedType == SeedType::SEED_PLANTERNNUT)
+		return HasSeedType(SeedType::SEED_PLANTERN);
+
 	if (theSeedType == SeedType::SEED_PLASMAPEA)
 		return mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_PLASMAPEA] > 0;
 

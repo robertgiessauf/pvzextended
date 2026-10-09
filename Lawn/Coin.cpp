@@ -201,7 +201,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
             SeedType aSeedType = (SeedType)TodPickFromArray((int*)aSeedList, LENGTH(aSeedList));
             mPottedPlantSpec.InitializePottedPlant(aSeedType);
         }
-        else if (mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT)
+        else if (mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT || mBoard->mBackground == BackgroundType::BACKGROUND_2_2_STONE)
         {
             SeedType aSeedList[] = {
                 SeedType::SEED_PUFFSHROOM,

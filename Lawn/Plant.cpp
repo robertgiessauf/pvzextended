@@ -87,9 +87,19 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
         { SeedType::SEED_GATLINGPEA,        nullptr, ReanimationType::REANIM_GATLINGPEA,    5,  250,    5000,   PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("GATLING_PEA") },
 
     { SeedType::SEED_FROSTSTARFRUIT,         nullptr, ReanimationType::REANIM_FROSTSTARFRUIT,     30, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
-    { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") }
+    { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
+    { SeedType::SEED_PLANTERNNUT,       nullptr, ReanimationType::REANIM_PLANTERNNUT,   38, 75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("PLANTERN_NUT") }
 
 };
+
+static Image* GetPlanternNutBlinkImage(const Plant& thePlant)
+{
+    if (thePlant.mPlantHealth < thePlant.mPlantMaxHealth / 3)
+        return IMAGE_REANIM_PLANTERNNUT_BLINK_CRACKED2;
+    if (thePlant.mPlantHealth < thePlant.mPlantMaxHealth * 2 / 3)
+        return IMAGE_REANIM_PLANTERNNUT_BLINK_CRACKED1;
+    return IMAGE_REANIM_PLANTERNNUT_BLINK;
+}
 
 Plant::Plant()
 {
@@ -406,7 +416,13 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         mState = PlantState::STATE_READY;
         break;
     case SeedType::SEED_PLANTERN:
+    case SeedType::SEED_PLANTERNNUT:
     {
+        if (mSeedType == SeedType::SEED_PLANTERNNUT)
+        {
+            mPlantHealth = 4000;
+            mBlinkCountdown = 1000 + Sexy::Rand(1000);
+        }
         mStateCountdown = 50;
 
         if (!IsOnBoard() || mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
@@ -2939,7 +2955,11 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
     const char* aTrackToPlay = "anim_blink";
     const char* aTrackToAttach = nullptr;
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT ||
+    if (mSeedType == SeedType::SEED_PLANTERNNUT)
+    {
+        aTrackToAttach = "PlanternNut_blink_anchor";
+    }
+    else if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT || mSeedType == SeedType::SEED_EXPLODE_NUT ||
         mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_GIANT_WALLNUT)
     {
         int aHit = Rand(10);
@@ -3053,6 +3073,8 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
     }
 
     aBlinkReanim->mFilterEffect = theReanimBody->mFilterEffect;
+    if (mSeedType == SeedType::SEED_PLANTERNNUT)
+        aBlinkReanim->SetImageOverride("PlanternNut_blink", GetPlanternNutBlinkImage(*this));
     return aBlinkReanim;
 }
 
@@ -3079,7 +3101,7 @@ void Plant::DoBlink()
         (mSeedType == SeedType::SEED_GARLIC && aBodyReanim->GetImageOverride("anim_face") == IMAGE_REANIM_GARLIC_BODY3))
         return;
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT ||
+    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_TALLNUT ||
         mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_GIANT_WALLNUT)
     {
         mBlinkCountdown = 1000 + Rand(1000);
@@ -3092,6 +3114,8 @@ void Plant::DoBlink()
     if (aBlinkReanim)
     {
         mBlinkReanimID = mApp->ReanimationGetID(aBlinkReanim);
+        if (mSeedType == SeedType::SEED_PLANTERNNUT)
+            aBodyReanim->AssignRenderGroupToTrack("anim_face", RENDER_GROUP_HIDDEN);
     }
     aBodyReanim->AssignRenderGroupToPrefix("anim_eye", RENDER_GROUP_HIDDEN);
 }
@@ -3107,6 +3131,8 @@ void Plant::EndBlink()
         if (aBodyReanim)
         {
             aBodyReanim->AssignRenderGroupToPrefix("anim_eye", RENDER_GROUP_NORMAL);
+            if (mSeedType == SeedType::SEED_PLANTERNNUT)
+                aBodyReanim->AssignRenderGroupToTrack("anim_face", RENDER_GROUP_NORMAL);
         }
     }
 }
@@ -3144,7 +3170,16 @@ void Plant::AnimateNuts()
     Image* aCracked1;
     Image* aCracked2;
     const char* aTrackToOverride;
-    if (mSeedType == SeedType::SEED_WALLNUT)
+    if (mSeedType == SeedType::SEED_PLANTERNNUT)
+    {
+        aCracked1 = IMAGE_REANIM_PLANTERNNUT_CRACKED1;
+        aCracked2 = IMAGE_REANIM_PLANTERNNUT_CRACKED2;
+        aTrackToOverride = "anim_face";
+        Reanimation* aBlinkReanim = mApp->ReanimationTryToGet(mBlinkReanimID);
+        if (aBlinkReanim)
+            aBlinkReanim->SetImageOverride("PlanternNut_blink", GetPlanternNutBlinkImage(*this));
+    }
+    else if (mSeedType == SeedType::SEED_WALLNUT)
     {
         aCracked1 = IMAGE_REANIM_WALLNUT_CRACKED1;
         aCracked2 = IMAGE_REANIM_WALLNUT_CRACKED2;
@@ -3520,7 +3555,7 @@ void Plant::Animate()
         return;
     }
 
-    if (mSeedType == SeedType::SEED_EXPLODE_NUT || mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_TALLNUT)
+    if (mSeedType == SeedType::SEED_EXPLODE_NUT || mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_TALLNUT)
     {
         AnimateNuts();
     }

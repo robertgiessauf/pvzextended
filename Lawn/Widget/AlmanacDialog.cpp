@@ -343,6 +343,8 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 	SeedType aSeedMouseOn = SeedHitTest(mLastMouseX, mLastMouseY);
 	for (SeedType aSeedType = SeedType::SEED_PEASHOOTER; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
 	{
+		if (aSeedType == SeedType::SEED_FROSTSTARFRUIT || aSeedType == SeedType::SEED_CHOMPER)
+			continue;
 		int aPosX, aPosY;
 		GetSeedPosition(aSeedType, aPosX, aPosY);
 		PlantDefinition& aPlantDef = GetPlantDefinition(aSeedType);
@@ -390,7 +392,7 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 	else
 	{
 		g->DrawImage(
-			Plant::IsNocturnal(mSelectedSeed) || mSelectedSeed == SeedType::SEED_GRAVEBUSTER || mSelectedSeed == SeedType::SEED_PLANTERN ? Sexy::IMAGE_ALMANAC_GROUNDNIGHT :
+			Plant::IsNocturnal(mSelectedSeed) || mSelectedSeed == SeedType::SEED_GRAVEBUSTER || mSelectedSeed == SeedType::SEED_PLANTERN || mSelectedSeed == SeedType::SEED_PLANTERNNUT ? Sexy::IMAGE_ALMANAC_GROUNDNIGHT :
 			mSelectedSeed == SeedType::SEED_FLOWERPOT ? Sexy::IMAGE_ALMANAC_GROUNDROOF : Sexy::IMAGE_ALMANAC_GROUNDDAY,
 			521, 107
 		);
@@ -680,6 +682,8 @@ void AlmanacDialog::Draw(Graphics* g)
 void AlmanacDialog::GetSeedPosition(SeedType theSeedType, int& x, int& y)
 {
 	SeedType aPlantIndex = theSeedType;
+	if (aPlantIndex == SeedType::SEED_PLANTERNNUT)
+		aPlantIndex = (SeedType)(SeedType::SEED_GATLINGPEA + 1);
 	if (aPlantIndex > SeedType::SEED_IMITATER)
 		aPlantIndex = (SeedType)(aPlantIndex - 1);
 

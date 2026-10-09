@@ -94,7 +94,9 @@ void QuickPlayScreen::Draw(Graphics* g)
     switch (mBackground)
     {
     case BackgroundType::BACKGROUND_1_DAY:				g->DrawImage(Sexy::IMAGE_BACKGROUND1, -130, 0);                       break;
+    case BackgroundType::BACKGROUND_1_2_STONE:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_2, -130, 0);					break;
     case BackgroundType::BACKGROUND_2_NIGHT:			g->DrawImage(Sexy::IMAGE_BACKGROUND2, -130, 0);						break;
+    case BackgroundType::BACKGROUND_2_2_STONE:		g->DrawImage(Sexy::IMAGE_BACKGROUND2_2, -130, 0);					break;
     case BackgroundType::BACKGROUND_3_POOL:
         g->DrawImage(Sexy::IMAGE_BACKGROUND3, -130, 0);
         DrawPool(g, false);
@@ -224,11 +226,18 @@ void QuickPlayScreen::ChooseBackground()
     {
         groupName = "DelayLoad_Background1";
         mBackground = BackgroundType::BACKGROUND_1_DAY;
+        if (mApp->mQuickLevel >= 6)
+        {
+            groupName = "DelayLoad_Background1_2";
+            mBackground = BackgroundType::BACKGROUND_1_2_STONE;
+        }
     }
     else if (mApp->mQuickLevel <= 2 * LEVELS_PER_AREA)
     {
         groupName = "DelayLoad_Background2";
         mBackground = BackgroundType::BACKGROUND_2_NIGHT;
+        if (mApp->mQuickLevel >= 16)
+            mBackground = BackgroundType::BACKGROUND_2_2_STONE;
     }
     else if (mApp->mQuickLevel <= 3 * LEVELS_PER_AREA)
     {
