@@ -1,33 +1,48 @@
-Tool: built-in imagegen. All outputs requested a transparent background.
+Tool: built-in imagegen. Transparent-background sprite sheet generated using
+Debug/reanim/Planternnut_ref.png as the primary design reference.
 
-Design prompt:
-A new Plants vs. Zombies-inspired PlanternNut in the original game's chunky,
-hand-painted cartoon style: a sturdy walnut whose protective shell has grown
-into a living lantern. A honey-amber frosted chamber in its belly is protected
-by thick, curved walnut-shell ribs. Small glowing fissures are part of the
-shell. Friendly eyes and a smile occupy the upper shell, with a green sprout
-and small base leaves. Keep the silhouette readable at approximately 70 pixels.
-Use dark brown outlines. No separate pasted lamp, metal accessories, arms,
-background, text, or cast shadow. Crisp silhouette and genuine transparency.
-
-Sprite-sheet prompt (concept.png used as reference):
-Create a three-column, two-row sheet of this same character. Top row: healthy,
-moderately damaged, heavily damaged, all with open eyes. Bottom row: the same
-three damage states with fully closed blinking eyes. Preserve identity, colors,
-proportions, pose, placement, and scale across every cell. Transparent background,
-no labels, backgrounds, or shadows.
-
-Transparency refinement prompt (sprite sheet used as reference):
-Remove only the colored background and outer halo. Preserve the exact six
-sprites, layout, colors, proportions, pose, and damage states. Empty background
-must be genuinely transparent with alpha zero. Do not redesign the artwork.
+Final prompt (verbatim):
+Use case: stylized-concept.
+Asset type: transparent 3-column by 2-row sprite sheet for PlanternNut in an original Plants vs. Zombies (2009) PC game mod.
+Input image 1 is the user's PRIMARY CHARACTER DESIGN REFERENCE. Follow it closely; it determines the character's silhouette, anatomy, face, color, light and original-game style.
+Primary request: redraw this same simple glowing walnut character cleanly, in the understated hand-painted 2D sprite style of original PvZ, and provide its six gameplay states.
+The character is a plump plain oval walnut, pale creamy yellow with warm golden yellow edges, two simple white round eyes with small warm brown pupils looking slightly to the right, a tiny friendly curved smile, a small orange-brown rounded nub at the top. The entire nut body emits soft warm yellow light, just as in the supplied reference. Its shell has only a few faint, subtle walnut wrinkles and simple broad painted shading. Preserve the small cartoon facial features and large plain softly luminous belly in the reference. The design must remain very simple and readable as a small 60-70 pixel game sprite.
+Composition: exactly 1536 x 1024 pixels, three equal 512 x 512 columns and two equal 512 x 512 rows. Exactly one complete character centered in each cell, SAME size, pose, orientation, alignment and face placement in every cell. Body about 365 pixels tall in each cell, keep complete soft glow and all edges safely inside each cell. No text or labels or grid lines.
+Top row left to right: healthy open eyes; moderately damaged open eyes with a few thin brown shell cracks and one small chipped side edge; heavily damaged open eyes with more shell cracks and several bitten/chipped shell edges. Keep the same pale yellow luminous body and facial proportions in all three. Damage is the modest brown cracking and edge chipping seen on the original game's Wall-nut, not ornate lava fissures.
+Bottom row left to right: exact counterparts of the three top-row states, but eyes fully shut in a natural blink, rendered as two simple curved warm brown eyelid lines in the SAME eye positions. Everything else including body, mouth, top nub, damage, colors and glow must match the corresponding top-row state.
+Style constraints: faithful to the supplied reference and original PvZ 1, thin slightly irregular golden-brown outline, simple soft painted color and shading. The glow is a soft translucent yellow halo whose alpha fades to zero. Transparent RGBA background throughout the sheet, no opaque backdrop or ground shadow.
+Avoid: PvZ 2 style, shiny modern vector polish, heavy black outlines, glossy 3D rendering, elaborate textures, dramatic contrast, orange internal lantern chamber, lantern bars, ribs or cage, separate lantern pasted on walnut, leaves or green sprouts, accessories, arms, legs, extra characters, scenery, text, watermarks.
 
 Files:
-concept.png: original generated character design.
-sprite-source.png: full-resolution generated sprite sheet after transparency refinement.
+concept.png: healthy sprite cropped from the generated sheet at full resolution.
+sprite-source.png: original 1536x1024 RGBA generated sprite sheet.
 preview.png: six game sprites shown on a lawn-colored background.
-Debug/reanim/PlanternNut_*.png: mechanically cropped and resized 100x100 RGBA sprites.
+native-healthy.png and native-blink.png: renders produced by the game's engine.
+Debug/reanim/PlanternNut_*.png: cropped and resized 100x100 RGBA game sprites.
 build-animation.ps1: rebuilds the editable and compiled reanimation from the
-Wall-nut idle motion and the new sprite resource names. Run using PowerShell.
+Wall-nut idle motion and the sprite resource names. Run using PowerShell.
 prepare-sprites.ps1: crops and resizes sprite-source.png using the same alignment
 for all six sprites and produces the game sprites and preview. Run using PowerShell.
+
+
+Facial expression edit prompt (verbatim):
+Use case: precise-object-edit.
+Asset type: existing transparent PlanternNut sprite sheet for original Plants vs. Zombies (2009).
+Input image 1 is the EDIT TARGET, a 1536x1024 sheet with three 512x512 columns and two 512x512 rows. Keep its dimensions, cell layout, scale, alignment, oval nut silhouette, small orange top nub, pale yellow paint, shell damage and soft translucent yellow glow EXACTLY the same.
+Change ONLY the facial expressions in the four DAMAGED sprites (middle and right columns in both rows). These plants are hurt and MUST NOT look happy or be smiling.
+Top middle, moderately damaged: concerned, strained expression, worried slightly drooping eyes with simple warm brown worried eyebrows, a small unmistakably downturned frown.
+Top right, heavily damaged: exhausted, pained expression like original PvZ Wall-nut when badly chewed; droopy half-lidded eyes and a downturned frowning mouth, subdued worried eyebrows.
+Bottom middle and bottom right: the same hurt expressions and frowning mouths as their counterparts above, but eyes fully CLOSED for their blinking state. Closed eyelid lines must feel weary, not happy crescent eyes.
+Keep the LEFT COLUMN healthy open-eyed and healthy blinking sprites completely unchanged, including their friendly smile. Keep every face in its existing position and use the same thin golden-brown linework and understated original PvZ1 hand-painted style. Add no tears, sweat, new accessories or new shell details.
+Preserve true RGBA transparency and the existing soft yellow halo; empty background alpha zero. No text, grid lines, opaque backdrop or other modifications.
+
+Stronger shell damage edit prompt (verbatim):
+Use case: precise-object-edit.
+Asset type: transparent 1536x1024 PlanternNut sprite sheet for original PvZ1.
+Input image 1 is the EDIT TARGET. Input image 2 is a DAMAGE-SEVERITY AND ROUGH EDGE REFERENCE from the original game's badly damaged Wall-nut; use its visibly chewed, missing-shell damage, not its character or color.
+Change ONLY shell damage in the middle and right columns of image 1. The user wants substantially MORE DAMAGE, easily distinguishable at 60 pixels.
+Keep the two HEALTHY LEFT-COLUMN sprites completely unchanged.
+MIDDLE COLUMN, medium damage: remove a large obvious irregular bite/chunk from the upper right shell and another smaller but clear bite from the lower left side. Add several branching brown fractures radiating from these missing pieces. These must visibly alter the body's outer contour, not just be drawn lines. Expose simple rough golden-brown walnut shell thickness at bitten edges. Still keep about 85 percent of the original nut body intact.
+RIGHT COLUMN, heavy damage: conspicuously broken and chewed like reference image 2, with a BIG irregular missing chunk across the upper right shoulder/top beside the nub, another deep missing chunk halfway down the left side, and multiple ragged bites along the right/lower edges. Roughly 25-30 percent of the outline/body is missing. Brown fragmented shell rims and several strong branching cracks. Silhouette must look obviously battered, with jagged uneven contours, while preserving the face, central body, tiny orange top nub and a complete sprite (nothing cut off by canvas).
+Top row: keep the current worried eyes and downturned frown for medium damage, drooping exhausted eyes and downturned frown for heavy damage. NO smiling in damaged states. Bottom row: same damaged silhouettes as corresponding top-row characters, retain fully CLOSED weary blink eyelids, concerned brows and frowns.
+Invariant: keep the same exact six-cell 3-column/2-row arrangement, each cell 512x512, body size, placement, eye position, pose, pale yellow luminous palette, thin brown painted outlines and simple original PvZ1 sprite style. Preserve translucently fading soft yellow halo and actual alpha transparency. No black backdrop, ground shadows, text, added leaves, ornaments, modern shiny effects, detached debris or extra objects.
