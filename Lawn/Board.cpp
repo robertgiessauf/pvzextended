@@ -2119,6 +2119,7 @@ Plant* Board::AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedTyp
 	}
 
 	if (theSeedType == SeedType::SEED_CABBAGEPULT ||
+		theSeedType == SeedType::SEED_PUFFPULT ||
 		theSeedType == SeedType::SEED_KERNELPULT ||
 		theSeedType == SeedType::SEED_MELONPULT ||
 		theSeedType == SeedType::SEED_WINTERMELON)
@@ -3477,7 +3478,7 @@ void Board::UpdateToolTip()
 			mToolTip->SetWarningText(_S("[REQUIRES_MAGNETSHROOM]"));
 		}
 	}
-	else if (aUseSeedType == SeedType::SEED_GLOOMSHROOM)
+	else if (aUseSeedType == SeedType::SEED_GLOOMSHROOM || aUseSeedType == SeedType::SEED_ICEFUMESHROOM)
 	{
 		if (!PlantingRequirementsMet(aUseSeedType))
 		{
@@ -3593,6 +3594,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 				break;
 
 			case SeedType::SEED_GLOOMSHROOM:
+			case SeedType::SEED_ICEFUMESHROOM:
 				DisplayAdvice(_S("[ADVICE_ONLY_ON_FUMESHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_ONLY_ON_FUMESHROOM);
 				break;
 
@@ -3725,11 +3727,15 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 	Plant* aPumpkinPlant = aPlantOnLawn.mPumpkinPlant;
 	if (aNormalPlant && aNormalPlant->IsUpgradableTo(aPlantingSeedType))
 	{
-		if (aPlantingSeedType == SeedType::SEED_GLOOMSHROOM)
+		bool aIceFumeUpgrade = aNormalPlant->mSeedType == SeedType::SEED_FUMESHROOM &&
+			(aPlantingSeedType == SeedType::SEED_SNOWPEA || aPlantingSeedType == SeedType::SEED_ICEFUMESHROOM);
+		if (aPlantingSeedType == SeedType::SEED_GLOOMSHROOM || aIceFumeUpgrade)
 		{
 			aIsAwake = !aNormalPlant->mIsAsleep;
 			aWakeUpCounter = aNormalPlant->mWakeUpCounter;
 		}
+		if (aIceFumeUpgrade)
+			aPlantingSeedType = SeedType::SEED_ICEFUMESHROOM;
 		if (aNormalPlant->mSeedType == SEED_MELONPULT && aPlantingSeedType == SeedType::SEED_SNOWPEA) {
 			aPlantingSeedType = SEED_WINTERMELON;
 		}
@@ -3788,7 +3794,15 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 	}
 	else if (mCursorObject->mCursorType == CursorType::CURSOR_TYPE_PLANT_FROM_USABLE_COIN)
 	{
-		AddPlant(aGridX, aGridY, mCursorObject->mType, mCursorObject->mImitaterType);
+		SeedType aResultType = aPlantingSeedType == SeedType::SEED_ICEFUMESHROOM ? aPlantingSeedType : mCursorObject->mType;
+		Plant* aPlant = AddPlant(aGridX, aGridY, aResultType, mCursorObject->mImitaterType);
+		if (aResultType == SeedType::SEED_ICEFUMESHROOM)
+		{
+			if (aIsAwake)
+				aPlant->SetSleeping(false);
+			else
+				aPlant->mWakeUpCounter = aWakeUpCounter;
+		}
 		Coin* aCoin = mCoins.DataArrayTryToGet(mCursorObject->mCoinID);
 		mCursorObject->mCoinID = CoinID::COINID_NULL;
 		aCoin->Die();
@@ -3796,6 +3810,8 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 	else if (mCursorObject->mCursorType == CursorType::CURSOR_TYPE_PLANT_FROM_BANK)
 	{
 		SeedType toPlant = mCursorObject->mType;
+		if (aPlantingSeedType == SeedType::SEED_ICEFUMESHROOM)
+			toPlant = SeedType::SEED_ICEFUMESHROOM;
 		if (mCursorObject->mType == SEED_SNOWPEA && aPlantingSeedType == SEED_WINTERMELON) {
 			toPlant = SEED_WINTERMELON;
 		}
@@ -3848,7 +3864,20 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 					aPumpkinPlant->Die();
 				}
 			}
-			AddPlant(aGridX, aRow, mCursorObject->mType, mCursorObject->mImitaterType);
+			if (aPlantingSeedType == SeedType::SEED_ICEFUMESHROOM)
+			{
+				Plant* aFume = GetTopPlantAt(aGridX, aRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
+				bool aWasAwake = !aFume->mIsAsleep;
+				int aWakeCounter = aFume->mWakeUpCounter;
+				aFume->Die();
+				Plant* aIceFume = AddPlant(aGridX, aRow, aPlantingSeedType, mCursorObject->mImitaterType);
+				if (aWasAwake)
+					aIceFume->SetSleeping(false);
+				else
+					aIceFume->mWakeUpCounter = aWakeCounter;
+			}
+			else
+				AddPlant(aGridX, aRow, mCursorObject->mType, mCursorObject->mImitaterType);
 		}
 	}
 
@@ -9616,6 +9645,7 @@ bool Board::PlantingRequirementsMet(SeedType theSeedType)
 	case SeedType::SEED_GATLINGPEA:			return CountPlantByType(SeedType::SEED_FIREPEA);
 	case SeedType::SEED_TWINSUNFLOWER:		return CountPlantByType(SeedType::SEED_SUNFLOWER);
 	case SeedType::SEED_GLOOMSHROOM:		return CountPlantByType(SeedType::SEED_FUMESHROOM);
+	case SeedType::SEED_ICEFUMESHROOM:	return CountPlantByType(SeedType::SEED_FUMESHROOM);
 	case SeedType::SEED_CATTAIL:			return CountEmptyPotsOrLilies(SeedType::SEED_LILYPAD);
 	case SeedType::SEED_WINTERMELON:		return CountPlantByType(SeedType::SEED_MELONPULT);
 	case SeedType::SEED_GOLD_MAGNET:		return CountPlantByType(SeedType::SEED_MAGNETSHROOM);

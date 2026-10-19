@@ -115,7 +115,14 @@ void ReanimatorCache::GetPlantImageSize(SeedType theSeedType, int& theOffsetX, i
 	theWidth = 120;
 	theHeight = 120;
 
-	if (theSeedType == SeedType::SEED_TALLNUT)
+	if (theSeedType == SeedType::SEED_ICEFUMESHROOM)
+	{
+		theOffsetX = -40;
+		theOffsetY = -40;
+		theWidth += 40;
+		theHeight += 40;
+	}
+	else if (theSeedType == SeedType::SEED_TALLNUT)
 	{
 		theOffsetY = -40;
 		theHeight += 40;

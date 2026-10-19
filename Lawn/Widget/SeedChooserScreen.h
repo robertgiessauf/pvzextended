@@ -91,9 +91,11 @@ public:
     SeedChooserScreen();
     ~SeedChooserScreen();
 
+    static bool             IsSeedInChooser(SeedType theSeedType);
+    static int              GetSeedChooserIndex(SeedType theSeedType);
+    static SeedType         GetSeedTypeInChooser(int theIndex);
     static /*inline*/ int   PickFromWeightedArrayUsingSpecialRandSeed(TodWeightedArray* theArray, int theCount, MTRand& theLevelRNG);
     void                    CrazyDavePickSeeds();
-    bool                    Has7Rows();
     void                    GetSeedPositionInChooser(int theIndex, int& x, int& y);
     /*inline*/ void         GetSeedPositionInBank(int theIndex, int& x, int& y);
     /*inline*/ unsigned int SeedNotRecommendedToPick(SeedType theSeedType);

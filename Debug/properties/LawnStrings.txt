@@ -3433,3 +3433,41 @@ Disco is Undead
 
 [ACHIEVEMENT_DISCO_IS_UNDEAD_DESCRIPTION]
 Hypnotize the lead Zombie Dancer.
+
+
+[PUFF_PULT]
+Puff Pult
+
+[PUFF_PULT_TOOLTIP]
+Lobs spore puffs at zombies. Sleeps during the day.
+
+[PUFF_PULT_DESCRIPTION_HEADER]
+Puff Pults lob spore puffs at zombies across their lane.
+
+[PUFF_PULT_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} normal
+{KEYWORD}Range:{STAT} lobbed
+{NOCTURNAL}Sleeps during the day
+{SHORTLINE}
+{FLAVOR}Puff Pult used to let his spores drift wherever the breeze took them. Now he has a much better sense of direction.
+
+[ICE_FUME_SHROOM]
+Ice Fume-shroom
+
+[ICE_FUME_SHROOM_TOOLTIP]
+Blue fumes damage and slow every zombie in range. Plant on Fume-shroom.
+
+[ICE_FUME_SHROOM_DESCRIPTION_HEADER]
+Ice Fume-shrooms send freezing blue fumes through every zombie in front of them.
+
+[ICE_FUME_SHROOM_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Damage:{STAT} normal, penetrates screen doors
+{KEYWORD}Range:{STAT} all zombies in the fume cloud
+{KEYWORD}Special:{STAT} slows zombies
+{NOCTURNAL}Sleeps during the day
+{SHORTLINE}
+{UPGRADE}Plant Ice Upgrade on Fume-shroom to create Ice Fume-shroom.
+{SHORTLINE}
+{FLAVOR}Ice Fume-shroom always keeps his cool, even when the neighbors complain about the draft.

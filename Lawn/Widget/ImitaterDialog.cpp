@@ -28,9 +28,10 @@ ImitaterDialog::~ImitaterDialog()
 
 SeedType ImitaterDialog::SeedHitTest(int x, int y)
 {
-	for (SeedType aSeedType = (SeedType)0; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
+	for (SeedType aSeedType = (SeedType)0; aSeedType < NUM_SEED_TYPES; aSeedType = (SeedType)(aSeedType + 1))
 	{
-		if ((aSeedType < SeedType::SEED_GATLINGPEA || aSeedType == SeedType::SEED_PLANTERNNUT) && mApp->SeedTypeAvailable(aSeedType))
+		if (aSeedType != SEED_IMITATER && SeedChooserScreen::IsSeedInChooser(aSeedType) &&
+			!Plant::IsUpgrade(aSeedType) && mApp->SeedTypeAvailable(aSeedType))
 		{
 			int aSeedX, aSeedY;
 			GetSeedPosition(aSeedType, aSeedX, aSeedY);
@@ -65,21 +66,25 @@ void ImitaterDialog::Update()
 
 void ImitaterDialog::GetSeedPosition(int theIndex, int& x, int& y)
 {
-	if (theIndex == SeedType::SEED_PLANTERNNUT)
-		theIndex = SeedType::SEED_PLANTERN + 1;
-	else if (theIndex > SeedType::SEED_PLANTERN)
-		theIndex++;
-	x = (theIndex % 8) * (SEED_PACKET_WIDTH + 1) + mWidth / 2 - 210;
-	y = (theIndex / 8) * (SEED_PACKET_HEIGHT + 1) + 112;
+	int aCopyIndex = 0;
+	for (int i = 0; ; i++)
+	{
+		SeedType aSeedType = SeedChooserScreen::GetSeedTypeInChooser(i);
+		if (aSeedType == SEED_NONE || aSeedType == theIndex) break;
+		if (aSeedType != SEED_IMITATER && !Plant::IsUpgrade(aSeedType)) aCopyIndex++;
+	}
+	x = (aCopyIndex % 8) * (SEED_PACKET_WIDTH + 1) + mWidth / 2 - 210;
+	y = (aCopyIndex / 8) * (SEED_PACKET_HEIGHT + 1) + 112;
 }
 
 void ImitaterDialog::Draw(Graphics* g)
 {
 	LawnDialog::Draw(g);
 	g->SetLinearBlend(true);
-	for (SeedType aSeedType = (SeedType)0; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))
+	for (SeedType aSeedType = (SeedType)0; aSeedType < NUM_SEED_TYPES; aSeedType = (SeedType)(aSeedType + 1))
 	{
-		if ((aSeedType < SeedType::SEED_GATLINGPEA || aSeedType == SeedType::SEED_PLANTERNNUT) && mApp->SeedTypeAvailable(aSeedType))
+		if (aSeedType != SEED_IMITATER && SeedChooserScreen::IsSeedInChooser(aSeedType) &&
+			!Plant::IsUpgrade(aSeedType) && mApp->SeedTypeAvailable(aSeedType))
 		{
 			int aSeedX, aSeedY;
 			GetSeedPosition(aSeedType, aSeedX, aSeedY);
@@ -155,8 +160,7 @@ void ImitaterDialog::MouseDown(int x, int y, int theClickCount)
 			ChosenSeed& aImitater = aSeedChooser->mChosenSeeds[SeedType::SEED_IMITATER];
 			aImitater.mSeedState = ChosenSeedState::SEED_IN_CHOOSER;
 			aImitater.mImitaterType = aSeedType;
-			aImitater.mX = aSeedChooser->mImitaterButton->mX;
-			aImitater.mY = aSeedChooser->mImitaterButton->mY;
+			aSeedChooser->GetSeedPositionInChooser(SEED_IMITATER, aImitater.mX, aImitater.mY);
 			aSeedChooser->ClickedSeedInChooser(aImitater);
 			//aSeedChooser->UpdateImitaterButton();
 			mApp->KillDialog(mId);

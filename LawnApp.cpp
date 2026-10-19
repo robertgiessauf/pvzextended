@@ -2593,6 +2593,12 @@ int LawnApp::GetSeedsAvailable()
 
 bool LawnApp::HasSeedType(SeedType theSeedType)
 {
+	if (theSeedType == SeedType::SEED_ICEFUMESHROOM)
+		return HasSeedType(SeedType::SEED_SNOWPEA) && HasSeedType(SeedType::SEED_FUMESHROOM);
+
+	if (theSeedType == SeedType::SEED_PUFFPULT)
+		return HasSeedType(SeedType::SEED_PUFFSHROOM);
+
 	if (theSeedType == SeedType::SEED_PLANTERNNUT)
 		return HasSeedType(SeedType::SEED_PLANTERN);
 

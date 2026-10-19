@@ -319,7 +319,8 @@ void Projectile::CheckForCollision()
 
 bool Projectile::CantHitHighGround()
 {
-	if (mMotionType == ProjectileMotion::MOTION_BACKWARDS || mMotionType == ProjectileMotion::MOTION_HOMING)
+	if (mMotionType == ProjectileMotion::MOTION_BACKWARDS || mMotionType == ProjectileMotion::MOTION_HOMING ||
+		mMotionType == ProjectileMotion::MOTION_LOBBED)
 		return false;
 
 	return (
@@ -544,7 +545,8 @@ void Projectile::UpdateLobMotion()
 		{
 			aMinCollisionZ = -35.0f;
 		}
-		else if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE || mProjectileType == ProjectileType::PROJECTILE_KERNEL)
+		else if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE || mProjectileType == ProjectileType::PROJECTILE_KERNEL ||
+			mProjectileType == ProjectileType::PROJECTILE_PUFF)
 		{
 			aMinCollisionZ = -30.0f;
 		}

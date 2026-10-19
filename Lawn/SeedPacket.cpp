@@ -369,6 +369,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		break;
 
 	case SeedType::SEED_FUMESHROOM:
+	case SeedType::SEED_ICEFUMESHROOM:
 	case SeedType::SEED_PUMPKINSHELL:
 	case SeedType::SEED_CHOMPER:
 	case SeedType::SEED_DOOMSHROOM:
@@ -378,6 +379,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	case SeedType::SEED_SPIKEROCK:
 	case SeedType::SEED_PLANTERN:
 	case SeedType::SEED_PLANTERNNUT:
+	case SeedType::SEED_PUFFPULT:
 	case SeedType::SEED_TORCHWOOD:
 	case SeedType::SEED_TANGLEKELP:
 		aScale = 0.4f;
@@ -800,7 +802,7 @@ void SeedPacket::MouseDown(int x, int y, int theClickCount)
 			{
 				mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_MAGNETSHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_MAGNETSHROOM);
 			}
-			else if (aUseSeedType == SeedType::SEED_GLOOMSHROOM)
+			else if (aUseSeedType == SeedType::SEED_GLOOMSHROOM || aUseSeedType == SeedType::SEED_ICEFUMESHROOM)
 			{
 				mBoard->DisplayAdvice(_S("[ADVICE_PLANT_NEEDS_FUMESHROOM]"), MessageStyle::MESSAGE_STYLE_HINT_LONG, AdviceType::ADVICE_PLANT_NEEDS_FUMESHROOM);
 			}

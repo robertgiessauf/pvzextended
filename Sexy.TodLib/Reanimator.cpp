@@ -166,7 +166,9 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_CREDITS_WEARETHEUNDEAD,               "reanim\\Credits_WeAreTheUndead.reanim",            1 },
 	{ ReanimationType::REANIM_CREDITS_DISCOLIGHTS,                  "reanim\\Credits_DiscoLights.reanim",               1 },
 	{ ReanimationType::REANIM_FLAG,                                 "reanim\\Zombie_FlagPole.reanim",                   0 },
-	{ ReanimationType::REANIM_PLANTERNNUT,                          "reanim\\PlanternNut.reanim",                       0 }
+	{ ReanimationType::REANIM_PLANTERNNUT,                          "reanim\\PlanternNut.reanim",                       0 },
+	{ ReanimationType::REANIM_PUFFPULT,                            "reanim\\PuffPult.reanim",                          0 },
+	{ ReanimationType::REANIM_ICEFUMESHROOM,                        "reanim\\Fumeshroom.reanim",                        0 }
 };
 
 ReanimatorTransform::ReanimatorTransform() :
@@ -238,6 +240,48 @@ bool ReanimationLoadDefinition(const SexyString& theFileName, ReanimatorDefiniti
 		}
 	}
 	return true;
+}
+
+static void ReanimationUseIceFumeArtwork(ReanimatorDefinition* theDefinition)
+{
+	Image* aOriginalHead = nullptr;
+	Image* aOriginalBody = nullptr;
+	Image* aIceHead = nullptr;
+	Image* aIceBody = nullptr;
+	bool aLoaded = DefinitionLoadImage(&aOriginalHead, "IMAGE_REANIM_FUMESHROOM_HEAD") &&
+		DefinitionLoadImage(&aOriginalBody, "IMAGE_REANIM_FUMESHROOM_BODY") &&
+		DefinitionLoadImage(&aIceHead, "IMAGE_REANIM_ICEFUMESHROOM_HEAD") &&
+		DefinitionLoadImage(&aIceBody, "IMAGE_REANIM_ICEFUMESHROOM_BODY");
+	TOD_ASSERT(aLoaded);
+	if (!aLoaded)
+		return;
+
+	for (int aTrackIndex = 0; aTrackIndex < theDefinition->mTrackCount; aTrackIndex++)
+	{
+		ReanimatorTrack& aTrack = theDefinition->mTracks[aTrackIndex];
+		for (int aFrame = 0; aFrame < aTrack.mTransformCount; aFrame++)
+		{
+			ReanimatorTransform& aTransform = aTrack.mTransforms[aFrame];
+			Image* aOriginal = aTransform.mImage;
+			Image* aReplacement = aOriginal == aOriginalHead ? aIceHead : aOriginal == aOriginalBody ? aIceBody : nullptr;
+			if (aReplacement)
+			{
+				// Keep the bottom center attached to the original rig as the larger crystal cap moves.
+				float aOffsetX = (aOriginal->GetCelWidth() - aReplacement->GetCelWidth()) * 0.5f;
+				float aOffsetY = aOriginal->GetCelHeight() - aReplacement->GetCelHeight();
+				float aSkewX = DEG_TO_RAD(aTransform.mSkewX);
+				float aSkewY = DEG_TO_RAD(aTransform.mSkewY);
+				aTransform.mTransX += cos(aSkewX) * aTransform.mScaleX * aOffsetX - sin(aSkewY) * aTransform.mScaleY * aOffsetY;
+				aTransform.mTransY += sin(aSkewX) * aTransform.mScaleX * aOffsetX + cos(aSkewY) * aTransform.mScaleY * aOffsetY;
+				aTransform.mImage = aReplacement;
+			}
+			else if (aOriginal)
+			{
+				// The original eyelids and spout still need a cool tint; leave the supplied artwork untouched.
+				aTransform.mImage = FilterEffectGetImage(aOriginal, FilterEffect::FILTER_EFFECT_LESS_WASHED_OUT);
+			}
+		}
+	}
 }
 
 void ReanimationFreeDefinition(ReanimatorDefinition* theDefinition)
@@ -332,6 +376,28 @@ void Reanimation::ReanimationInitializeType(float theX, float theY, ReanimationT
 	ReanimatorEnsureDefinitionLoaded(theReanimType, false);
 	mReanimationType = theReanimType;
 	ReanimationInitialize(theX, theY, &gReanimatorDefArray[(int)theReanimType]);
+	if (theReanimType == ReanimationType::REANIM_ICEFUMESHROOM)
+	{
+		Image* aIceHead = nullptr;
+		Image* aIceBody = nullptr;
+		DefinitionLoadImage(&aIceHead, "IMAGE_REANIM_ICEFUMESHROOM_HEAD");
+		DefinitionLoadImage(&aIceBody, "IMAGE_REANIM_ICEFUMESHROOM_BODY");
+		for (int aTrackIndex = 0; aTrackIndex < mDefinition->mTrackCount; aTrackIndex++)
+		{
+			bool aUsesCustomArtwork = false;
+			ReanimatorTrack& aTrack = mDefinition->mTracks[aTrackIndex];
+			for (int aFrame = 0; aFrame < aTrack.mTransformCount; aFrame++)
+			{
+				Image* aImage = aTrack.mTransforms[aFrame].mImage;
+				ReanimAtlasImage* aAtlasImage = mDefinition->mReanimAtlas ? mDefinition->mReanimAtlas->GetEncodedReanimAtlas(aImage) : nullptr;
+				if (aAtlasImage)
+					aImage = aAtlasImage->mOriginalImage;
+				if (aImage == aIceHead || aImage == aIceBody)
+					aUsesCustomArtwork = true;
+			}
+			mTrackInstances[aTrackIndex].mTrackColor = aUsesCustomArtwork ? Color::White : Color(100, 210, 255);
+		}
+	}
 }
 
 void ReanimationCreateAtlas(ReanimatorDefinition* theDefinition, ReanimationType theReanimationType)
@@ -1103,6 +1169,8 @@ void ReanimatorEnsureDefinitionLoaded(ReanimationType theReanimType, bool theIsP
 		sprintf_s<1024U>(aBuf, "Failed to load reanim '%s'", aReanimParams->mReanimFileName);
 		TodErrorMessageBox(aBuf, "Error");
 	}
+	if (theReanimType == ReanimationType::REANIM_ICEFUMESHROOM && aReanimDef->mTracks)
+		ReanimationUseIceFumeArtwork(aReanimDef);
 	int aDuration = aTimer.GetDuration();
 	if (aDuration > 100)  
 		TodTraceAndLog("LOADING:Long reanim '%s' %d ms on %s", aReanimParams->mReanimFileName, aDuration, gGetCurrentLevelName().c_str());

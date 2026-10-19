@@ -1,0 +1,73 @@
+Tool: built-in imagegen, transparent background.
+Reference sprites: Debug/reanim/PuffShroom_head.png and PuffShroom_body.png.
+
+Original design prompt (superseded by the PvZ1 revision below):
+Use case: stylized-concept.
+Asset type: transparent 3-column x 2-row animation sprite sheet for a NEW plant "Puff Pult" in an original Plants vs. Zombies (2009 PC) game mod.
+Input images 1 and 2 are ORIGINAL-GAME STYLE AND ANATOMY references only: a simple purple-spotted Puff-shroom cap and its pale green mushroom body. Create one cohesive new mushroom species with their understated old-game hand-painted look.
+Character design: a squat, pale mint-green mushroom body with simple white oval cartoon eyes looking to the right, a short upward-tilted round puff nozzle on the right of its face, and a broad dusty purple mushroom cap with a handful of dark plum spots. Behind the cap, a single flexible purple mushroom stalk curves upward and ends in a small cupped mushroom gill scoop, like an organic catapult arm. The cup holds a small pale lilac puff of spores ready to be lobbed. Everything is grown from one mushroom, no wooden machine, no metal, no green cabbage pasted on it, no leaves or extra accessories. Simple silhouette readable at 60 pixels. Face calm and determined, not a huge grin.
+Style: original PvZ1 2D game sprite, slightly irregular dark plum outlines, simple soft painted shading, restrained muted violet and pale mint palette, very few details. Avoid PvZ2 glossy polished vector styling, 3D lighting, glowing magical effects, elaborate textures.
+Sheet: EXACTLY 1536x1024 pixels, 3 columns x 2 rows, each cell 512x512. One complete character per cell. Same overall size (roughly 355 pixels tall), base/ground position, character orientation and silhouette scale across every cell. Keep every part inside each cell with generous transparent padding.
+Top row left to right:
+1. normal awake idle pose, catapult scoop relaxed behind the cap, small spore puff resting in it.
+2. exact same idle pose with eyes fully CLOSED for a blink.
+3. daytime sleeping pose: eyes fully shut, nozzle and cap slightly drooped, catapult arm relaxed. No Z letters.
+Bottom row left to right:
+4. throwing windup: the flexible mushroom arm bent backward to the left, pulling the puff-filled cup back; body gently compressed, focused eyes.
+5. release: organic catapult arm springs upward and forward toward the right; the cup EMPTY because the game supplies the actual airborne projectile, body stretches a little.
+6. recovery: empty arm settles back toward its idle position, body and cap settling, awake eyes.
+All sprites isolated on actual RGBA transparency; empty areas alpha zero. No scene, background, ground, cast shadows, labels, dividing lines, text, watermark, floating particles outside the character.
+
+Gameplay: 50 sun; 7.5-second recharge; 20 damage per lob; Cabbage-pult's 3-second firing interval; normal 300 health; full-lane targeting; daytime sleeping and standard Coffee Bean support. Unlocks alongside Puff-shroom.
+
+Files: sprite-source.png is the full-resolution RGBA sheet; concept.png is its first cell; preview.png shows all six game sprites. prepare-sprites.ps1 exports Debug/reanim/PuffPult_*.png; build-animation.ps1 compiles Debug/compiled/reanim/PuffPult.reanim and its .compiled sibling.
+
+Transparency/layout cleanup prompt (verbatim):
+Use case: precise-object-edit.
+Input image is the edit target, a 1536x1024 transparent 3-column by 2-row Puff Pult sprite sheet.
+Make a narrowly targeted cleanup: there is a tiny stray purple fragment near the LEFT edge of the BOTTOM RIGHT recovery cell, detached from that mushroom's organic catapult arm. Remove that stray fragment completely. The release pose in the bottom middle cell also needs to fit completely inside its own 512x512 cell: keep its cupped stalk tip inside that cell, with at least 16 pixels of clear padding to its right border, so no part of that pose spills into the recovery cell.
+Keep ALL SIX sprites' character design, pose, colors, facial expressions, source illustration style, base positions, size, spore puffs, and transparency otherwise unchanged. Keep the image exactly 1536x1024, 3 equal columns and 2 equal rows. Preserve actual RGBA alpha; backgrounds remain entirely transparent, no halo, added shapes or text. No other changes.
+
+2026-10-18: final PvZ1 style revision (built-in imagegen, transparent background).
+References: original PuffShroom_head.png, PuffShroom_body.png, PuffShroom_tip.png, plus original-puffshroom-reference.png (nearest-neighbor enlargement of the engine's native original Puff-shroom render).
+The revised sprite-source.png replaces the first design. prepare-sprites.ps1 regenerates all six game sprites, concept.png and preview.png. Gameplay and animation timings are unchanged.
+
+Final revision prompt (verbatim):
+Use case: stylized-concept.
+Asset type: transparent animation sprite atlas for a PvZ1 mod plant named Puff Pult.
+Create a NEW six-pose sheet using ONLY the included original 2009 Plants vs Zombies Puff-shroom as the character/style foundation. The first three supplied images are actual original-game cap, body and nozzle art; the fourth is an enlarged native in-game rendering showing how those parts fit together (ignore its green preview background). Match these references closely. This should look like the original Puff-shroom gained a small natural mushroom catapult stalk.
+
+Character: copy the original cap's distinctive compact, ROUND HIGH DOMED silhouette and original dark-purple blotch shapes, colors and very simple softly shaded finish. The cap is almost as tall as it is wide, a rounded bell with an uneven curved lower rim, rather than a wide flat umbrella. Main cap-to-body proportions come from the reference. Pale mint-green stubby cylindrical body, gently rounded bottom, two very tiny black pin eyes right under the low cap rim near its right edge, almost hidden by the cap, and a small narrow upturned puff nozzle on the right, as in the original. The nozzle should be modest and narrow, not a large trumpet. No white sclera or eyelid decoration. No eyebrows. Body about half the width of the cap. The face is understated, nearly concealed. Preserve the soft old-game hand-painted color transitions, dark muted purple outlines and simple asymmetry. No thick ink contour, bright pink rim highlight, decorative scalloped flower spots, large oval eyes, big nose, modern cartoon gloss, sparkles or elaborate details.
+
+New catapult feature: a slender flexible muted-purple stalk grows BEHIND the original mushroom cap, curls up on the left/back, ending in a small shallow gilled scoop. The stalk and scoop are secondary in size to the original mushroom. Its natural purple colors and soft shaded edge match the original head. In idle, windup and sleep the scoop cradles a small pale lilac spore puff. In release and recovery the scoop is EMPTY. Catapult readable at small game scale.
+
+Atlas: exactly 1536x1024, 3 equal columns by 2 equal rows, cells512x512. NO TEXT. Each cell contains one entire full character on TRUE TRANSPARENT alpha background. Each complete sprite has at least32px transparent margin from EVERY cell edge, so no parts bleed into neighboring cells. Same body center at local x280 and baseline at local y448 in all six cells; keep body scale and cap proportions consistent. All poses point RIGHT. The total height including scoop about370px.
+Top row, left to right:
+1. awake idle, original tiny pin eyes, loaded cup relaxed behind cap.
+2. same idle pose, eyes CLOSED to blink.
+3. daytime asleep, eyes CLOSED, cap and narrow nozzle droop subtly, loaded cup relaxed.
+Bottom row, left to right:
+4. WINDUP, loaded arm flexes backwards LEFT, body compresses a little, original tiny pin eyes.
+5. RELEASE, EMPTY arm stretches up and forward RIGHT, body lengthens slightly; no airborne spore because the game supplies it.
+6. RECOVERY, EMPTY cup settles back behind cap, original tiny pin eyes open.
+Return all6 isolated poses on ACTUAL RGBA TRANSPARENCY. No green preview background, gray field, shadow, halo, glow, scenery, ground, letters, labels, panel lines, borders, decorative marks or watermark. Original PvZ1 sprite fidelity is the highest priority.
+
+Smooth shooting revision: built-in imagegen used only to separate the approved artwork into rig components (rig-source.png). prepare-rig.ps1 exports six components and rig-parts.png; build-animation.ps1 supplies continuous arm transforms, body squash/stretch, cup tilt, and spore reload. shooting-preview.gif contains native engine renders at 50 FPS, enlarged 3x for review; shooting-frames.png is a contact sheet of the throw.
+
+Rig separation prompt (verbatim):
+Use case: precise-object-edit.
+Asset type: animation RIG PARTS sprite atlas for an existing PvZ1 Puff Pult character.
+Input 1 (concept.png) is the authoritative character design and input 2 (sprite-source.png) shows the exact approved style and awake/blink/sleep expressions. PRESERVE this design and original 2009 PvZ1 sprite look exactly. We are separating the approved character into cutout layers for smooth skeletal animation, NOT redesigning it or adding intermediate full-character poses.
+
+Output one 1536x1024 RGBA transparent sheet, 3 equal columns by 2 equal rows, each cell512x512. Six isolated components, one per cell, plenty of fully transparent margin on all sides, no ground or glow. Keep fine muted dark-purple edges, soft simple shading, same colors, original tiny black dot eye and small upturned nozzle, identical round spotted mushroom cap and pale sage body. No large white eyes, modern vector gloss, extra outlines, text or labels.
+
+TOP LEFT: the exact awake mushroom HEAD AND BODY from input1, cap and small face/nozzle intact, but REMOVE the entire rear catapult stalk, cup and puff. Simply finish the small part of the cap silhouette previously touching the rear stalk. Position exactly as in input1: cap roughly local x165..425 and y225..395, body local x225..405 y390..470. No arm fragment behind it.
+TOP MIDDLE: identical cap/body, same position and size, only tiny eye CLOSED for a blink. No stalk, cup or puff.
+TOP RIGHT: cap/body in sleeping pose from input2, tiny eye shut and nozzle drooped; keep same body center and ground baseline as the awake body. No stalk, cup or puff.
+BOTTOM LEFT: one isolated short, slim, STRAIGHT organic purple stalk segment, vertical, with softly rounded overlapping ends, muted purple fill and a gentle lighter strip along one side. Shape like a flexible mushroom stem, NOT wood, metal or rope. Centered in the cell, extending from y100 to400, width about40px. Both ends rounded for seamless overlapping when two copies are joined at an angle. NO cap, face, cup or puff.
+BOTTOM MIDDLE: one isolated EMPTY purple mushroom gill cup from input1's catapult tip, same shading/design, perspective and orientation as the idle cup. Width about180px, height about100px, centered. Hollow visible oval opening, rounded bowl underside, no stalk, no spore, no character body.
+BOTTOM RIGHT: one isolated pale lilac round spore puff from the approved design, about150px wide and150px tall, centered, subtly shaded, no heavy black border, no cup, no stalk, no character.
+
+Actual transparent alpha background throughout, no haze or shadow or scenery. Each isolated component entirely inside its cell. Do not assemble the parts together. Maintain the approved character's simple slightly soft original-PvZ1 sprite style.
+
+Puff appearance correction: the generated round spore in rig-source.png is unused. The live cup animation now references IMAGE_PUFFSHROOM_PUFF1 directly, the same original sprite used by flying PROJECTILE_PUFF objects. prepare-rig.ps1 copies Debug/particles/PuffShroom_puff1.png unchanged to PuffPult_spore.png for the rig preview and compatibility resource. The original puff's alpha, color, and shape stay intact. The lob trajectory, original puff trail, smooth arm motion, and reload are preserved.
