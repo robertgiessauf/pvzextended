@@ -294,6 +294,21 @@ void Projectile::CheckForCollision()
 		Plant* aPlant = FindCollisionTargetPlant();
 		if (aPlant)
 		{
+			if (aPlant->mSeedType == SeedType::SEED_DEFLECTORNUT && !aPlant->NotOnGround() &&
+				aPlant->mPlantHealth > 0 && aPlant->mOnBungeeState == PlantOnBungeeState::NOT_ON_BUNGEE)
+			{
+				// Return the incoming pea as a normal plant projectile in this same lane.
+				mProjectileType = ProjectileType::PROJECTILE_PEA;
+				mMotionType = ProjectileMotion::MOTION_STRAIGHT;
+				mDamageRangeFlags = aPlant->GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);
+				mOnHighGround = aPlant->IsOnHighGround();
+				mVelX = 3.33f;
+				mVelY = mVelZ = mAccZ = 0.0f;
+				mHitTorchwoodGridX = -1;
+				aPlant->FlashDeflectorShield();
+				mApp->PlayFoley(FoleyType::FOLEY_SHIELD_HIT);
+				return;
+			}
 			const ProjectileDefinition& aProjectileDef = GetProjectileDef();
 			aPlant->mPlantHealth -= aProjectileDef.mDamage;
 			aPlant->mEatenFlashCountdown = max(aPlant->mEatenFlashCountdown, 25);

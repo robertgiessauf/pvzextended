@@ -2892,7 +2892,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 			return PlantingReason::PLANTING_NEEDS_UPGRADE;
 		}
 
-		if ((theSeedType == SeedType::SEED_WALLNUT || theSeedType == SeedType::SEED_PLANTERNNUT || theSeedType == SeedType::SEED_TALLNUT) && aAidPurchased)
+		if ((theSeedType == SeedType::SEED_WALLNUT || theSeedType == SeedType::SEED_PLANTERNNUT || theSeedType == SeedType::SEED_DEFLECTORNUT || theSeedType == SeedType::SEED_TALLNUT) && aAidPurchased)
 		{
 			if (aNormalPlant->mPlantHealth < aNormalPlant->mPlantMaxHealth * 2 / 3 &&
 				aNormalPlant->mSeedType == theSeedType && aNormalPlant->mOnBungeeState != PlantOnBungeeState::GETTING_GRABBED_BY_BUNGEE)
@@ -3164,7 +3164,7 @@ void Board::UpdateMousePosition()
 			aPlant->mHighlighted = true;
 		}
 	}
-	else if (aCursorSeedType == SeedType::SEED_WALLNUT || aCursorSeedType == SeedType::SEED_PLANTERNNUT || aCursorSeedType == SeedType::SEED_TALLNUT)
+	else if (aCursorSeedType == SeedType::SEED_WALLNUT || aCursorSeedType == SeedType::SEED_PLANTERNNUT || aCursorSeedType == SeedType::SEED_DEFLECTORNUT || aCursorSeedType == SeedType::SEED_TALLNUT)
 	{
 		int aGridX = PlantingPixelToGridX(mApp->mWidgetManager->mLastMouseX, mApp->mWidgetManager->mLastMouseY, aCursorSeedType);
 		int aGridY = PlantingPixelToGridY(mApp->mWidgetManager->mLastMouseX, mApp->mWidgetManager->mLastMouseY, aCursorSeedType);
@@ -3750,7 +3750,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		}
 		aNormalPlant->Die();
 	}
-	if ((aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_PLANTERNNUT || aPlantingSeedType == SeedType::SEED_TALLNUT) && aNormalPlant)
+	if ((aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_PLANTERNNUT || aPlantingSeedType == SeedType::SEED_DEFLECTORNUT || aPlantingSeedType == SeedType::SEED_TALLNUT) && aNormalPlant)
 	{
 		if (aNormalPlant->mSeedType == aPlantingSeedType)
 		{
@@ -3848,7 +3848,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 			if (aRow == aGridY || CanPlantAt(aGridX, aRow, aPlantingSeedType) != PlantingReason::PLANTING_OK)
 				continue;
 
-			if (aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_PLANTERNNUT || aPlantingSeedType == SeedType::SEED_TALLNUT)
+			if (aPlantingSeedType == SeedType::SEED_WALLNUT || aPlantingSeedType == SeedType::SEED_PLANTERNNUT || aPlantingSeedType == SeedType::SEED_DEFLECTORNUT || aPlantingSeedType == SeedType::SEED_TALLNUT)
 			{
 				aNormalPlant = GetTopPlantAt(aGridX, aRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
 				if (aNormalPlant && aNormalPlant->mSeedType == aPlantingSeedType)

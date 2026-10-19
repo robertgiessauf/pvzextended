@@ -3471,3 +3471,19 @@ Ice Fume-shrooms send freezing blue fumes through every zombie in front of them.
 {UPGRADE}Plant Ice Upgrade on Fume-shroom to create Ice Fume-shroom.
 {SHORTLINE}
 {FLAVOR}Ice Fume-shroom always keeps his cool, even when the neighbors complain about the draft.
+
+[DEFLECTOR_NUT]
+Deflector-nut
+
+[DEFLECTOR_NUT_TOOLTIP]
+Blocks zombies and reflects their peas back down its lane
+
+[DEFLECTOR_NUT_DESCRIPTION_HEADER]
+Deflector-nuts protect your plants and send zombie-fired peas back at the zombies.
+
+[DEFLECTOR_NUT_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Toughness:{STAT} high
+{KEYWORD}Special:{STAT} reflects zombie peas in its own lane
+{SHORTLINE}
+{FLAVOR}"You dropped something," says Deflector-nut. He's always happy to return it.

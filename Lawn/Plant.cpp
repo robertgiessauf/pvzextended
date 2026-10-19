@@ -91,7 +91,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
     { SeedType::SEED_FROSTSTARFRUIT,         nullptr, ReanimationType::REANIM_FROSTSTARFRUIT,     30, 125,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("STARFRUIT") },
     { SeedType::SEED_CHOMPER,           nullptr, ReanimationType::REANIM_CHOMPER,       31, 150,    750,    PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHOMPER") },
     { SeedType::SEED_PLANTERNNUT,       nullptr, ReanimationType::REANIM_PLANTERNNUT,   38, 75,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("PLANTERN_NUT") },
-    { SeedType::SEED_ICEFUMESHROOM,     nullptr, ReanimationType::REANIM_ICEFUMESHROOM,  9, 100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("ICE_FUME_SHROOM") }
+    { SeedType::SEED_ICEFUMESHROOM,     nullptr, ReanimationType::REANIM_ICEFUMESHROOM,  9, 100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("ICE_FUME_SHROOM") },
+    { SeedType::SEED_DEFLECTORNUT,      nullptr, ReanimationType::REANIM_DEFLECTORNUT,   2, 100,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("DEFLECTOR_NUT") }
 
 };
 
@@ -102,6 +103,15 @@ static Image* GetPlanternNutBlinkImage(const Plant& thePlant)
     if (thePlant.mPlantHealth < thePlant.mPlantMaxHealth * 2 / 3)
         return IMAGE_REANIM_PLANTERNNUT_BLINK_CRACKED1;
     return IMAGE_REANIM_PLANTERNNUT_BLINK;
+}
+
+static Image* GetDeflectorNutBlinkImage(const Plant& thePlant)
+{
+    if (thePlant.mPlantHealth < thePlant.mPlantMaxHealth / 3)
+        return IMAGE_REANIM_DEFLECTORNUT_BLINK_CRACKED2;
+    if (thePlant.mPlantHealth < thePlant.mPlantMaxHealth * 2 / 3)
+        return IMAGE_REANIM_DEFLECTORNUT_BLINK_CRACKED1;
+    return IMAGE_REANIM_DEFLECTORNUT_BLINK;
 }
 
 Plant::Plant()
@@ -290,6 +300,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         break;
     }
     case SeedType::SEED_WALLNUT:
+    case SeedType::SEED_DEFLECTORNUT:
         mPlantHealth = 4000;
         mBlinkCountdown = 1000 + Sexy::Rand(1000);
         break;
@@ -2753,6 +2764,12 @@ void Plant::UpdateReanimColor()
 
     aBodyReanim->mColorOverride = aColorOverride;
 
+    if (mSeedType == SeedType::SEED_DEFLECTORNUT)
+    {
+        int aShieldAlpha = ClampInt(mStateCountdown * 16, 0, 255);
+        aBodyReanim->GetTrackInstanceByName("DeflectorNut_shield_glow")->mTrackColor = Color(255, 255, 255, aShieldAlpha);
+    }
+
     if (mHighlighted)
     {
         aBodyReanim->mExtraAdditiveColor = Color(255, 255, 255, 196);
@@ -2970,6 +2987,10 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
     {
         aTrackToAttach = "PlanternNut_blink_anchor";
     }
+    else if (mSeedType == SeedType::SEED_DEFLECTORNUT)
+    {
+        aTrackToAttach = "DeflectorNut_blink_anchor";
+    }
     else if (mSeedType == SeedType::SEED_PUFFPULT)
     {
         aTrackToAttach = "PuffPult_blink_anchor";
@@ -3090,6 +3111,8 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
     aBlinkReanim->mFilterEffect = theReanimBody->mFilterEffect;
     if (mSeedType == SeedType::SEED_PLANTERNNUT)
         aBlinkReanim->SetImageOverride("PlanternNut_blink", GetPlanternNutBlinkImage(*this));
+    else if (mSeedType == SeedType::SEED_DEFLECTORNUT)
+        aBlinkReanim->SetImageOverride("DeflectorNut_blink", GetDeflectorNutBlinkImage(*this));
     return aBlinkReanim;
 }
 
@@ -3120,7 +3143,7 @@ void Plant::DoBlink()
         (mSeedType == SeedType::SEED_GARLIC && aBodyReanim->GetImageOverride("anim_face") == IMAGE_REANIM_GARLIC_BODY3))
         return;
 
-    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_TALLNUT ||
+    if (mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_DEFLECTORNUT || mSeedType == SeedType::SEED_TALLNUT ||
         mSeedType == SeedType::SEED_EXPLODE_O_NUT || mSeedType == SeedType::SEED_GIANT_WALLNUT)
     {
         mBlinkCountdown = 1000 + Rand(1000);
@@ -3133,7 +3156,7 @@ void Plant::DoBlink()
     if (aBlinkReanim)
     {
         mBlinkReanimID = mApp->ReanimationGetID(aBlinkReanim);
-        if (mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_PUFFPULT)
+        if (mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_DEFLECTORNUT || mSeedType == SeedType::SEED_PUFFPULT)
             aBodyReanim->AssignRenderGroupToTrack("anim_face", RENDER_GROUP_HIDDEN);
     }
     aBodyReanim->AssignRenderGroupToPrefix("anim_eye", RENDER_GROUP_HIDDEN);
@@ -3150,7 +3173,7 @@ void Plant::EndBlink()
         if (aBodyReanim)
         {
             aBodyReanim->AssignRenderGroupToPrefix("anim_eye", RENDER_GROUP_NORMAL);
-            if (mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_PUFFPULT)
+            if (mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_DEFLECTORNUT || mSeedType == SeedType::SEED_PUFFPULT)
                 aBodyReanim->AssignRenderGroupToTrack("anim_face", RENDER_GROUP_NORMAL);
         }
     }
@@ -3180,6 +3203,14 @@ void Plant::UpdateBlink()
     }
 }
 
+void Plant::FlashDeflectorShield()
+{
+    mStateCountdown = 30;
+    Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
+    if (aBodyReanim)
+        aBodyReanim->GetTrackInstanceByName("DeflectorNut_shield_glow")->mTrackColor = Color::White;
+}
+
 void Plant::AnimateNuts()
 {
     Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
@@ -3197,6 +3228,21 @@ void Plant::AnimateNuts()
         Reanimation* aBlinkReanim = mApp->ReanimationTryToGet(mBlinkReanimID);
         if (aBlinkReanim)
             aBlinkReanim->SetImageOverride("PlanternNut_blink", GetPlanternNutBlinkImage(*this));
+    }
+    else if (mSeedType == SeedType::SEED_DEFLECTORNUT)
+    {
+        aCracked1 = IMAGE_REANIM_DEFLECTORNUT_CRACKED1;
+        aCracked2 = IMAGE_REANIM_DEFLECTORNUT_CRACKED2;
+        aTrackToOverride = "anim_face";
+        bool aBadlyDamaged = mPlantHealth < mPlantMaxHealth / 3;
+        bool aDamaged = mPlantHealth < mPlantMaxHealth * 2 / 3;
+        aBodyReanim->SetImageOverride("DeflectorNut_shield", aBadlyDamaged ? IMAGE_REANIM_DEFLECTORNUT_SHIELD_CRACKED2 :
+            aDamaged ? IMAGE_REANIM_DEFLECTORNUT_SHIELD_CRACKED1 : nullptr);
+        aBodyReanim->SetImageOverride("DeflectorNut_shield_glow", aBadlyDamaged ? IMAGE_REANIM_DEFLECTORNUT_SHIELD_GLOW_CRACKED2 :
+            aDamaged ? IMAGE_REANIM_DEFLECTORNUT_SHIELD_GLOW_CRACKED1 : nullptr);
+        Reanimation* aBlinkReanim = mApp->ReanimationTryToGet(mBlinkReanimID);
+        if (aBlinkReanim)
+            aBlinkReanim->SetImageOverride("DeflectorNut_blink", GetDeflectorNutBlinkImage(*this));
     }
     else if (mSeedType == SeedType::SEED_WALLNUT)
     {
@@ -3584,7 +3630,7 @@ void Plant::Animate()
         return;
     }
 
-    if (mSeedType == SeedType::SEED_EXPLODE_NUT || mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_TALLNUT)
+    if (mSeedType == SeedType::SEED_EXPLODE_NUT || mSeedType == SeedType::SEED_WALLNUT || mSeedType == SeedType::SEED_PLANTERNNUT || mSeedType == SeedType::SEED_DEFLECTORNUT || mSeedType == SeedType::SEED_TALLNUT)
     {
         AnimateNuts();
     }

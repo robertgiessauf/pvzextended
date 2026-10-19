@@ -4835,7 +4835,7 @@ void Zombie::AnimateChewSound()
         }
         else
         {
-            if (aPlant->mSeedType == SeedType::SEED_WALLNUT || aPlant->mSeedType == SeedType::SEED_PLANTERNNUT || aPlant->mSeedType == SeedType::SEED_TALLNUT || aPlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
+            if (aPlant->mSeedType == SeedType::SEED_WALLNUT || aPlant->mSeedType == SeedType::SEED_PLANTERNNUT || aPlant->mSeedType == SeedType::SEED_DEFLECTORNUT || aPlant->mSeedType == SeedType::SEED_TALLNUT || aPlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
             {
                 mApp->PlayFoley(FoleyType::FOLEY_CHOMP_SOFT);
             }
@@ -4876,7 +4876,7 @@ void Zombie::AnimateChewEffect()
     Plant* aPlant = FindPlantTarget(ZombieAttackType::ATTACKTYPE_CHEW);
     if (aPlant)
     {
-        if (aPlant->mSeedType == SeedType::SEED_WALLNUT || aPlant->mSeedType == SeedType::SEED_PLANTERNNUT || aPlant->mSeedType == SeedType::SEED_TALLNUT)
+        if (aPlant->mSeedType == SeedType::SEED_WALLNUT || aPlant->mSeedType == SeedType::SEED_PLANTERNNUT || aPlant->mSeedType == SeedType::SEED_DEFLECTORNUT || aPlant->mSeedType == SeedType::SEED_TALLNUT)
         {
             int aRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_PROJECTILE, mRow, 0);
             ZombieDrawPosition aDrawPos;
@@ -6346,7 +6346,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
     if (mZombiePhase == ZombiePhase::PHASE_LADDER_CARRYING || mZombiePhase == ZombiePhase::PHASE_LADDER_PLACING)
     {
         bool aPlaceLadder = false;
-        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_PLANTERNNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
+        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_PLANTERNNUT || thePlant->mSeedType == SeedType::SEED_DEFLECTORNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
         {
             aPlaceLadder = true;
         }
@@ -7075,7 +7075,7 @@ void Zombie::EatPlant(Plant* thePlant)
     thePlant->mRecentlyEatenCountdown = 50;
     if (mApp->IsIZombieLevel() && mJustGotShotCounter < -500)
     {
-        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_PLANTERNNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
+        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_PLANTERNNUT || thePlant->mSeedType == SeedType::SEED_DEFLECTORNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
         {
             thePlant->mPlantHealth -= damage;
         }

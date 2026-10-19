@@ -250,6 +250,7 @@ public:
     void                    UpdatePotato();
     int                     CalcRenderOrder();
     void                    AnimateNuts();
+    void                    FlashDeflectorShield();
     void                    SetSleeping(bool theIsAsleep);
     void                    UpdateShooting();
     void                    DrawShadow(Graphics* g, float theOffsetX, float theOffsetY);

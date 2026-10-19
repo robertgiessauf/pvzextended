@@ -168,7 +168,8 @@ ReanimationParams gLawnReanimationArray[(int)ReanimationType::NUM_REANIMS] = {
 	{ ReanimationType::REANIM_FLAG,                                 "reanim\\Zombie_FlagPole.reanim",                   0 },
 	{ ReanimationType::REANIM_PLANTERNNUT,                          "reanim\\PlanternNut.reanim",                       0 },
 	{ ReanimationType::REANIM_PUFFPULT,                            "reanim\\PuffPult.reanim",                          0 },
-	{ ReanimationType::REANIM_ICEFUMESHROOM,                        "reanim\\Fumeshroom.reanim",                        0 }
+	{ ReanimationType::REANIM_ICEFUMESHROOM,                        "reanim\\Fumeshroom.reanim",                        0 },
+	{ ReanimationType::REANIM_DEFLECTORNUT,                         "reanim\\DeflectorNut.reanim",                      0 }
 };
 
 ReanimatorTransform::ReanimatorTransform() :
@@ -376,6 +377,8 @@ void Reanimation::ReanimationInitializeType(float theX, float theY, ReanimationT
 	ReanimatorEnsureDefinitionLoaded(theReanimType, false);
 	mReanimationType = theReanimType;
 	ReanimationInitialize(theX, theY, &gReanimatorDefArray[(int)theReanimType]);
+	if (theReanimType == ReanimationType::REANIM_DEFLECTORNUT)
+		GetTrackInstanceByName("DeflectorNut_shield_glow")->mTrackColor = Color(255, 255, 255, 0);
 	if (theReanimType == ReanimationType::REANIM_ICEFUMESHROOM)
 	{
 		Image* aIceHead = nullptr;

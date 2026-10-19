@@ -2599,6 +2599,9 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 	if (theSeedType == SeedType::SEED_PUFFPULT)
 		return HasSeedType(SeedType::SEED_PUFFSHROOM);
 
+	if (theSeedType == SeedType::SEED_DEFLECTORNUT)
+		return HasSeedType(SeedType::SEED_WALLNUT);
+
 	if (theSeedType == SeedType::SEED_PLANTERNNUT)
 		return HasSeedType(SeedType::SEED_PLANTERN);
 

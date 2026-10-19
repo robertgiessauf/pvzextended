@@ -688,6 +688,8 @@ void AlmanacDialog::GetSeedPosition(SeedType theSeedType, int& x, int& y)
 		aPlantIndex = (SeedType)(SeedType::SEED_GATLINGPEA + 2);
 	else if (aPlantIndex == SeedType::SEED_ICEFUMESHROOM)
 		aPlantIndex = (SeedType)(SeedType::SEED_GATLINGPEA + 3);
+	else if (aPlantIndex == SeedType::SEED_DEFLECTORNUT)
+		aPlantIndex = (SeedType)(SeedType::SEED_GATLINGPEA + 4);
 	if (aPlantIndex > SeedType::SEED_IMITATER)
 		aPlantIndex = (SeedType)(aPlantIndex - 1);
 
