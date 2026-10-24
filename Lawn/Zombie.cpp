@@ -55,7 +55,9 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_GATLING_HEAD,      REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("GATLING_ZOMBIE")},
     { ZOMBIE_SQUASH_HEAD,       REANIM_ZOMBIE,              3,      99,     10,     2000,   _S("SQUASH_ZOMBIE")},
     { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")},
-    { ZOMBIE_STRONG_BITE,       REANIM_ZOMBIE,              2,      1,      1,      4000,   _S("ZOMBIE_STRONG_BITE")}
+    { ZOMBIE_STRONG_BITE,       REANIM_ZOMBIE,              2,      1,      1,      4000,   _S("ZOMBIE_STRONG_BITE")},
+    { ZOMBIE_EXPLOSIVE_NEWSPAPER, REANIM_ZOMBIE_NEWSPAPER,  2,      10,          1,      1000,   _S("EXPLOSIVE_NEWSPAPER_ZOMBIE")},
+    { ZOMBIE_GHOST,               REANIM_ZOMBIE,            2,      2,          1,      1000,   _S("GHOST_ZOMBIE")}
 };
 
 static ZombieType gBossZombieList[] = {  
@@ -209,6 +211,11 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mVariant = false;
         break;
     }
+
+    case ZombieType::ZOMBIE_GHOST:
+        LoadPlainZombieReanim();
+        mZombieAttackRect = Rect(20, 0, 50, 115);
+        break;
 
 
     case ZombieType::ZOMBIE_TRAFFIC_CONE:  
@@ -570,6 +577,17 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mBodyHealth = 1200;
         mVariant = false;
         AttachShield();
+        break;
+
+    case ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER:
+        mZombieAttackRect = Rect(20, 0, 50, 115);
+        mZombiePhase = ZombiePhase::PHASE_NEWSPAPER_READING;
+        mShieldType = ShieldType::SHIELDTYPE_NEWSPAPER;
+        mShieldHealth = 150;
+        mBodyHealth = 1200;
+        mVariant = false;
+        AttachShield();
+        mApp->ReanimationGet(mBodyReanimID)->GetTrackInstanceByName("Zombie_paper_paper")->mTrackColor = Color(255, 155, 145);
         break;
 
     case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
@@ -986,7 +1004,7 @@ void Zombie::SetupReanimLayers(Reanimation* aReanim, ZombieType theZombieType)
     {
         SetupDoorArms(aReanim, true);
     }
-    else if (theZombieType == ZombieType::ZOMBIE_NEWSPAPER)
+    else if (theZombieType == ZombieType::ZOMBIE_NEWSPAPER || theZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
     {
         aReanim->AssignRenderGroupToPrefix("Zombie_paper_paper", RENDER_GROUP_HIDDEN);
     }
@@ -3511,7 +3529,7 @@ void Zombie::DropHead(unsigned int theDamageFlags)
         ReanimShowPrefix("Zombie_backup_stash", RENDER_GROUP_HIDDEN);
         ReanimShowPrefix("Zombie_disco_chops", RENDER_GROUP_HIDDEN);
     }
-    else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER)
+    else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
     {
         aEffect = ParticleEffect::PARTICLE_ZOMBIE_NEWSPAPER_HEAD;
     }
@@ -3658,6 +3676,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
         ReanimShowPrefix("Zombie_football_leftarm_hand", RENDER_GROUP_HIDDEN);
         break;
     case ZombieType::ZOMBIE_NEWSPAPER:
+    case ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER:
         ReanimShowTrack("Zombie_paper_hands", RENDER_GROUP_HIDDEN);
         ReanimShowTrack("Zombie_paper_leftarm_lower", RENDER_GROUP_HIDDEN);
         break;
@@ -3701,6 +3720,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
             aBodyReanim->SetImageOverride("Zombie_football_leftarm_upper", IMAGE_REANIM_ZOMBIE_FOOTBALL_LEFTARM_UPPER2);
             break;
         case ZombieType::ZOMBIE_NEWSPAPER:
+        case ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER:
             GetTrackPosition("Zombie_paper_leftarm_lower", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_paper_leftarm_upper", IMAGE_REANIM_ZOMBIE_PAPER_LEFTARM_UPPER2);
             break;
@@ -4445,6 +4465,10 @@ void Zombie::UpdateActions()
     {
         UpdateZombieNewspaper();
     }
+    if (mZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
+    {
+        UpdateZombieNewspaper();
+    }
     if (mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
     {
         UpdateZombieWallnutNewspaper();
@@ -4676,7 +4700,7 @@ bool Zombie::HasYuckyFaceImage()
         mZombieType == ZombieType::ZOMBIE_DUCKY_TUBE || 
         mZombieType == ZombieType::ZOMBIE_DANCER || 
         mZombieType == ZombieType::ZOMBIE_BACKUP_DANCER || 
-        mZombieType == ZombieType::ZOMBIE_NEWSPAPER || 
+        mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER ||
         mZombieType == ZombieType::ZOMBIE_POLEVAULTER;
 }
 
@@ -5006,10 +5030,12 @@ void Zombie::DrawZombie(Graphics* g, const ZombieDrawPosition& theDrawPos)
     switch (mZombieType)
     {
     case ZombieType::ZOMBIE_NORMAL:
+    case ZombieType::ZOMBIE_GHOST:
     case ZombieType::ZOMBIE_FLAG:
     case ZombieType::ZOMBIE_TRAFFIC_CONE:
     case ZombieType::ZOMBIE_PAIL:
     case ZombieType::ZOMBIE_NEWSPAPER:
+    case ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER:
     case ZombieType::ZOMBIE_WALLNUTNEWSPAPER:
     case ZombieType::ZOMBIE_DOOR:
     case ZombieType::ZOMBIE_FOOTBALL:
@@ -5671,6 +5697,14 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
             aColorOverride = Color(aGrayness, aGrayness, aGrayness, aFadeAlpha);
         }
 
+        aExtraAdditiveColor = Color::Black;
+        aEnableExtraAdditiveDraw = false;
+    }
+    else if (mZombieType == ZombieType::ZOMBIE_GHOST)
+    {
+        bool aIsExposed = IsGhostExposed();
+        int anOpacity = aFadeAlpha * (aIsExposed ? 230 : 150) / 255;
+        aColorOverride = aIsExposed ? Color(190, 235, 255, anOpacity) : Color(145, 205, 255, anOpacity);
         aExtraAdditiveColor = Color::Black;
         aEnableExtraAdditiveDraw = false;
     }
@@ -7571,6 +7605,19 @@ void Zombie::DropShield(unsigned int theDamageFlags)
             mApp->PlayFoley(FoleyType::FOLEY_NEWSPAPER_RIP);
             AddAttachedReanim(-11, 0, ReanimationType::REANIM_ZOMBIE_SURPRISE);
         }
+
+        if (mZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
+        {
+            int aPosX = mX + mWidth / 2;
+            int aPosY = mY + mHeight / 2;
+            mApp->PlayFoley(FoleyType::FOLEY_EXPLOSION);
+            mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, JackInTheBoxZombieRadius, 1, true, 255);
+            mBoard->KillAllPlantsInRadius(aPosX, aPosY, JackInTheBoxPlantRadius);
+            mApp->AddTodParticle(aPosX, aPosY, Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_TOP, 0, 0), ParticleEffect::PARTICLE_JACKEXPLODE);
+            mBoard->ShakeBoard(4, -6);
+            DieNoLoot();
+            return;
+        }
     }
     else if (mShieldType == ShieldType::SHIELDTYPE_LADDER)
     {
@@ -7962,7 +8009,8 @@ void Zombie::TakeBodyDamage(int theDamage, unsigned int theDamageFlags)
 
 void Zombie::TakeDamage(int theDamage, unsigned int theDamageFlags)
 {
-    if (mZombiePhase == ZombiePhase::PHASE_JACK_IN_THE_BOX_POPPING || IsDeadOrDying())
+    if (mZombiePhase == ZombiePhase::PHASE_JACK_IN_THE_BOX_POPPING || IsDeadOrDying() ||
+        (mZombieType == ZombieType::ZOMBIE_GHOST && !IsGhostExposed()))
         return;
 
     int aDamageRemaining = theDamage;
@@ -8073,6 +8121,11 @@ bool Zombie::CanBeFrozen()
 
 bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
 {
+    if (mZombieType == ZombieType::ZOMBIE_GHOST && !IsGhostExposed())
+    {
+        return false;
+    }
+
     if (!TestBit(theDamageRangeFlags, (int)DamageRangeFlags::DAMAGES_DYING) && IsDeadOrDying())
     {
         return false;
@@ -8164,6 +8217,38 @@ bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
     }
 
     return TestBit(theDamageRangeFlags, (int)DamageRangeFlags::DAMAGES_GROUND) && !IsFlying() && !submerged && !underground;
+}
+
+bool Zombie::IsGhostExposed()
+{
+    if (mZombieType != ZombieType::ZOMBIE_GHOST || mBoard == nullptr)
+        return false;
+
+    Rect aZombieRect = GetZombieRect();
+    int aZombieCenterX = aZombieRect.mX + aZombieRect.mWidth / 2;
+    int aZombieCenterY = aZombieRect.mY + aZombieRect.mHeight / 2;
+    int aZombieCol = mBoard->PixelToGridXKeepOnBoard(aZombieCenterX, aZombieCenterY);
+
+    Plant* aPlant = nullptr;
+    while (mBoard->IteratePlants(aPlant))
+    {
+        if (aPlant->mDead || aPlant->mPlantHealth <= 0 || aPlant->NotOnGround() ||
+            (aPlant->mSeedType != SeedType::SEED_PLANTERN && aPlant->mSeedType != SeedType::SEED_PLANTERNNUT))
+        {
+            continue;
+        }
+
+        int aColumnDistance = abs(aZombieCol - aPlant->mPlantCol);
+        int aRowDistance = abs(mRow - aPlant->mRow);
+        // Match the Plantern's clear-fog footprint: three columns by two rows,
+        // with the two far diagonal cells outside the light.
+        if (aColumnDistance <= 3 && aRowDistance <= 2 && aColumnDistance + aRowDistance < 5)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Zombie::SetRow(int theRow)
@@ -8659,7 +8744,8 @@ void Zombie::RemoveColdEffects()
 
 void Zombie::ApplyBurn()
 {
-    if (mDead || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_BURNED)
+    if (mDead || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_BURNED ||
+        (mZombieType == ZombieType::ZOMBIE_GHOST && !IsGhostExposed()))
         return;
 
     if (mBodyHealth >= 1800 || mZombieType == ZombieType::ZOMBIE_BOSS)
@@ -9140,6 +9226,7 @@ void Zombie::UpdateDeath()
             break;
 
         case ZombieType::ZOMBIE_NEWSPAPER:
+        case ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER:
             aFallTime = 0.63f;
             break;
 
@@ -9390,7 +9477,7 @@ void Zombie::DrawShadow(Graphics* g)
         }
         aShadowOffsetY += 16.0f;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
+    else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER || mZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
     {
         if (IsWalkingBackwards())
         {
@@ -9515,7 +9602,7 @@ void Zombie::DrawShadow(Graphics* g)
         }
     }
 
-    if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER)
+    if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER || mZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
     {
         aShadowOffsetY += 4.0f;
     }

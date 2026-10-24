@@ -187,6 +187,7 @@ public:
     void                            UpdateZombieBungee();
     void                            BungeeLanding();
     bool                            EffectedByDamage(unsigned int theDamageRangeFlags);
+    bool                            IsGhostExposed();
     void                            PickRandomSpeed();
     void                            UpdateZombiePolevaulter();
     void                            UpdateZombieDolphinRider();

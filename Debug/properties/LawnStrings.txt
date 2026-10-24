@@ -357,6 +357,12 @@ Pole Vaulting Zombie
 [NEWSPAPER_ZOMBIE]
 Newspaper Zombie
 
+[EXPLOSIVE_NEWSPAPER_ZOMBIE]
+Explosive Newspaper Zombie
+
+[GHOST_ZOMBIE]
+Ghost Zombie
+
 [SCREEN_DOOR_ZOMBIE]
 Screen Door Zombie
 
