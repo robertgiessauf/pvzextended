@@ -262,7 +262,7 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mQuickPlayButton->mVisible = true;
 
 
-	mBonusButton = MakeNewButton(GameSelector::GameSelector_Bonus, this, _S("Bonus Levels"), Sexy::FONT_BRIANNETOD12,
+	mBonusButton = MakeNewButton(GameSelector::GameSelector_Bonus, this, _S("Challenges"), Sexy::FONT_BRIANNETOD12,
 		Sexy::IMAGE_SEEDCHOOSER_BUTTON2, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
 	mBonusButton->Resize(80, 300, 111, 26);
 	mBonusButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);

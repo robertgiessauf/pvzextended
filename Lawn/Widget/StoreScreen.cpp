@@ -370,7 +370,7 @@ void StoreScreen::DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theIt
     }
     else
     {
-        SeedType aSeedType = theItemType == STORE_ITEM_PLANT_GATLINGPEA ? SEED_GATLINGPEA : (SeedType)(theItemType + 40);
+        SeedType aSeedType = (SeedType)(SEED_GATLINGPEA + theItemType - STORE_ITEM_PLANT_GATLINGPEA);
         DrawSeedPacket(g, aPosX, aPosY, aSeedType, SEED_NONE, 0, 255, false, false);
     }
 

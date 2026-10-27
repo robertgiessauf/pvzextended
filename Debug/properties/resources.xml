@@ -287,6 +287,10 @@
 <Image id="ZOMBIEFUTUREGLASSES" path="ZombieFutureGlasses" cols="4" />
 <Image id="DUST_PUFFS" path="Dust_puffs" cols="3" />
 
+<SetDefaults path="images" idprefix="IMAGE_" />
+<Image id="GHOST_ZOMBIE_FOG" path="GhostZombie_fog" />
+<Image id="GHOST_ZOMBIE_LOWER_FOG" path="GhostZombie_lowerfog" />
+
 <SetDefaults path="reanim" idprefix="IMAGE_REANIM_" />
   
 <Image id="WALLNUT_BODY" path="Wallnut_body" />

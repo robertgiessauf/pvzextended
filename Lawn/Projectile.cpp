@@ -146,7 +146,7 @@ Plant* Projectile::FindCollisionTargetPlant()
 		if (aPlant->mRow != mRow)
 			continue;
 
-		if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA)
+		if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA || (mProjectileType == ProjectileType::PROJECTILE_FIREBALL && mMotionType == ProjectileMotion::MOTION_BACKWARDS))
 		{
 			if (aPlant->mSeedType == SeedType::SEED_PUFFSHROOM ||
 				aPlant->mSeedType == SeedType::SEED_SUNSHROOM ||
@@ -160,7 +160,7 @@ Plant* Projectile::FindCollisionTargetPlant()
 		Rect aPlantRect = aPlant->GetPlantRect();
 		if (GetRectOverlap(aProjectileRect, aPlantRect) > 8)
 		{
-			if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA)
+			if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA || (mProjectileType == ProjectileType::PROJECTILE_FIREBALL && mMotionType == ProjectileMotion::MOTION_BACKWARDS))
 			{
 				return mBoard->GetTopPlantAt(aPlant->mPlantCol, aPlant->mRow, PlantPriority::TOPPLANT_EATING_ORDER);
 			}
@@ -289,7 +289,7 @@ void Projectile::CheckForCollision()
 		return;
 	}
 
-	if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA)
+	if (mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA || (mProjectileType == ProjectileType::PROJECTILE_FIREBALL && mMotionType == ProjectileMotion::MOTION_BACKWARDS))
 	{
 		Plant* aPlant = FindCollisionTargetPlant();
 		if (aPlant)
@@ -297,7 +297,9 @@ void Projectile::CheckForCollision()
 			if (aPlant->mSeedType == SeedType::SEED_DEFLECTORNUT && !aPlant->NotOnGround() &&
 				aPlant->mPlantHealth > 0 && aPlant->mOnBungeeState == PlantOnBungeeState::NOT_ON_BUNGEE)
 			{
-				// Return the incoming pea as a normal plant projectile in this same lane.
+				// Return incoming zombie peas and fireballs as ordinary plant peas.
+				if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
+					AttachmentDie(mAttachmentID);
 				mProjectileType = ProjectileType::PROJECTILE_PEA;
 				mMotionType = ProjectileMotion::MOTION_STRAIGHT;
 				mDamageRangeFlags = aPlant->GetDamageRangeFlags(PlantWeapon::WEAPON_PRIMARY);

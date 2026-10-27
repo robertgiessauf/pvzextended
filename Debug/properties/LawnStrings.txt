@@ -363,6 +363,12 @@ Explosive Newspaper Zombie
 [GHOST_ZOMBIE]
 Ghost Zombie
 
+[EXPLODONUT_HEAD_ZOMBIE]
+Explodo-Nut-Head Zombie
+
+[FIREPEA_HEAD_ZOMBIE]
+Fire Peashooter Zombie
+
 [SCREEN_DOOR_ZOMBIE]
 Screen Door Zombie
 
@@ -1090,6 +1096,43 @@ His newspaper provides limited defense.
 {KEYWORD}Speed:{STAT} normal, then fast (after losing newspaper)
 {SHORTLINE}
 {FLAVOR}Newspaper Zombie was *this* close to finishing his sudoku puzzle. No wonder he's freaking out.
+
+[EXPLOSIVE_NEWSPAPER_ZOMBIE_DESCRIPTION_HEADER]
+Its newspaper hides a volatile charge.
+
+[EXPLOSIVE_NEWSPAPER_ZOMBIE_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Special:{STAT} explodes when its newspaper is destroyed, damaging nearby plants and zombies.
+{SHORTLINE}
+{FLAVOR}He packed one last surprise between the crossword and the comics.
+
+[GHOST_ZOMBIE_DESCRIPTION_HEADER]
+An invulnerable ghost, revealed by Plantern light.
+
+[GHOST_ZOMBIE_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Special:{STAT} can only be damaged while near a Plantern or Plantern Nut.
+{SHORTLINE}
+{FLAVOR}The fog hides him from plants until a lantern shines through.
+
+[EXPLODONUT_HEAD_ZOMBIE_DESCRIPTION_HEADER]
+Its Explodo-Nut head is tough and volatile.
+
+[EXPLODONUT_HEAD_ZOMBIE_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Special:{STAT} the head explodes when its armor is destroyed, damaging nearby plants and zombies.
+{KEYWORD}Explodo-Nut Toughness:{STAT} high {2000}
+{SHORTLINE}
+{FLAVOR}He insists the nut is perfectly safe, right up until it isn't.
+
+[FIREPEA_HEAD_ZOMBIE_DESCRIPTION_HEADER]
+It spits fireballs at plants from across the lane.
+
+[FIREPEA_HEAD_ZOMBIE_DESCRIPTION]
+{SHORTLINE}
+{KEYWORD}Special:{STAT} fires damaging fireballs at plants.
+{SHORTLINE}
+{FLAVOR}The zombie thought it would be fun to play with fire. It was.
 
 [SCREEN_DOOR_ZOMBIE_DESCRIPTION_HEADER]
 His screen door is an effective shield.

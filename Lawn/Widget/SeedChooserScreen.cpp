@@ -24,27 +24,33 @@
 const Rect cSeedClipRect = Rect(0, 123, BOARD_WIDTH, 420);
 const int seedPacketColumns = 8;
 
-// Packet order is independent of seed IDs, which are also used in saved games.
+// Follow the acquisition order in Plant.cpp rather than maintaining a separate order.
 // Keep shop upgrade packets, but omit Fire/Ice Upgrade results and special plants.
-static const SeedType cSeedChooserOrder[] =
+static const std::vector<SeedType> cSeedChooserOrder = []
 {
-	SEED_PEASHOOTER, SEED_SUNFLOWER, SEED_CHERRYBOMB, SEED_WALLNUT,
-	SEED_DEFLECTORNUT,
-	SEED_POTATOMINE, SEED_FIREPEA, SEED_ROCK, SEED_EXPLODE_NUT,
-	SEED_PUFFSHROOM, SEED_SUNSHROOM, SEED_PUFFPULT, SEED_FUMESHROOM,
-	SEED_GRAVEBUSTER, SEED_SNOWPEA, SEED_HYPNOSHROOM, SEED_SCAREDYSHROOM,
-	SEED_ICESHROOM, SEED_DOOMSHROOM, SEED_LILYPAD, SEED_SQUASH,
-	SEED_THREEPEATER, SEED_TANGLEKELP, SEED_JALAPENO, SEED_SPIKEWEED,
-	SEED_TORCHWOOD, SEED_TALLNUT, SEED_SEASHROOM, SEED_PLANTERN,
-	SEED_PLANTERNNUT, SEED_CACTUS, SEED_BLOVER, SEED_SPLITPEA,
-	SEED_STARFRUIT, SEED_PUMPKINSHELL, SEED_MAGNETSHROOM, SEED_CABBAGEPULT,
-	SEED_FLOWERPOT, SEED_KERNELPULT, SEED_INSTANT_COFFEE, SEED_GARLIC,
-	SEED_UMBRELLA, SEED_MARIGOLD, SEED_MELONPULT, SEED_PLASMAPEA,
-	SEED_GATLINGPEA, SEED_TWINSUNFLOWER, SEED_GLOOMSHROOM, SEED_CATTAIL,
-	SEED_GOLD_MAGNET, SEED_SPIKEROCK, SEED_COBCANNON,
-	SEED_IMITATER
-};
-static const int cSeedChooserCount = sizeof(cSeedChooserOrder) / sizeof(cSeedChooserOrder[0]);
+	std::vector<SeedType> aOrder;
+	for (const PlantDefinition& aDef : gPlantDefs)
+	{
+		switch (aDef.mSeedType)
+		{
+		case SEED_WINTERMELON:
+		case SEED_EXPLODE_O_NUT:
+		case SEED_GIANT_WALLNUT:
+		case SEED_SPROUT:
+		case SEED_LEFTPEATER:
+		case SEED_FIRECACTUS:
+		case SEED_FROSTSTARFRUIT:
+		case SEED_CHOMPER:
+		case SEED_ICEFUMESHROOM:
+			break;
+		default:
+			aOrder.push_back(aDef.mSeedType);
+			break;
+		}
+	}
+	return aOrder;
+}();
+static const int cSeedChooserCount = (int)cSeedChooserOrder.size();
 static const int cSeedChooserGridRows = (cSeedChooserCount - 1 + seedPacketColumns - 1) / seedPacketColumns;
 
 bool SeedChooserScreen::IsSeedInChooser(SeedType theSeedType)
@@ -311,6 +317,9 @@ void SeedChooserScreen::GetSeedPositionInChooser(int theIndex, int& x, int& y)
 			x = y = 0;
 			return;
 		}
+		// Imitater has its own slot outside the grid.
+		if (aChooserIndex > GetSeedChooserIndex(SEED_IMITATER))
+			aChooserIndex--;
 		x = aChooserIndex % seedPacketColumns * 53 + 22;
 		y = aChooserIndex / seedPacketColumns * SEED_PACKET_HEIGHT + cSeedClipRect.mY - mScrollPosition;
 	}
@@ -902,7 +911,12 @@ Zombie* SeedChooserScreen::ZombieHitTest(int x, int y)
 		Zombie* aZombie = nullptr;
 		while (mBoard->IterateZombies(aZombie))
 		{
-			if (aZombie->mDead || aZombie->IsDeadOrDying() || aZombie->mZombieType >= NUM_ZOMBIES_IN_ALMANAC)
+			if (aZombie->mDead || aZombie->IsDeadOrDying() ||
+				(aZombie->mZombieType > ZombieType::ZOMBIE_BOSS &&
+					aZombie->mZombieType != ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER &&
+					aZombie->mZombieType != ZombieType::ZOMBIE_GHOST &&
+					aZombie->mZombieType != ZombieType::ZOMBIE_EXPLODONUT_HEAD &&
+					aZombie->mZombieType != ZombieType::ZOMBIE_FIREPEA_HEAD))
 				continue;
 
 			if (aZombie->GetZombieRect().Contains(x - mBoard->mX, y - mBoard->mY))

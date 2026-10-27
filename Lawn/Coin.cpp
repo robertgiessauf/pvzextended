@@ -783,10 +783,9 @@ Color Coin::GetColor()
 
 SeedType Coin::GetFinalSeedPacketType()
 {
-    if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
-        return SeedType::SEED_GATLINGPEA;
-    if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
-        return SeedType::SEED_PLASMAPEA;
+    SeedType aBonusSeed = LawnApp::GetBonusAwardSeed(mApp->mGameMode);
+    if (aBonusSeed != SeedType::SEED_NONE)
+        return aBonusSeed;
     if (mApp->IsFirstTimeAdventureMode() && mBoard && mBoard->mLevel <= 50)
     {
         return mApp->GetAwardSeedForLevel(mBoard->mLevel);

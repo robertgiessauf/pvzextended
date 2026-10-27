@@ -608,12 +608,12 @@ void Board::PickZombieWaves()
 			mNumWaves = 0;
 		else if (aGameMode == GameMode::GAMEMODE_CHALLENGE_WHACK_A_ZOMBIE)
 			mNumWaves = 12;
-		else if (aGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+		else if (aGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
 			mNumWaves = 30;
 		else if (aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING || aGameMode == GameMode::GAMEMODE_CHALLENGE_AIR_RAID ||
 				 aGameMode == GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER || aGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY ||
 				 aGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS ||
-				 aGameMode == GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL || aGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+				 aGameMode == GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL || aGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE)
 			mNumWaves = 20;
 		else if (mApp->IsStormyNightLevel() || mApp->IsLittleTroubleLevel() || mApp->IsBungeeBlitzLevel() ||
 				 aGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN || mApp->IsShovelLevel() || aGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 ||
@@ -680,11 +680,11 @@ void Board::PickZombieWaves()
 		}
 
 		// Keep the opening gentle, then add roughly 25% to the normal wave budget.
-		if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+		if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
 		{
 			aZombiePoints += aZombiePoints / 2;
 		}
-		else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+		else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE)
 		{
 			aZombiePoints += aZombiePoints / 4;
 		}
@@ -917,8 +917,8 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2:
 	case GameMode::GAMEMODE_CHALLENGE_ART_CHALLENGE_WALLNUT:
 	case GameMode::GAMEMODE_CHALLENGE_SUNNY_DAY:
-	case GameMode::GAMEMODE_BONUS_GATLING_PEA:
-	case GameMode::GAMEMODE_BONUS_PLASMA_PEA:
+	case GameMode::GAMEMODE_BONUS_FIRE_UPGRADE:
+	case GameMode::GAMEMODE_BONUS_SNOW_UPGRADE:
 	case GameMode::GAMEMODE_CHALLENGE_RESODDED:
 	case GameMode::GAMEMODE_CHALLENGE_BIG_TIME:
 	case GameMode::GAMEMODE_CHALLENGE_ART_CHALLENGE_SUNFLOWER:

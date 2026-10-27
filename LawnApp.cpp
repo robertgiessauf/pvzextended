@@ -432,6 +432,13 @@ bool LawnApp::WriteCurrentUserConfig()
 
 void LawnApp::PreNewGame(GameMode theGameMode, bool theLookForSavedGame)
 {
+	if (!CanStartBonusLevel(theGameMode))
+	{
+		if (!mChallengeScreen)
+			ShowChallengeScreen(ChallengePage::CHALLENGE_PAGE_BONUS);
+		return;
+	}
+
 	//if (NeedRegister())
 	//{
 	//	ShowGameSelector();
@@ -1538,14 +1545,11 @@ bool LawnApp::UpdatePlayerProfileForFinishingLevel()
 			GetAchievement(ACHIEVEMENT_GOOD_MORNING);
 		}
 	}
-	else if (mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA || mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+	else if (mGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE || mGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
 	{
 		aUnlockedNewChallenge = !HasBeatenChallenge(mGameMode);
 		mPlayerInfo->mChallengeRecords[GetCurrentChallengeIndex()]++;
-		if (mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
-			mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_GATLINGPEA] = 1;
-		else
-			mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_PLASMAPEA] = 1;
+		// Bonus upgrades are unlocked by the completion record above.
 	}
 	else if (IsSurvivalMode())
 	{
@@ -1637,7 +1641,7 @@ void LawnApp::CheckForGameEnd()
 	}
 
 	bool aUnlockedNewChallenge = UpdatePlayerProfileForFinishingLevel();
-	if (mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA || mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+	if (mGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE || mGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
 	{
 		KillBoard();
 		if (aUnlockedNewChallenge)
@@ -2554,6 +2558,31 @@ void LawnApp::CloseRequestAsync()
 	mCloseRequest = true;
 }
 
+SeedType LawnApp::GetBonusAwardSeed(GameMode theGameMode)
+{
+	if (theGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE)
+		return SeedType::SEED_FIREPEA;
+	if (theGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
+		return SeedType::SEED_SNOWPEA;
+	return SeedType::SEED_NONE;
+}
+
+int LawnApp::GetBonusAdventureRequirement(GameMode theGameMode)
+{
+	if (theGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE)
+		return 5;
+	if (theGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
+		return 10;
+	return 0;
+}
+
+bool LawnApp::CanStartBonusLevel(GameMode theGameMode)
+{
+	int aLevelsRequired = GetBonusAdventureRequirement(theGameMode);
+	return aLevelsRequired == 0 || (mPlayerInfo &&
+		(HasFinishedAdventure() || mPlayerInfo->mLevel > aLevelsRequired));
+}
+
 SeedType LawnApp::GetAwardSeedForLevel(int theLevel)
 {
 	int aArea = (theLevel - 1) / LEVELS_PER_AREA + 1;
@@ -2586,7 +2615,7 @@ int LawnApp::GetSeedsAvailable()
 	SeedType aSeedTypeMax = GetAwardSeedForLevel(aLevel);
 	int aSeedsAvailable = min(49, aSeedTypeMax);
 	// Loan the daytime starter plants without advancing the player's adventure.
-	if (mBoard && (mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA || mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA))
+	if (mBoard && (mGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE || mGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE))
 		aSeedsAvailable = max(aSeedsAvailable, (int)SeedType::SEED_EXPLODE_NUT + 1);
 	return aSeedsAvailable;
 }
@@ -2602,11 +2631,20 @@ bool LawnApp::HasSeedType(SeedType theSeedType)
 	if (theSeedType == SeedType::SEED_DEFLECTORNUT)
 		return HasSeedType(SeedType::SEED_WALLNUT);
 
+	if (theSeedType == SeedType::SEED_FIREPEA)
+		return HasBeatenChallenge(GameMode::GAMEMODE_BONUS_FIRE_UPGRADE);
+
+	if (theSeedType == SeedType::SEED_SNOWPEA)
+		return HasBeatenChallenge(GameMode::GAMEMODE_BONUS_SNOW_UPGRADE);
+
 	if (theSeedType == SeedType::SEED_PLANTERNNUT)
 		return HasSeedType(SeedType::SEED_PLANTERN);
 
 	if (theSeedType == SeedType::SEED_PLASMAPEA)
 		return mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_PLASMAPEA] > 0;
+
+	if (theSeedType == SeedType::SEED_GATLINGPEA)
+		return mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PLANT_GATLINGPEA] > 0;
 
 	if (IsTrialStageLocked() && theSeedType >= SeedType::SEED_JALAPENO)
 		return false;

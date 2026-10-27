@@ -5,6 +5,7 @@
 #include "../../Resources.h"
 #include "../ToolTipWidget.h"
 #include "../System/PlayerInfo.h"
+#include "../Plant.h"
 #include "../../Sexy.TodLib/TodDebug.h"
 #include "../../Sexy.TodLib/TodFoley.h"
 #include "../../Sexy.TodLib/TodCommon.h"
@@ -90,8 +91,8 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_ENDLESS,              11,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      3,  4,  _S("[I_ZOMBIE_ENDLESS]") },
 	{ GameMode::GAMEMODE_UPSELL,                               10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       3,  4,  _S("Upsell") },
 	{ GameMode::GAMEMODE_INTRO,                                10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       2,  3,  _S("Intro") },
-	{ GameMode::GAMEMODE_BONUS_GATLING_PEA,                     0,   ChallengePage::CHALLENGE_PAGE_BONUS,       0,  0,  _S("Gatling Pea") },
-	{ GameMode::GAMEMODE_BONUS_PLASMA_PEA,                      1,   ChallengePage::CHALLENGE_PAGE_BONUS,       1,  0,  _S("Plasma Pea") }
+	{ GameMode::GAMEMODE_BONUS_FIRE_UPGRADE,                   0,   ChallengePage::CHALLENGE_PAGE_BONUS,       0,  0,  _S("[REPEATER]") },
+	{ GameMode::GAMEMODE_BONUS_SNOW_UPGRADE,                   1,   ChallengePage::CHALLENGE_PAGE_BONUS,       1,  0,  _S("[SNOW_PEA]") }
 };
 
 ChallengeScreen::ChallengeScreen(LawnApp* theApp, ChallengePage thePage)
@@ -255,7 +256,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 {
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
 	if (aDef.mPage == CHALLENGE_PAGE_BONUS)
-		return 0;
+		return mApp->CanStartBonusLevel(aDef.mChallengeMode) ? 0 : 1;
 	if (mApp->mGameMode == GAMEMODE_UPSELL && mApp->mGameScene == SCENE_LEVEL_INTRO)
 	{
 		return aDef.mChallengeMode == GAMEMODE_CHALLENGE_FINAL_BOSS ? 1 : 0;
@@ -367,6 +368,8 @@ int ChallengeScreen::AccomplishmentsNeeded(int theChallengeIndex)
 {
 	int aTrophiesNeeded = MoreTrophiesNeeded(theChallengeIndex);
 	GameMode aGameMode = GetChallengeDefinition(theChallengeIndex).mChallengeMode;
+	if (LawnApp::GetBonusAdventureRequirement(aGameMode) > 0)
+		return aTrophiesNeeded;
 	if (mApp->IsSurvivalEndless(aGameMode) && aTrophiesNeeded <= 3 && mApp->GetNumTrophies(CHALLENGE_PAGE_SURVIVAL) < 10 &&
 		mApp->HasFinishedAdventure() && !mApp->IsTrialStageLocked()) aTrophiesNeeded = 1;
 	return mCheatEnableChallenges ? 0 : aTrophiesNeeded;
@@ -412,14 +415,17 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 				g->SetColorizeImages(true);
 			}
 			g->SetClipRect(cChallengeRect);
-			g->SetScale(0.5f, 0.5f, aPosX + 13, aPosY + 4);
-			if (mPageIndex == CHALLENGE_PAGE_SURVIVAL)
+			if (aDef.mPage == CHALLENGE_PAGE_BONUS)
 			{
-				g->DrawImageCel(Sexy::IMAGE_SURVIVAL_THUMBNAILS, aPosX + 13, aPosY + 4, aDef.mChallengeIconIndex);
+				g->SetScale(0.75f, 0.75f, aPosX + 22, aPosY + 8);
+				Plant::DrawSeedType(g, LawnApp::GetBonusAwardSeed(aDef.mChallengeMode),
+					SEED_NONE, VARIATION_NORMAL, aPosX + 22, aPosY + 8);
 			}
 			else
 			{
-				g->DrawImageCel(Sexy::IMAGE_CHALLENGE_THUMBNAILS, aPosX + 13, aPosY + 4, aDef.mChallengeIconIndex);
+				g->SetScale(0.5f, 0.5f, aPosX + 13, aPosY + 4);
+				g->DrawImageCel(mPageIndex == CHALLENGE_PAGE_SURVIVAL ? Sexy::IMAGE_SURVIVAL_THUMBNAILS :
+					Sexy::IMAGE_CHALLENGE_THUMBNAILS, aPosX + 13, aPosY + 4, aDef.mChallengeIconIndex);
 			}
 			g->SetScale(1.0f, 1.0f, aPosX + 13, aPosY + 4);
 
@@ -429,7 +435,8 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 
 			Color aTextColor = aHighLight ? Color(250, 40, 40) : Color(42, 42, 90);
 			SexyString aName = TodStringTranslate(aDef.mChallengeName);
-			if (aChallengeButton->mDisabled || (theChallengeIndex == mUnlockChallengeIndex && mUnlockState == UNLOCK_SHAKING))
+			if ((aChallengeButton->mDisabled && aDef.mPage != CHALLENGE_PAGE_BONUS) ||
+				(theChallengeIndex == mUnlockChallengeIndex && mUnlockState == UNLOCK_SHAKING))
 			{
 				aName = _S("?");
 			}
@@ -489,7 +496,7 @@ void ChallengeScreen::Draw(Graphics* g)
 	TodDrawString(g, GetPageTitle(mPageIndex), 400, 58, Sexy::FONT_HOUSEOFTERROR28, Color(220, 220, 220), DS_ALIGN_CENTER);
 	if (mPageIndex == CHALLENGE_PAGE_BONUS)
 	{
-		TodDrawStringWrapped(g, _S("Beat each level to unlock its plant! Basic plants are provided."),
+		TodDrawStringWrapped(g, _S("Finish Adventure 1-5 to unlock the first challenge and Adventure 1-10 to unlock the second. Beat each challenge to earn its upgrade."),
 			Rect(200, 110, 520, 65), Sexy::FONT_BRIANNETOD16, Color(42, 42, 90), DS_ALIGN_CENTER_VERTICAL_MIDDLE);
 	}
 
@@ -575,7 +582,7 @@ SexyString ChallengeScreen::GetPageTitle(ChallengePage thePage)
 		aTitle = _S("Limbo Page");
 		break;
 	case ChallengePage::CHALLENGE_PAGE_BONUS:
-		aTitle = _S("Bonus Levels");
+		aTitle = _S("Challenges");
 		break;
 	}
 	return aTitle;
@@ -639,6 +646,8 @@ void ChallengeScreen::ButtonDepress(int theId)
 	int aChallengeMode = theId - ChallengeScreen::ChallengeScreen_Mode;
 	if (aChallengeMode >= 0 && aChallengeMode < NUM_CHALLENGE_MODES)
 	{
+		if (!mApp->CanStartBonusLevel(GetChallengeDefinition(aChallengeMode).mChallengeMode))
+			return;
 		mApp->KillChallengeScreen();
 		mApp->PreNewGame((GameMode)(aChallengeMode + 1), true);
 	}
@@ -665,7 +674,12 @@ void ChallengeScreen::UpdateToolTip()
 			if (MoreTrophiesNeeded(aChallengeMode) > 0)
 			{
 				SexyString aLabel;
-				if (mPageIndex == CHALLENGE_PAGE_PUZZLE)
+				if (aDef.mPage == CHALLENGE_PAGE_BONUS)
+				{
+					aLabel = StrFormat(_S("Complete the first %d Adventure levels to unlock this challenge."),
+						LawnApp::GetBonusAdventureRequirement(aDef.mChallengeMode));
+				}
+				else if (mPageIndex == CHALLENGE_PAGE_PUZZLE)
 				{
 					if (IsScaryPotterLevel(aDef.mChallengeMode))
 					{

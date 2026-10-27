@@ -461,7 +461,7 @@ void GameOverDialog::ButtonDepress(int theId)
         }
         else
         {
-            mApp->ShowChallengeScreen((mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA) ?
+            mApp->ShowChallengeScreen((mApp->mGameMode == GAMEMODE_BONUS_FIRE_UPGRADE || mApp->mGameMode == GAMEMODE_BONUS_SNOW_UPGRADE) ?
                 CHALLENGE_PAGE_BONUS : CHALLENGE_PAGE_CHALLENGE);
         }
     }

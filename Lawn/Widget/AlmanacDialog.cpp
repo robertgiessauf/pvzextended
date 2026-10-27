@@ -26,7 +26,7 @@ const int seedPacketHeight = SEED_PACKET_HEIGHT + 8;
 const int zombieRows = 5;
 const char* weirdCharacters[WEIRD_CHARACTERS_COUNT] = 
 {
-	"®"
+	"ï¿½"
 };
 
 AlmanacDialog::AlmanacDialog(LawnApp* theApp) : LawnDialog(theApp, DIALOG_ALMANAC, true, _S("Almanac"), _S(""), _S(""), BUTTONS_NONE)
@@ -314,7 +314,17 @@ void AlmanacDialog::Update()
 
 ZombieType AlmanacDialog::GetZombieType(int theIndex)
 {
-	return theIndex < NUM_ZOMBIE_TYPES ? (ZombieType)theIndex : ZOMBIE_INVALID;
+    if (theIndex >= 0 && theIndex <= ZombieType::ZOMBIE_BOSS)
+        return (ZombieType)theIndex;
+    if (theIndex == ZombieType::ZOMBIE_BOSS + 3)
+        return ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER;
+    if (theIndex == ZombieType::ZOMBIE_BOSS + 4)
+        return ZombieType::ZOMBIE_GHOST;
+    if (theIndex == ZombieType::ZOMBIE_BOSS + 5)
+        return ZombieType::ZOMBIE_EXPLODONUT_HEAD;
+    if (theIndex == ZombieType::ZOMBIE_BOSS + 6)
+        return ZombieType::ZOMBIE_FIREPEA_HEAD;
+    return ZombieType::ZOMBIE_INVALID;
 }
 
 void AlmanacDialog::DrawIndex(Graphics* g)
@@ -481,12 +491,12 @@ void AlmanacDialog::DrawZombies(Graphics* g)
 	g->SetClipRect(cZombieClipRect);
 	for (int i = 0; i < NUM_ZOMBIES_IN_ALMANAC; i++)
 	{
-		ZombieType aZombieType = GetZombieType(i);
-		int aPosX, aPosY;
-		GetZombiePosition(aZombieType, aPosX, aPosY);
-		ZombieDefinition aZombieDefiniton = GetZombieDefinition(aZombieType);
-		if (aZombieType != ZombieType::ZOMBIE_INVALID)
-		{
+        ZombieType aZombieType = GetZombieType(i);
+        if (aZombieType != ZombieType::ZOMBIE_INVALID)
+        {
+            int aPosX, aPosY;
+            GetZombiePosition(aZombieType, aPosX, aPosY);
+            ZombieDefinition aZombieDefiniton = GetZombieDefinition(aZombieType);
 			if (!ZombieIsShown(aZombieType))
 				g->DrawImage(Sexy::IMAGE_ALMANAC_ZOMBIEBLANK, aPosX, aPosY);
 			else
@@ -779,9 +789,17 @@ int AlmanacDialog::ZombieHasDescription(ZombieType theZombieType)
 
 void AlmanacDialog::GetZombiePosition(ZombieType theZombieType, int& x, int& y)
 {
-	int aZombieIndex = (int)theZombieType;
-	if (theZombieType == ZombieType::ZOMBIE_BOSS)
-		aZombieIndex += 2;
+    int aZombieIndex = (int)theZombieType;
+    if (theZombieType == ZombieType::ZOMBIE_EXPLOSIVE_NEWSPAPER)
+        aZombieIndex = ZombieType::ZOMBIE_BOSS + 3;
+    else if (theZombieType == ZombieType::ZOMBIE_GHOST)
+        aZombieIndex = ZombieType::ZOMBIE_BOSS + 4;
+    else if (theZombieType == ZombieType::ZOMBIE_EXPLODONUT_HEAD)
+        aZombieIndex = ZombieType::ZOMBIE_BOSS + 5;
+    else if (theZombieType == ZombieType::ZOMBIE_FIREPEA_HEAD)
+        aZombieIndex = ZombieType::ZOMBIE_BOSS + 6;
+    else if (theZombieType == ZombieType::ZOMBIE_BOSS)
+        aZombieIndex += 2;
 
 	x = aZombieIndex % zombieRows * 85 + 22;
 	y = aZombieIndex / zombieRows * zombieHeight + (zombieHeight + zombieOffsetY) - mScrollPosition;
@@ -793,10 +811,10 @@ ZombieType AlmanacDialog::ZombieHitTest(int x, int y)
 	{
 		for (int i = 0; i < NUM_ZOMBIES_IN_ALMANAC; i++)
 		{
-			ZombieType aZombieType = GetZombieType(i);
-			ZombieDefinition aZombieDefiniton = GetZombieDefinition(aZombieType);
-			if (aZombieType != ZombieType::ZOMBIE_INVALID)
-			{
+            ZombieType aZombieType = GetZombieType(i);
+            if (aZombieType != ZombieType::ZOMBIE_INVALID)
+            {
+                ZombieDefinition aZombieDefiniton = GetZombieDefinition(aZombieType);
 				int aZombieX, aZombieY;
 				GetZombiePosition(aZombieType, aZombieX, aZombieY);
 				Rect aZombieRect = Rect(aZombieX, aZombieY, 76 , 76);

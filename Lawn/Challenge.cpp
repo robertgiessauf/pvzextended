@@ -319,7 +319,23 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		}
-}
+    },
+    { ZOMBIE_EXPLODONUT_HEAD, {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+            0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+        }
+    },
+    { ZOMBIE_FIREPEA_HEAD, {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+            0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+            0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+        }
+    }
 };
 
 SeedType gArtChallengeWallnut[MAX_GRID_SIZE_Y][MAX_GRID_SIZE_X] = {  
@@ -2544,21 +2560,16 @@ void Challenge::InitZombieWaves()
 {
 	GameMode aGameMode = mApp->mGameMode;
 	bool* aList = mBoard->mZombieAllowed;
-	if (aGameMode == GAMEMODE_BONUS_GATLING_PEA)
+	if (aGameMode == GAMEMODE_BONUS_FIRE_UPGRADE)
 	{
 		aList[ZOMBIE_NORMAL] = true;
-		aList[ZOMBIE_TRAFFIC_CONE] = true;
-		aList[ZOMBIE_PAIL] = true;
-		aList[ZOMBIE_POLEVAULTER] = true;
+		aList[ZOMBIE_JALAPENO_HEAD] = true;
+		aList[ZOMBIE_EXPLOSIVE_NEWSPAPER] = true;
+		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		aList[ZOMBIE_REPEATER_PEA_HEAD] = true;
 	}
-	else if (aGameMode == GAMEMODE_BONUS_PLASMA_PEA)
-	{
-		aList[ZOMBIE_NORMAL] = true;
-		aList[ZOMBIE_TRAFFIC_CONE] = true;
-		aList[ZOMBIE_PAIL] = true;
-		aList[ZOMBIE_NEWSPAPER] = true;
-		aList[ZOMBIE_DOOR] = true;
-		aList[ZOMBIE_FOOTBALL] = true;
+	else if (aGameMode == GAMEMODE_BONUS_SNOW_UPGRADE)
+	{.--.
 		aList[ZOMBIE_LADDER] = true;
 		aList[ZOMBIE_BALLOON] = true;
 	}

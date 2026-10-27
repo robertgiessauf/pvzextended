@@ -136,7 +136,7 @@ AwardScreen::AwardScreen(LawnApp* theApp, AwardType theAwardType, bool hasAchiev
     }
     else if (!mApp->IsAdventureMode())
     {
-        mStartButton->SetLabel((mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA) ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
+        mStartButton->SetLabel((mApp->mGameMode == GAMEMODE_BONUS_FIRE_UPGRADE || mApp->mGameMode == GAMEMODE_BONUS_SNOW_UPGRADE) ? "Challenges" : "[MAIN_MENU_BUTTON]");
         mMenuButton->mBtnNoDraw = true;
         mMenuButton->mDisabled = true;
     }
@@ -240,12 +240,13 @@ void AwardScreen::DrawBottom(Graphics* g, SexyString theTitle, SexyString theAwa
 
 void AwardScreen::DrawAwardSeed(Graphics* g)
 {
-    SeedType aSeedType = mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA ? SEED_GATLINGPEA :
-        mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA ? SEED_PLASMAPEA : mApp->GetAwardSeedForLevel(mApp->mPlayerInfo->mLevel - 1);
+    SeedType aSeedType = LawnApp::GetBonusAwardSeed(mApp->mGameMode);
+    if (aSeedType == SEED_NONE)
+        aSeedType = mApp->GetAwardSeedForLevel(mApp->mPlayerInfo->mLevel - 1);
     SexyString aAward = Plant::GetNameString(aSeedType, SEED_NONE);
     SexyString aMessage;
     if (mApp->IsTrialStageLocked() && aSeedType >= SEED_SQUASH && aSeedType != SEED_TANGLEKELP &&
-        mApp->mGameMode != GAMEMODE_BONUS_GATLING_PEA && mApp->mGameMode != GAMEMODE_BONUS_PLASMA_PEA)
+        mApp->mGameMode != GAMEMODE_BONUS_FIRE_UPGRADE && mApp->mGameMode != GAMEMODE_BONUS_SNOW_UPGRADE)
         aMessage = _S("[AVAILABLE_IN_FULL_VERSION]");
     else
         aMessage = Plant::GetToolTip(aSeedType);
@@ -282,7 +283,7 @@ void AwardScreen::Draw(Graphics* g)
     }
     else
     {
-        if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA)
+        if (mApp->mGameMode == GAMEMODE_BONUS_FIRE_UPGRADE || mApp->mGameMode == GAMEMODE_BONUS_SNOW_UPGRADE)
         {
             DrawAwardSeed(g);
         }
@@ -433,7 +434,7 @@ void AwardScreen::Draw(Graphics* g)
         }
         else if (!mApp->IsAdventureMode())
         {
-            mStartButton->SetLabel((mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA) ? "Bonus Levels" : "[MAIN_MENU_BUTTON]");
+            mStartButton->SetLabel((mApp->mGameMode == GAMEMODE_BONUS_FIRE_UPGRADE || mApp->mGameMode == GAMEMODE_BONUS_SNOW_UPGRADE) ? "Challenges" : "[MAIN_MENU_BUTTON]");
         }
         else if (aLevel == 1)
         {
@@ -528,7 +529,7 @@ void AwardScreen::ExitScreen()
         mApp->KillAwardScreen();
         mApp->ShowChallengeScreen(CHALLENGE_PAGE_PUZZLE);
     }
-    else if (mApp->mGameMode == GAMEMODE_BONUS_GATLING_PEA || mApp->mGameMode == GAMEMODE_BONUS_PLASMA_PEA)
+    else if (mApp->mGameMode == GAMEMODE_BONUS_FIRE_UPGRADE || mApp->mGameMode == GAMEMODE_BONUS_SNOW_UPGRADE)
     {
         mApp->KillAwardScreen();
         mApp->ShowChallengeScreen(CHALLENGE_PAGE_BONUS);

@@ -345,13 +345,10 @@ void CutScene::PreloadResources()
 		}
 	}
 
-	if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+	SeedType aBonusSeed = LawnApp::GetBonusAwardSeed(mApp->mGameMode);
+	if (aBonusSeed != SeedType::SEED_NONE)
 	{
-		Plant::PreloadPlantResources(SeedType::SEED_PLASMAPEA);
-	}
-	else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
-	{
-		Plant::PreloadPlantResources(SeedType::SEED_GATLINGPEA);
+		Plant::PreloadPlantResources(aBonusSeed);
 	}
 	else if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel <= 50)
 	{

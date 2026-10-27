@@ -57,7 +57,9 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE")},
     { ZOMBIE_STRONG_BITE,       REANIM_ZOMBIE,              2,      1,      1,      4000,   _S("ZOMBIE_STRONG_BITE")},
     { ZOMBIE_EXPLOSIVE_NEWSPAPER, REANIM_ZOMBIE_NEWSPAPER,  2,      10,          1,      1000,   _S("EXPLOSIVE_NEWSPAPER_ZOMBIE")},
-    { ZOMBIE_GHOST,               REANIM_ZOMBIE,            2,      2,          1,      1000,   _S("GHOST_ZOMBIE")}
+    { ZOMBIE_GHOST,               REANIM_ZOMBIE,            2,      2,          1,      1000,   _S("GHOST_ZOMBIE")},
+    { ZOMBIE_EXPLODONUT_HEAD,     REANIM_ZOMBIE,            4,      10,         5,      1200,   _S("EXPLODONUT_HEAD_ZOMBIE" )},
+    { ZOMBIE_FIREPEA_HEAD,        REANIM_ZOMBIE,            3,      14,         5,      1500,   _S("FIREPEA_HEAD_ZOMBIE" )}
 };
 
 static ZombieType gBossZombieList[] = {  
@@ -786,28 +788,48 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         break;
     }
 
-    case ZombieType::ZOMBIE_WALLNUT_HEAD:  
+
+    case ZombieType::ZOMBIE_EXPLODONUT_HEAD:
     {
         LoadPlainZombieReanim();
         ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
         ReanimShowPrefix("anim_head", RENDER_GROUP_HIDDEN);
         ReanimShowPrefix("Zombie_tie", RENDER_GROUP_HIDDEN);
-
         Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
         ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_body");
         Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_WALLNUT);
         aHeadReanim->PlayReanim("anim_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        aHeadReanim->mColorOverride = Color(255, 120, 112, 255);
         mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
         AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
         aBodyReanim->mFrameBasePose = 0;
         TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 50.0f, 0.0f, 0.2f, -0.8f, 0.8f);
-
         mHelmType = HelmType::HELMTYPE_WALLNUT;
-        mHelmHealth = 1100;
+        mHelmHealth = 2000;
         mVariant = false;
         break;
     }
 
+    case ZombieType::ZOMBIE_FIREPEA_HEAD:
+    {
+        LoadPlainZombieReanim();
+        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
+        ReanimShowPrefix("anim_head2", RENDER_GROUP_HIDDEN);
+        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+        if (IsOnBoard())
+            aBodyReanim->SetFramesForLayer("anim_walk2");
+        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("anim_head1");
+        aTrackInstance->mImageOverride = IMAGE_BLANK;
+        Reanimation* aHeadReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_FIREPEA);
+        aHeadReanim->PlayReanim("anim_head_idle", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
+        mSpecialHeadReanimID = mApp->ReanimationGetID(aHeadReanim);
+        AttachEffect* aAttachEffect = AttachReanim(aTrackInstance->mAttachmentID, aHeadReanim, 0.0f, 0.0f);
+        aBodyReanim->mFrameBasePose = 0;
+        TodScaleRotateTransformMatrix(aAttachEffect->mOffset, 65.0f, -5.0f, 0.2f, -1.0f, 1.0f);
+        mPhaseCounter = 150;
+        mVariant = false;
+        break;
+    }
     case ZombieType::ZOMBIE_TALLNUT_HEAD:  
     {
         LoadPlainZombieReanim();
@@ -2393,7 +2415,7 @@ void Zombie::UpdateZombiePeaHead()
         }
         else
         {
-            Projectile* aProjectile = mBoard->AddProjectile(aOriginX, aOriginY, mRenderOrder, mRow, ProjectileType::PROJECTILE_ZOMBIE_PEA);
+            Projectile* aProjectile = mBoard->AddProjectile(aOriginX, aOriginY, mRenderOrder, mRow, mZombieType == ZombieType::ZOMBIE_FIREPEA_HEAD ? ProjectileType::PROJECTILE_FIREBALL : ProjectileType::PROJECTILE_ZOMBIE_PEA);
             aProjectile->mMotionType = ProjectileMotion::MOTION_BACKWARDS;
         }
 
@@ -4513,7 +4535,7 @@ void Zombie::UpdateActions()
     {
         UpdateZombieImp();
     }
-    if (mZombieType == ZombieType::ZOMBIE_PEA_HEAD || mZombieType == ZombieType::ZOMBIE_PEA_HEAD_PAIL)
+    if (mZombieType == ZombieType::ZOMBIE_PEA_HEAD || mZombieType == ZombieType::ZOMBIE_PEA_HEAD_PAIL || mZombieType == ZombieType::ZOMBIE_FIREPEA_HEAD)
     {
         UpdateZombiePeaHead();
     }
@@ -5284,6 +5306,16 @@ void Zombie::UpdateReanim()
     if (aBodyReanim == nullptr || aBodyReanim->mDead)
         return;
 
+    if (mZombieType == ZombieType::ZOMBIE_GHOST)
+    {
+        aBodyReanim->GetTrackInstanceByName("Zombie_innerleg_upper")->mTrackColor = Color(255, 255, 255, 200);
+        aBodyReanim->GetTrackInstanceByName("Zombie_outerleg_upper")->mTrackColor = Color(255, 255, 255, 200);
+        aBodyReanim->GetTrackInstanceByName("Zombie_innerleg_lower")->mTrackColor = Color(255, 255, 255, 60);
+        aBodyReanim->GetTrackInstanceByName("Zombie_outerleg_lower")->mTrackColor = Color(255, 255, 255, 60);
+        aBodyReanim->GetTrackInstanceByName("Zombie_innerleg_foot")->mTrackColor = Color(255, 255, 255, 0);
+        aBodyReanim->GetTrackInstanceByName("Zombie_outerleg_foot")->mTrackColor = Color(255, 255, 255, 0);
+    }
+
     if (mZombieType == ZombieType::ZOMBIE_CATAPULT)
     {
         if (GetBodyDamageIndex() == 2 || mZombiePhase == ZombiePhase::PHASE_ZOMBIE_DYING)
@@ -5326,6 +5358,12 @@ void Zombie::UpdateReanim()
     if (mZombieType == ZombieType::ZOMBIE_FOOTBALL && mScaleZombie < 1.0f)
     {
         anOffsetY += 20.0f - mScaleZombie * 20.0f;
+    }
+
+    if (mZombieType == ZombieType::ZOMBIE_GHOST && mZombiePhase != ZombiePhase::PHASE_ZOMBIE_DYING &&
+        mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED && mZombiePhase != ZombiePhase::PHASE_ZOMBIE_MOWERED)
+    {
+        anOffsetY -= 8.0f + 3.0f * sin(mZombieAge * 0.04f);
     }
 
     bool anOpposite = false;
@@ -5703,8 +5741,8 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
     else if (mZombieType == ZombieType::ZOMBIE_GHOST)
     {
         bool aIsExposed = IsGhostExposed();
-        int anOpacity = aFadeAlpha * (aIsExposed ? 230 : 150) / 255;
-        aColorOverride = aIsExposed ? Color(190, 235, 255, anOpacity) : Color(145, 205, 255, anOpacity);
+        int anOpacity = aFadeAlpha * (aIsExposed ? 185 : 140) / 255;
+        aColorOverride = Color(255, 255, 255, anOpacity);
         aExtraAdditiveColor = Color::Black;
         aEnableExtraAdditiveDraw = false;
     }
@@ -5738,6 +5776,31 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
     aBodyReanim->mExtraAdditiveColor = aExtraAdditiveColor;
     aBodyReanim->mEnableExtraAdditiveDraw = aEnableExtraAdditiveDraw;
 
+    const bool aGhostIsHovering = mZombieType == ZombieType::ZOMBIE_GHOST &&
+        mZombiePhase != ZombiePhase::PHASE_ZOMBIE_DYING &&
+        mZombiePhase != ZombiePhase::PHASE_ZOMBIE_BURNED &&
+        mZombiePhase != ZombiePhase::PHASE_ZOMBIE_MOWERED;
+    const float aGhostHoverOffset = aGhostIsHovering ? 8.0f + 3.0f * sin(mZombieAge * 0.04f) : 0.0f;
+    auto DrawGhostFog = [&](int theOpacity)
+    {
+        const float aFogWidth = 150.0f;
+        const float aFogHeight = aFogWidth * IMAGE_GHOST_ZOMBIE_FOG->GetHeight() / IMAGE_GHOST_ZOMBIE_FOG->GetWidth();
+        g->SetColorizeImages(true);
+        g->SetColor(Color(255, 255, 255, theOpacity * aFadeAlpha / 255));
+        TodDrawImageScaledF(g, IMAGE_GHOST_ZOMBIE_FOG,
+            theDrawPos.mImageOffsetX - 30.0f,
+            theDrawPos.mImageOffsetY + theDrawPos.mBodyY + 115.0f - aFogHeight - aGhostHoverOffset,
+            aFogWidth / IMAGE_GHOST_ZOMBIE_FOG->GetWidth(),
+            aFogHeight / IMAGE_GHOST_ZOMBIE_FOG->GetHeight());
+        g->SetColorizeImages(false);
+        g->SetColor(Color::White);
+    };
+
+    if (aGhostIsHovering)
+    {
+        DrawGhostFog(IsGhostExposed() ? 210 : 190);
+    }
+
     if (mZombieType == ZombieType::ZOMBIE_BOBSLED)
     {
         DrawBobsledReanim(g, theDrawPos, true);
@@ -5755,6 +5818,26 @@ void Zombie::DrawReanim(Graphics* g, const ZombieDrawPosition& theDrawPos, int t
     else
     {
         aBodyReanim->DrawRenderGroup(g, theBaseRenderGroup);
+    }
+
+    if (aGhostIsHovering)
+    {
+        DrawGhostFog(IsGhostExposed() ? 100 : 80);
+
+        // Draw an opaque foreground veil over the feet so they dissolve into
+        // the ghost's fog instead of remaining readable as shoes.
+        const float aLowerFogWidth = 155.0f;
+        const float aLowerFogHeight = aLowerFogWidth * IMAGE_GHOST_ZOMBIE_LOWER_FOG->GetHeight() /
+            IMAGE_GHOST_ZOMBIE_LOWER_FOG->GetWidth();
+        g->SetColorizeImages(true);
+        g->SetColor(Color(255, 255, 255, 245 * aFadeAlpha / 255));
+        TodDrawImageScaledF(g, IMAGE_GHOST_ZOMBIE_LOWER_FOG,
+            theDrawPos.mImageOffsetX - 32.5f,
+            theDrawPos.mImageOffsetY + theDrawPos.mBodyY + 43.0f - aGhostHoverOffset,
+            aLowerFogWidth / IMAGE_GHOST_ZOMBIE_LOWER_FOG->GetWidth(),
+            aLowerFogHeight / IMAGE_GHOST_ZOMBIE_LOWER_FOG->GetHeight());
+        g->SetColorizeImages(false);
+        g->SetColor(Color::White);
     }
 
     if (mShieldType != ShieldType::SHIELDTYPE_NONE)
@@ -7252,12 +7335,12 @@ bool Zombie::TrySpawnLevelAward()
             mBoard->AddCoin(aCenterX + i * 5, aCenterY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_COIN);
         }
     }
-    else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_GATLING_PEA)
+    else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_FIRE_UPGRADE)
     {
         aCoinType = mApp->HasBeatenChallenge(mApp->mGameMode) ?
             CoinType::COIN_AWARD_MONEY_BAG : CoinType::COIN_FINAL_SEED_PACKET;
     }
-    else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_PLASMA_PEA)
+    else if (mApp->mGameMode == GameMode::GAMEMODE_BONUS_SNOW_UPGRADE)
     {
         aCoinType = mApp->HasBeatenChallenge(mApp->mGameMode) ?
             CoinType::COIN_AWARD_MONEY_BAG : CoinType::COIN_FINAL_SEED_PACKET;
@@ -7772,6 +7855,18 @@ int Zombie::TakeHelmDamage(int theDamage, unsigned int theDamageFlags)
     if (mHelmHealth == 0)
     {
         DropHelm(theDamageFlags);
+        if (mZombieType == ZombieType::ZOMBIE_EXPLODONUT_HEAD && mBoard)
+        {
+            int aPosX = mX + mWidth / 2;
+            int aPosY = mY + mHeight / 2;
+            mApp->PlayFoley(FoleyType::FOLEY_EXPLOSION);
+            mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, JackInTheBoxZombieRadius, 1, true, 255);
+            mBoard->KillAllPlantsInRadius(aPosX, aPosY, JackInTheBoxPlantRadius);
+            mApp->AddTodParticle(aPosX, aPosY, Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_TOP, 0, 0), ParticleEffect::PARTICLE_JACKEXPLODE);
+            mBoard->ShakeBoard(4, -6);
+            DieNoLoot();
+            return 0;
+        }
         return aDamageRemaining;
     }
 
@@ -8349,7 +8444,9 @@ bool Zombie::IsZombotany(ZombieType theZombieType)
         theZombieType == ZombieType::ZOMBIE_WALLNUT_HEAD ||
         theZombieType == ZombieType::ZOMBIE_REPEATER_PEA_HEAD ||
         //theZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER ||
-        theZombieType == ZombieType::ZOMBIE_TALLNUT_HEAD || 
+        theZombieType == ZombieType::ZOMBIE_TALLNUT_HEAD ||
+        theZombieType == ZombieType::ZOMBIE_EXPLODONUT_HEAD ||
+        theZombieType == ZombieType::ZOMBIE_FIREPEA_HEAD ||
         theZombieType == ZombieType::ZOMBIE_JALAPENO_HEAD || 
         theZombieType == ZombieType::ZOMBIE_GATLING_HEAD ||
         theZombieType == ZombieType::ZOMBIE_SQUASH_HEAD;
@@ -8371,7 +8468,9 @@ bool Zombie::ZombieTypeCanGoInPool(ZombieType theZombieType)
         theZombieType == ZombieType::ZOMBIE_WALLNUTNEWSPAPER ||
         theZombieType == ZombieType::ZOMBIE_JALAPENO_HEAD || 
         theZombieType == ZombieType::ZOMBIE_GATLING_HEAD || 
-        theZombieType == ZombieType::ZOMBIE_TALLNUT_HEAD;
+        theZombieType == ZombieType::ZOMBIE_TALLNUT_HEAD ||
+        theZombieType == ZombieType::ZOMBIE_EXPLODONUT_HEAD ||
+        theZombieType == ZombieType::ZOMBIE_FIREPEA_HEAD;
 }
 
 bool Zombie::ZombieTypeCanGoOnHighGround(ZombieType theZombieType)

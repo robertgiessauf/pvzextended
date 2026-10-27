@@ -271,6 +271,9 @@ public:
 	/*inline*/ bool					IsFinalBossLevel();
 	/*inline*/ bool					IsBungeeBlitzLevel();
 	static /*inline*/ SeedType		GetAwardSeedForLevel(int theLevel);
+	static SeedType					GetBonusAwardSeed(GameMode theGameMode);
+	static int						GetBonusAdventureRequirement(GameMode theGameMode);
+	bool							CanStartBonusLevel(GameMode theGameMode);
 	SexyString						GetCrazyDaveText(int theMessageIndex);
 	/*inline*/ bool					CanShowAlmanac();
 	/*inline*/ bool					IsNight();
