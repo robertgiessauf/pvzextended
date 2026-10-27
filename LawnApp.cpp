@@ -1664,7 +1664,7 @@ void LawnApp::CheckForGameEnd()
 		int aLevel = mBoard->mLevel;
 		KillBoard();
 
-		if (IsFirstTimeAdventureMode() && aLevel < 50)
+		if (IsFirstTimeAdventureMode() && aLevel < 49)
 		{
 			ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
 		}
@@ -1680,7 +1680,7 @@ void LawnApp::CheckForGameEnd()
 				ShowAwardScreen(AwardType::AWARD_CREDITS_ZOMBIENOTE, true);
 			}
 		}
-		else if (aLevel == 9 || aLevel == 19 || aLevel == 29 || aLevel == 39 || aLevel == 49)
+		else if (aLevel == 9 || aLevel == 19 || aLevel == 29 || aLevel == 39 || aLevel == 59)
 		{
 			ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
 		}
@@ -2471,9 +2471,9 @@ bool LawnApp::IsFinalBossLevel()
 		return true;
 
 	if (mPlayedQuickplay)
-		return mQuickLevel == 50;
+		return mQuickLevel == FINAL_LEVEL;
 
-	return IsAdventureMode() && mPlayerInfo->mLevel == 50;
+	return IsAdventureMode() && mPlayerInfo->mLevel == FINAL_LEVEL;
 }
 
 bool LawnApp::IsChallengeWithoutSeedBank()
@@ -2501,11 +2501,11 @@ bool LawnApp::IsNight()
 
 	if (mPlayedQuickplay)
 	{
-		return (mQuickLevel >= 11 && mQuickLevel <= 20) || (mQuickLevel >= 31 && mQuickLevel <= 40) || mQuickLevel == 50;
+		return (mQuickLevel >= 11 && mQuickLevel <= 20) || (mQuickLevel >= 31 && mQuickLevel <= 40) || (mQuickLevel > 5 * LEVELS_PER_AREA && mQuickLevel <= NUM_LEVELS);
 	}
 	else
 	{
-		return (mPlayerInfo->mLevel >= 11 && mPlayerInfo->mLevel <= 20) || (mPlayerInfo->mLevel >= 31 && mPlayerInfo->mLevel <= 40) || mPlayerInfo->mLevel == 50;
+		return (mPlayerInfo->mLevel >= 11 && mPlayerInfo->mLevel <= 20) || (mPlayerInfo->mLevel >= 31 && mPlayerInfo->mLevel <= 40) || (mPlayerInfo->mLevel > 5 * LEVELS_PER_AREA && mPlayerInfo->mLevel <= NUM_LEVELS);
 	}
 }
 

@@ -737,7 +737,7 @@ void Board::PickZombieWaves()
 			}
 		}
 
-		if (mLevel == 50 && aIsFinalWave)
+		if (mLevel == FINAL_LEVEL && aIsFinalWave)
 		{
 			PutZombieInWave(ZombieType::ZOMBIE_GARGANTUAR, aWave, &aZombiePicker);
 		}
@@ -893,12 +893,13 @@ void Board::PickBackground()
 		{
 			mBackground = BackgroundType::BACKGROUND_4_FOG;
 		}
-		else if (mLevel < FINAL_LEVEL)
+		else if (mLevel <= 5 * LEVELS_PER_AREA)
 		{
 			mBackground = BackgroundType::BACKGROUND_5_ROOF;
 		}
-		else if (mLevel == FINAL_LEVEL)
+		else if (mLevel <= FINAL_LEVEL)
 		{
+			// The boss roof artwork is also the night-time version of the roof.
 			mBackground = BackgroundType::BACKGROUND_6_BOSS;
 		}
 		else
@@ -1767,7 +1768,7 @@ void Board::UpdateLevelEndSequence()
 	}
 	if (mBoardFadeOutCounter == 300)
 	{
-		if (!IsSurvivalStageWithRepick() && !(mLevel == 9 || mLevel == 19 || mLevel == 29 || mLevel == 39 || mLevel == 49))
+		if (!IsSurvivalStageWithRepick() && !(mLevel == 9 || mLevel == 19 || mLevel == 29 || mLevel == 39 || mLevel == FINAL_LEVEL - 1))
 		{
 			mApp->PlaySample(Sexy::SOUND_LIGHTFILL);
 		}
@@ -1855,7 +1856,7 @@ void Board::FadeOutLevel()
 	if (aNeedSoundEffect)
 	{
 		mApp->mMusic->StopAllMusic();
-		if (mApp->IsAdventureMode() && mLevel == 50)
+		if (mApp->IsAdventureMode() && mLevel == FINAL_LEVEL)
 		{
 			mApp->PlayFoley(FoleyType::FOLEY_FINAL_FANFARE);
 		}
@@ -1911,7 +1912,7 @@ void Board::FadeOutLevel()
 		mApp->mLastLevelStats->mUnusedLawnMowers = CountUntriggerLawnMowers();
 
 		mBoardFadeOutCounter = 600;
-		if (mLevel == 9 || mLevel == 19 || mLevel == 29 || mLevel == 39 || mLevel == 49)
+		if (mLevel == 9 || mLevel == 19 || mLevel == 29 || mLevel == 39 || mLevel == FINAL_LEVEL - 1)
 		{
 			mBoardFadeOutCounter = 500;
 		}
@@ -7237,7 +7238,7 @@ void Board::DrawFadeOut(Graphics* g)
 		return;
 
 	int anAlpha = TodAnimateCurve(200, 0, mBoardFadeOutCounter, 0, 255, TodCurves::CURVE_LINEAR);
-	if (mLevel == 9 || mLevel == 19 || mLevel == 29 || mLevel == 39 || mLevel == 49)
+	if (mLevel == 9 || mLevel == 19 || mLevel == 29 || mLevel == 39 || mLevel == FINAL_LEVEL - 1)
 	{
 		g->SetColor(Color(0, 0, 0, anAlpha));
 	}

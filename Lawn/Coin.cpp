@@ -1178,7 +1178,7 @@ void Coin::Collect()
                 FanOutCoins(CoinType::COIN_GOLD, 5);
             }
         }
-        else if (mApp->IsAdventureMode() && mBoard->mLevel == 50)
+        else if (mApp->IsAdventureMode() && mBoard->mLevel == FINAL_LEVEL)
         {
             FanOutCoins(CoinType::COIN_DIAMOND, 3);
         }

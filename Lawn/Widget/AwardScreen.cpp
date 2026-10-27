@@ -73,7 +73,7 @@ AwardScreen::AwardScreen(LawnApp* theApp, AwardType theAwardType, bool hasAchiev
             TodLoadResources("DelayLoad_ZombieNote");
             TodLoadResources("DelayLoad_ZombieNote4");
         }
-        else if (aLevel == 50)
+        else if (aLevel == FINAL_LEVEL)
         {
             TodLoadResources("DelayLoad_Background1");
             TodLoadResources("DelayLoad_ZombieNote");
@@ -226,7 +226,7 @@ bool AwardScreen::IsPaperNote()
         return true;
 
     int aLevel = mApp->mPlayerInfo->mLevel;
-    return mApp->IsAdventureMode() && (aLevel == 10 || aLevel == 20 || aLevel == 30 || aLevel == 40 || aLevel == 50);
+    return mApp->IsAdventureMode() && (aLevel == 10 || aLevel == 20 || aLevel == 30 || aLevel == 40 || aLevel == FINAL_LEVEL);
 }
 
 void AwardScreen::DrawBottom(Graphics* g, SexyString theTitle, SexyString theAward, SexyString theMessage)
@@ -373,7 +373,7 @@ void AwardScreen::Draw(Graphics* g)
             DrawBottom(g, _S("[FOUND_WATERING_CAN]"), _S("[WATERING_CAN]"), _S("[WATERING_CAN_DESCRIPTION]"));
             g->DrawImage(Sexy::IMAGE_WATERINGCAN, BOARD_WIDTH / 2 - Sexy::IMAGE_WATERINGCAN->mWidth / 2, 160);
         }
-        else if (aLevel == 50)
+        else if (aLevel == FINAL_LEVEL)
         {
             g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
             g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);

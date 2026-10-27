@@ -8,6 +8,7 @@
 #include "Projectile.h"
 #include "../LawnApp.h"
 #include "../Resources.h"
+#include "../GameConstants.h"
 #include "System/Music.h"
 #include "Widget/AlmanacDialog.h"
 #include "../Sexy.TodLib/TodFoley.h"
@@ -45,7 +46,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_CATAPULT,          REANIM_CATAPULT,            5,      46,     10,     1500,   _S("CATAPULT_ZOMBIE")},
     { ZOMBIE_GARGANTUAR,        REANIM_GARGANTUAR,          10,     48,     15,     1500,   _S("GARGANTUAR")},
     { ZOMBIE_IMP,               REANIM_IMP,                 10,     48,     1,      0,      _S("IMP")},
-    { ZOMBIE_BOSS,              REANIM_BOSS,                10,     50,     1,      0,      _S("BOSS")},
+    { ZOMBIE_BOSS,              REANIM_BOSS,                10,     FINAL_LEVEL, 1,      0,      _S("BOSS")},
     { ZOMBIE_REDEYE_GARGANTUAR, REANIM_GARGANTUAR,          10,     48,     15,     6000,   _S("REDEYED_GARGANTUAR")},
     { ZOMBIE_PEA_HEAD,          REANIM_ZOMBIE,              1,      4,     1,      4000,   _S("PEASHOOTER_ZOMBIE")},
     { ZOMBIE_REPEATER_PEA_HEAD, REANIM_ZOMBIE,              1,      4,     1,      4000,   _S("PEASHOOTER_ZOMBIE")},
@@ -7280,17 +7281,17 @@ bool Zombie::TrySpawnLevelAward()
         aCoinType = CoinType::COIN_NONE;
         mBoard->mChallenge->PuzzlePhaseComplete(mBoard->PixelToGridXKeepOnBoard(mPosX + 75, mPosY), mRow);
     }
-    else if (mApp->IsAdventureMode() && mBoard->mLevel <= 50)
+    else if (mApp->IsAdventureMode())
     {
-        if (mBoard->mLevel == 9 || mBoard->mLevel == 19 || mBoard->mLevel == 29 || mBoard->mLevel == 39 || mBoard->mLevel == 49)
+        if (mBoard->mLevel == 9 || mBoard->mLevel == 19 || mBoard->mLevel == 29 || mBoard->mLevel == 39 || mBoard->mLevel == FINAL_LEVEL - 1)
         {
             aCoinType = CoinType::COIN_NOTE;
         }
-        else if (mBoard->mLevel == 50)
+        else if (mBoard->mLevel == FINAL_LEVEL)
         {
             aCoinType = mApp->HasFinishedAdventure() ? CoinType::COIN_AWARD_MONEY_BAG : CoinType::COIN_AWARD_SILVER_SUNFLOWER;
         }
-        else if (mApp->HasFinishedAdventure())
+        else if (mApp->HasFinishedAdventure() || mBoard->mLevel >= 49)
         {
             aCoinType = CoinType::COIN_AWARD_MONEY_BAG;
         }
@@ -8321,8 +8322,9 @@ bool Zombie::IsGhostExposed()
 
     Rect aZombieRect = GetZombieRect();
     int aZombieCenterX = aZombieRect.mX + aZombieRect.mWidth / 2;
-    int aZombieCenterY = aZombieRect.mY + aZombieRect.mHeight / 2;
-    int aZombieCol = mBoard->PixelToGridXKeepOnBoard(aZombieCenterX, aZombieCenterY);
+    // Keep off-board columns distinct instead of clamping them to the edge.
+    int aZombieCol = aZombieCenterX >= LAWN_XMIN ?
+        (aZombieCenterX - LAWN_XMIN) / 80 : -1 - (LAWN_XMIN - aZombieCenterX - 1) / 80;
 
     Plant* aPlant = nullptr;
     while (mBoard->IteratePlants(aPlant))
@@ -8335,9 +8337,8 @@ bool Zombie::IsGhostExposed()
 
         int aColumnDistance = abs(aZombieCol - aPlant->mPlantCol);
         int aRowDistance = abs(mRow - aPlant->mRow);
-        // Match the Plantern's clear-fog footprint: three columns by two rows,
-        // with the two far diagonal cells outside the light.
-        if (aColumnDistance <= 3 && aRowDistance <= 2 && aColumnDistance + aRowDistance < 5)
+        // Include the plant's tile and all eight adjacent tiles.
+        if (aColumnDistance <= 1 && aRowDistance <= 1)
         {
             return true;
         }
